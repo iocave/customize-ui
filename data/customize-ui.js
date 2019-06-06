@@ -69,7 +69,7 @@ define([
                 let rowHeight = this.configurationService.getValue("customizeUI.listRowHeight") || 22;
                 this.updateRowHeight(rowHeight);
 
-                let fontSize = this.configurationService.getValue("customizeUI.fontSize") || {};
+                let fontSize = this.configurationService.getValue("customizeUI.fontSizeMap") || {};
                 this.updateFontSize(fontSize);
 
                 if (rowHeight <= 20)

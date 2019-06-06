@@ -19,75 +19,79 @@
 	],
 	"main": "./out/extension.js",
 	"contributes": {
-		"configuration" : {
+		"configuration": {
 			"type": "object",
-			"title" : "Customize UI",
+			"title": "Customize UI",
 			"properties": {
-				"customizeUI.stylesheet" : {
+				"customizeUI.stylesheet": {
 					"type": "object",
 					"markdownDescription": "Additional stylesheet definitions.\n```\n{\n  \".monaco-workbench .window-title\" :\n     \"font-size: 12px !important\"\n}\n```\n"
 				},
-				"customizeUI.listRowHeight" : {
+				"customizeUI.listRowHeight": {
 					"type": "integer",
 					"title": "Height of rows in lists and trees in pixels (defaults to 22)"
 				},
-				"customizeUI.font.regular" : {
+				"customizeUI.font.regular": {
 					"type": "string",
 					"title": "Replacement font family for regular UI font"
 				},
-				"customizeUI.font.monospace" : {
+				"customizeUI.font.monospace": {
 					"type": "string",
 					"title": "Replacement font family for monospace UI font"
 				},
-				"customizeUI.fontSize": {
+				"customizeUI.fontSizeMap": {
+					"default": {
+						"13px": "11px",
+						"monospace": "12px"
+					},
 					"properties": {
-						"9px" : {
+						"9px": {
 							"type": "string",
 							"title": "Replacement font size for 9px fonts"
 						},
-						"10px" : {
+						"10px": {
 							"type": "string",
 							"title": "Replacement font size for 10px fonts"
 						},
-						"11px" : {
+						"11px": {
 							"type": "string",
 							"title": "Replacement font size for 11px fonts"
 						},
-						"12px" : {
+						"12px": {
 							"type": "string",
 							"title": "Replacement font size for 12px fonts"
 						},
-						"13px" : {
+						"13px": {
 							"type": "string",
 							"title": "Replacement font size for 13px fonts"
 						},
-						"14px" : {
+						"14px": {
 							"type": "string",
 							"title": "Replacement font size for 14px fonts"
 						},
-						"15px" : {
+						"15px": {
 							"type": "string",
 							"title": "Replacement font size for 15px fonts"
 						},
-						"16px" : {
+						"16px": {
 							"type": "string",
 							"title": "Replacement font size for 16px fonts"
 						},
-						"monospace" : {
+						"monospace": {
 							"type": "string",
 							"title": "Replacement font size for monospace fonts"
 						},
-						"window-title" : {
+						"window-title": {
 							"window-type": "string",
 							"title": "Font size for windows title"
 						},
-						"tab-title" : {
+						"tab-title": {
 							"window-type": "string",
 							"title": "Font size for tab title"
 						}
 					},
 					"type": "object",
-					"title" : "Font size map",
+					"title": "Font size map",
 					"markdownDescription": "Maps original VSCode UI font size to custom font size.\n\nFor example the following changes all 12 and 13px fonts to 11px: \n```\n{\n  \"13px\": \"11px\",\n  \"12px\": \"11px\"\n}\n```\n"
 				}
 			}
@@ -109,5 +113,10 @@
 		"tslint": "^5.12.1",
 		"@types/node": "^10.12.21",
 		"@types/mocha": "^2.2.42"
+	},
+	"__metadata": {
+		"id": "ac44dd75-bdb7-433b-9d86-23f9f070c07a",
+		"publisherDisplayName": "iocave",
+		"publisherId": "23f4e00e-db63-40fd-9f68-245f064ca7f5"
 	}
 }

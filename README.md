@@ -4,12 +4,12 @@ This experimental extension allows tweaking certain VSCode UI settings that are 
 
 ## Supported configuration options
 
-### `customizeUI.fontSize`
+### `customizeUI.fontSizeMap`
 
 Mapping from hardcoded VSCode font size to custom font size. For example the following will change 13px and 12px UI fonts to 11px, which fixes huge sidebar font on OS X.
 
 ```jsonc
-    "customizeUI.fontSize": {
+    "customizeUI.fontSizeMap": {
         "13px": "11px",
         "12px": "11px",
         "window-title": "12px", // Window title font when using custom titlebar
