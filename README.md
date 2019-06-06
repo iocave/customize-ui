@@ -38,7 +38,7 @@ Allows changing font face for regular and monospace user interface fonts
 
 ### `customizeUI.stylesheet`
 
-Allow adding custom stylesheet rules. It is form of map where selectors are keys.
+Allow adding custom stylesheet rules. It is in form of a map where selectors are keys.
 
 ```jsonc
     "customizeUI.stylesheet": {
