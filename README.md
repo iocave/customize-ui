@@ -49,5 +49,5 @@ Allow adding custom stylesheet rules. It is form of map where selectors are keys
 
 ## How does it work
 
-Customize UI relies in the [Monkey Patch Extension](https://marketplace.visualstudio.com/items?itemName=iocave.monkey-patch) to inject custom javascript in VSCode. After installation you should
+Customize UI relies on the [Monkey Patch Extension](https://marketplace.visualstudio.com/items?itemName=iocave.monkey-patch) to inject custom javascript in VSCode. After installation you should
 be prompted to enable Monkey Patch. You can always trigger this manually by invoking the "Enable Monkey Patch" command.
