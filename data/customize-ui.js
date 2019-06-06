@@ -121,6 +121,8 @@ define([
                         res = getFontSize("12px");
                     if (res === "tab-title")
                         res = getFontSize("13px");
+                    if (res == "menu")
+                        res = getFontSize("12px");
                     return res;
                 }
 
@@ -136,6 +138,7 @@ define([
                     --font-size-monospace: ${getFontSize("monospace")};
                     --font-size-window-title: ${getFontSize("window-title")};
                     --font-size-tab-title: ${getFontSize("tab-title")};
+                    --font-size-menu: ${getFontSize("menu")};
                     }`);
             }
 

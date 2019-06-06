@@ -2,7 +2,7 @@
 	"name": "customize-ui",
 	"displayName": "Customize UI",
 	"description": "Tweak VSCode User Interface",
-	"version": "0.1.3",
+	"version": "0.1.4",
 	"publisher": "iocave",
 	"repository": {
 		"type": "git",
@@ -82,12 +82,16 @@
 							"title": "Replacement font size for monospace fonts"
 						},
 						"window-title": {
-							"window-type": "string",
+							"type": "string",
 							"title": "Font size for windows title"
 						},
 						"tab-title": {
-							"window-type": "string",
+							"type": "string",
 							"title": "Font size for tab title"
+						},
+						"menu" : {
+							"type": "string",
+							"title" : "Font size for menu items"
 						}
 					},
 					"type": "object",

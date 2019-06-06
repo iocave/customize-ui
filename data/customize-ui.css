@@ -44,9 +44,6 @@
 
 .monaco-inputbox-container .monaco-inputbox-message,
 .monaco-drag-image,
-.monaco-menu .monaco-action-bar.vertical .action-label,
-.monaco-menu .monaco-action-bar.vertical .keybinding,
-.monaco-menu .monaco-action-bar.vertical .submenu-indicator,
 .monaco-tree-drag-image,
 .monaco-editor .find-widget > .find-part,
 .monaco-editor .find-widget > .replace-part,
@@ -104,6 +101,12 @@
 
 .monaco-workbench .part.titlebar > .window-title {
     font-size: var(--font-size-window-title) !important;
+}
+
+.monaco-menu .monaco-action-bar.vertical .action-label,
+.monaco-menu .monaco-action-bar.vertical .keybinding,
+.monaco-menu .monaco-action-bar.vertical .submenu-indicator {
+    font-size: var(--font-size-menu) !important;
 }
 
 .monaco-workbench .debug-viewlet .monaco-list-row .expression,
