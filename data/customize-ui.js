@@ -60,7 +60,11 @@ define([
     variablesView, callStackView, watchExpressionsView, loadedScriptsView, breakpointsView, scm, configuration) {
         'use strict';
 
-        addStyleSheet('file://' + req.toUrl(mod.id) + ".css");
+        let url =  req.toUrl(mod.id) + ".css";
+        if (!url.startsWith("file://")) {
+            url = 'file://' +url;
+        }
+        addStyleSheet(url);
 
         let CustomizeFont = class CustomizeFont {
             constructor(configurationService) {
