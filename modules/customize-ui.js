@@ -109,8 +109,6 @@ define([
             }
 
             updateFontSize(fontSizeMap) {
-                console.log(fontSizeMap);
-
                 let getFontSize = function (key) {
                     let res = fontSizeMap[key];
                     if (res === undefined)
