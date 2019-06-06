@@ -15,7 +15,7 @@ Mapping from hardcoded VSCode font size to custom font size. For example the fol
         "window-title": "12px", // Window title font when using custom titlebar
         "tab-title": "12px",    // Used for editor tab titles
         "monospace": "10.5px",  // Used for monospace fonts in user interface
-        "menu": "13px",         // Used for menu items
+        "menu": "13px",         // Used for menu items (windows only)
     }
 ```
 

@@ -6,6 +6,6 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
-## [0.1.6] - 2019-06-06
+## [0.1.7] - 2019-06-06
 
 - Initial release
