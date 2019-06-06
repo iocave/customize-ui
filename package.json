@@ -6,7 +6,7 @@
 	"publisher": "iocave",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/iocave/monkey-patch"
+		"url": "https://github.com/iocave/customize-ui"
 	},
 	"engines": {
 		"vscode": "^1.34.0"
