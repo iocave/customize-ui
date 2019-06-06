@@ -2,6 +2,8 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import * as path from 'path';
+import * as fs from 'fs';
+import { openSync } from 'fs';
 
 interface FolderMap { [key: string]: string; }
 
@@ -16,6 +18,16 @@ interface API {
 	active(): boolean;
 }
 
+function mkdirRecursive(p: string) {
+    if (!fs.existsSync(p)) {
+        if (path.parse(p).root !== p) {
+            let parent = path.join(p, "..");
+            mkdirRecursive(parent);
+        }
+        fs.mkdirSync(p);
+    }
+}
+
 class Extension {
 
 	constructor(context: vscode.ExtensionContext) {
@@ -28,11 +40,27 @@ class Extension {
 		}));
 	}
 
-	get modulesPath() {
+	get sourcePath() {
 		return path.join(this.context.extensionPath, "modules");
 	}
 
+	get modulesPath() {
+		return path.join(this.context.globalStoragePath, "modules");
+	}
+
+	private copyModule(name : string) {
+		fs.copyFileSync(path.join(this.sourcePath, name), path.join(this.modulesPath, name));
+	}
+
 	async start() {
+
+		mkdirRecursive(this.modulesPath);
+
+		// copy the modules to global storage path, which unlike extension path is not versioned
+		// and will work after update
+		this.copyModule("customize-ui.css");
+		this.copyModule("customize-ui.js");
+
 		let monkeyPatch = vscode.extensions.getExtension("iocave.monkey-patch");
 
 		if (monkeyPatch !== undefined) {
