@@ -2,7 +2,7 @@
 	"name": "customize-ui",
 	"displayName": "Customize UI",
 	"description": "Tweak VSCode User Interface",
-	"version": "0.1.4",
+	"version": "0.1.5",
 	"publisher": "iocave",
 	"repository": {
 		"type": "git",

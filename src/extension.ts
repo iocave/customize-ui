@@ -28,8 +28,8 @@ class Extension {
 		}));
 	}
 
-	get dataPath() {
-		return path.join(this.context.extensionPath, "data");
+	get modulesPath() {
+		return path.join(this.context.extensionPath, "modules");
 	}
 
 	async start() {
@@ -41,7 +41,7 @@ class Extension {
 			exports.contribute("iocave.customize-ui",
 				{
 					folderMap: {
-						"customize-ui": this.dataPath,
+						"customize-ui": this.modulesPath,
 					},
 					browserModules: [
 						"customize-ui/customize-ui"
