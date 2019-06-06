@@ -65,10 +65,11 @@ class Extension {
 				if (res === "Enable") {
 					vscode.commands.executeCommand("iocave.monkey-patch.enable");
 				}
-			}
-			let res = await vscode.window.showInformationMessage("Customizing UI requires window reload", "Reload Window");
-			if (res === "Reload Window") {
-				vscode.commands.executeCommand("workbench.action.reloadWindow");
+			} else {
+				let res = await vscode.window.showInformationMessage("Customizing UI requires window reload", "Reload Window");
+				if (res === "Reload Window") {
+					vscode.commands.executeCommand("workbench.action.reloadWindow");
+				}
 			}
 		}
 	}
