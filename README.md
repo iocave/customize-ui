@@ -1,65 +1,52 @@
-# customize-ui README
+# Customize UI README
 
-This is the README for your extension "customize-ui". After writing up a brief description, we recommend including the following sections.
+This experimental extension allows tweaking certain VSCode UI settings that are otherwise non-configurable. It also allows injecting custom stylesheet rules that can be specified directly in your configuration file.
 
-## Features
+## Supported configuration options
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+### `customizeUI.fontSize`
 
-For example if there is an image subfolder under your extension project workspace:
+Mapping from hardcoded VSCode font size to custom font size. For example the following will change 13px and 12px UI fonts to 11px, which fixes huge sidebar font on OS X.
 
-\!\[feature X\]\(images/feature-x.png\)
+```jsonc
+    "customizeUI.fontSize": {
+        "13px": "11px",
+        "12px": "11px",
+        "window-title": "12px", // Window title font when using custom titlebar
+        "tab-title": "12px",  // Used for editor tab titles
+        "monospace": "10.5px" // Used for monospace fonts in user interface
+    }
+```
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+### `customizeUI.listRowHeight`
 
-## Requirements
+Changes row height in various list and trees in user inteface. 22 by default
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+```jsonc
+    "customizeUI.listRowHeight": 20, // shrink rows to match XCode
+```
 
-## Extension Settings
+### `customizeUI.font.regular` and `customizeUI.font.monospace`
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+Allows changing font face for regular and monospace user interface fonts
 
-For example:
+```jsonc
+    "customizeUI.font.regular": "Helvetica Nueve",
+    "customizeUI.font.monospace": "Fira Code",
+```
 
-This extension contributes the following settings:
+### `customizeUI.stylesheet`
 
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+Allow adding custom stylesheet rules. It is form of map where selectors are keys.
 
-## Known Issues
+```jsonc
+    "customizeUI.stylesheet": {
+        ".search-view .search-widgets-container": "padding-top: 0px !important",
+        ".suggest-input-container": "padding: 3px 4px 3px !important;"
+    }
+```
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+## How does it work
 
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+Customize UI relies in the [Monkey Patch Extension](https://marketplace.visualstudio.com/items?itemName=iocave.monkey-patch) to inject custom javascript in VSCode. After installation you should
+be prompted to enable Monkey Patch. You can always trigger this manually by invoking the "Enable Monkey Patch" command.

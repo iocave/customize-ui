@@ -30,8 +30,6 @@
 .monaco-workbench .part.editor > .content .editor-group-container > .title .title-label a,
 .monaco-workbench .part.editor > .content .editor-group-container > .title .tabs-container > .tab .tab-label a,
 .monaco-editor .review-widget .head .review-title,
-.monaco-workbench .debug-viewlet .monaco-list-row .expression,
-.monaco-workbench .debug-hover-widget .monaco-list-row .expression,
 .monaco-workbench.windows .zone-widget .zone-widget-container.exception-widget,
 .monaco-workbench.linux .zone-widget .zone-widget-container.exception-widget,
 .extension-editor > .header > .details > .subtext-container,
@@ -76,8 +74,6 @@
 .monaco-workbench > .notifications-center > .notifications-center-header > .notifications-center-header-title,
 .monaco-workbench .part.panel > .title > .panel-switcher-container > .monaco-action-bar .action-item,
 .monaco-panel-view .panel > .panel-header h3.title,
-.monaco-workbench.mac .debug-viewlet .monaco-list-row .expression,
-.monaco-workbench.mac .debug-hover-widget .monaco-list-row .expression,
 .monaco-editor .debug-hover-widget .complex-value .title,
 .monaco-workbench .part > .title > .title-actions .start-debug-action-item,
 .debug-viewlet .scope,
@@ -111,11 +107,19 @@
 }
 
 .monaco-workbench .debug-viewlet .monaco-list-row .expression,
-.monaco-workbench .debug-hover-widget .monaco-list-row .expression {
+.monaco-workbench .debug-hover-widget .monaco-list-row .expression,
+.monaco-workbench .debug-viewlet .monaco-list-row .expression,
+.monaco-workbench .debug-hover-widget .monaco-list-row .expression,
+.monaco-workbench.mac .debug-viewlet .monaco-list-row .expression,
+.monaco-workbench.mac .debug-hover-widget .monaco-list-row .expression {
     font-size: var(--font-size-monospace) !important;
 }
 
 .customview-tree .monaco-tree .monaco-tree-row .custom-view-tree-node-item > .custom-view-tree-node-item-icon {
+    height: var(--row-height) !important;
+}
+
+.monaco-panel-view .panel>.panel-header>.actions .action-label.icon {
     height: var(--row-height) !important;
 }
 
@@ -154,4 +158,40 @@
 
 .search-view .linematch {
     line-height: var(--row-height) !important;
+}
+
+.monaco-panel-view .panel > .panel-header > .actions .action-label.icon {
+    background-size: calc(var(--factor) * 16px) !important;
+}
+
+.monaco-workbench .symbol-ic on.inline {
+    background-size: calc(var(--factor) * 16px) calc(var(--factor) * 16px) !important;
+}
+
+/**
+ * Tweaks
+ */
+
+/* search result actiosn */
+body.row-height-lte20 .search-view .monaco-list .monaco-list-row .monaco-action-bar .action-label {
+    margin-top: 3px !important;
+    width: 15px !important;
+    height: 15px !important;
+}
+
+body.row-height-lte20 .monaco-findInput>.controls {
+    top: 2px !important;
+}
+
+body.row-height-lte20 .scm-viewlet .scm-editor > .monaco-inputbox > .wrapper > textarea.input {
+    min-height: 24px !important;
+}
+
+body.row-height-lte20 .monaco-workbench .debug-viewlet .monaco-list-row .expression,
+body.row-height-lte20 .monaco-workbench .debug-hover-widget .monaco-list-row .expression,
+body.row-height-lte20 .monaco-workbench .debug-viewlet .monaco-list-row .expression,
+body.row-height-lte20 .monaco-workbench .debug-hover-widget .monaco-list-row .expression,
+body.row-height-lte20 .monaco-workbench.mac .debug-viewlet .monaco-list-row .expression,
+body.row-height-lte20 .monaco-workbench.mac .debug-hover-widget .monaco-list-row .expression {
+    font-size: var(--font-size-monospace) !important;
 }

@@ -48,6 +48,7 @@ define([
     "vs/workbench/contrib/files/browser/views/openEditorsView",
     "vs/editor/contrib/documentSymbols/outlineTree",
     "vs/workbench/browser/parts/views/customView",
+    "vs/workbench/contrib/search/browser/searchResultsView",
     "vs/workbench/contrib/debug/browser/variablesView",
     "vs/workbench/contrib/debug/browser/callStackView",
     "vs/workbench/contrib/debug/browser/watchExpressionsView",
@@ -55,7 +56,7 @@ define([
     "vs/workbench/contrib/debug/browser/breakpointsView",
     "vs/workbench/contrib/scm/browser/scmViewlet",
     "vs/platform/configuration/common/configuration",
-], function (mod, req, workbench, explorerView, panelView, openEditorsView, outlineTree, customView,
+], function (mod, req, workbench, explorerView, panelView, openEditorsView, outlineTree, customView, searchResultsView,
     variablesView, callStackView, watchExpressionsView, loadedScriptsView, breakpointsView, scm, configuration) {
         'use strict';
 
@@ -68,8 +69,39 @@ define([
                 let rowHeight = this.configurationService.getValue("customizeUI.listRowHeight") || 22;
                 this.updateRowHeight(rowHeight);
 
-                let fontSize = this.configurationService.getValue("customizeUI.fontSizeMap") || {};
+                let fontSize = this.configurationService.getValue("customizeUI.fontSize") || {};
                 this.updateFontSize(fontSize);
+
+                if (rowHeight <= 20)
+                    document.body.classList.add("row-height-lte20");
+
+                let styleSheet = this.configurationService.getValue("customizeUI.stylesheet");
+                if (styleSheet instanceof Object) {
+                    this.addCustomStyleSheet(styleSheet);
+                }
+
+                let fontFamily = this.configurationService.getValue("customizeUI.font.regular");
+                if (typeof(fontFamily) == "string" && fontFamily.length > 0) {
+                    this.setFontFamily(fontFamily);
+                }
+
+                let monospaceFamily = this.configurationService.getValue("customizeUI.font.monospace");
+                if (typeof(monospaceFamily) == "string" && monospaceFamily.length > 0) {
+                    this.setMonospaceFontFamily(monospaceFamily);
+                }
+            }
+
+            addCustomStyleSheet(styleSheet) {
+                let string = Object.entries(styleSheet).map(([key, value]) => `${key} { ${value}; }` ).join("\n");
+                addStyle(string);
+            }
+
+            setFontFamily(fontFamily) {
+                addStyle(`.mac, .windows, .linux { font-family: "${fontFamily}" !important; }`);
+            }
+
+            setMonospaceFontFamily(fontFamily) {
+                addStyle(`.mac, .windows, .linux { --monaco-monospace-font:"${fontFamily}" !important; }`);
             }
 
             updateFontSize(fontSizeMap) {
@@ -110,7 +142,7 @@ define([
                 // panel height (OUTLINE, DEPENDENCIES, ...)
                 panelView.Panel.HEADER_SIZE = rowHeight;
 
-                addStyle(`:root { --row-height: ${rowHeight}px; }`);
+                addStyle(`:root { --row-height: ${rowHeight}px; --factor: ${rowHeight / 22}; }`);
 
                 // open editors
                 override(openEditorsView.OpenEditorsView, "renderBody", function (original) {
@@ -133,6 +165,11 @@ define([
                     }
                     return res;
                 });
+
+                // search
+                searchResultsView.SearchDelegate.prototype.getHeight = function () {
+                    return rowHeight;
+                }
 
                 //
                 // Debugger

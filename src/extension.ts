@@ -44,7 +44,7 @@ class Extension {
 						"customize-ui": this.dataPath,
 					},
 					browserModules: [
-						"customize-ui/customize-font"
+						"customize-ui/customize-ui"
 					],
 					mainProcessModules: [
 					]
@@ -78,7 +78,6 @@ class Extension {
 
 
 export function activate(context: vscode.ExtensionContext) {
-
 	new Extension(context).start();
 }
 

@@ -1,9 +1,13 @@
 {
 	"name": "customize-ui",
 	"displayName": "Customize UI",
-	"description": "Tweak VSCode UI",
-	"version": "0.0.1",
+	"description": "Tweak VSCode User Interface",
+	"version": "0.1.0",
 	"publisher": "iocave",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/iocave/monkey-patch"
+	},
 	"engines": {
 		"vscode": "^1.34.0"
 	},
@@ -27,15 +31,15 @@
 					"type": "integer",
 					"title": "Height of rows in lists and trees in pixels (defaults to 22)"
 				},
-				"customizeUI.fontFace.regular" : {
+				"customizeUI.font.regular" : {
 					"type": "string",
-					"title": "Replacement font face for regular UI font"
+					"title": "Replacement font family for regular UI font"
 				},
-				"customizeUI.fontFace.monospace" : {
+				"customizeUI.font.monospace" : {
 					"type": "string",
-					"title": "Replacement font face for monospace UI font"
+					"title": "Replacement font family for monospace UI font"
 				},
-				"customizeUI.fontSizeMap": {
+				"customizeUI.fontSize": {
 					"properties": {
 						"9px" : {
 							"type": "string",
