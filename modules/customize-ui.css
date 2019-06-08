@@ -198,3 +198,80 @@ body.row-height-lte20 .monaco-workbench.mac .debug-viewlet .monaco-list-row .exp
 body.row-height-lte20 .monaco-workbench.mac .debug-hover-widget .monaco-list-row .expression {
     font-size: var(--font-size-monospace) !important;
 }
+
+/*
+ * Bottom activity bar
+ */
+
+ body.activity-bar-at-bottom .monaco-workbench .part.activitybar {
+    width: 100% !important;
+}
+
+body.activity-bar-at-bottom .monaco-workbench .activitybar > .content {
+	flex-direction: row !important;
+}
+
+body.activity-bar-at-bottom .monaco-workbench .activitybar>.content .monaco-action-bar .action-item {
+    padding-right: 0px !important;
+}
+
+body.activity-bar-at-bottom .monaco-workbench .activitybar > .content .monaco-action-bar .action-label {
+    padding: 0 0 0 var(--activity-bar-action-width) !important;
+}
+
+body.activity-bar-at-bottom .monaco-workbench .activitybar .monaco-action-bar .action-label {
+    -webkit-mask-size: 22px 22px !important;
+}
+
+body.activity-bar-at-bottom .monaco-workbench .activitybar>.content .monaco-action-bar .badge {
+    width: var(--activity-bar-action-width) !important;
+    height: var(--activity-bar-action-height) !important;
+}
+
+body.activity-bar-at-bottom .monaco-workbench .activitybar>.content .monaco-action-bar .action-item {
+    padding: 0px !important;
+}
+
+body.activity-bar-at-bottom .monaco-workbench .activitybar>.content .monaco-action-bar .action-label {
+    height: var(--activity-bar-action-height) !important;
+}
+
+body.activity-bar-at-bottom .monaco-workbench .activitybar>.content .monaco-action-bar .badge .badge-content {
+    top: 12px;
+    left: 12px !important;
+    font-size: 8px !important;
+    height: 14px;
+    line-height: 14px;
+    padding: 0px 3px;
+}
+
+body.activity-bar-at-bottom .monaco-workbench .activitybar > .content .monaco-action-bar .action-item:focus:before {
+	content: "";
+	position: absolute;
+    top: 0px;
+    left: 0px;
+    width: var(--activity-bar-action-width);
+    height: calc(var(--activity-bar-action-height) - 2px);
+    border-left-width: 0px !important;
+	border-bottom: 2px solid var(--focus-border);
+}
+
+body.activity-bar-at-bottom .monaco-workbench .activitybar > .content .monaco-action-bar .action-item.clicked:focus:before {
+    border-bottom: none !important; /* no focus feedback when using mouse */
+}
+
+body.activity-bar-at-bottom .monaco-workbench .activitybar > .content .composite-bar {
+    margin-left: var(--activity-bar-side-margin);
+}
+
+body.activity-bar-at-bottom .monaco-workbench .activitybar > .content .global-activity {
+    margin-right: var(--activity-bar-side-margin);
+}
+
+body.activity-bar-at-bottom .monaco-workbench .part.statusbar {
+    height: 20px !important;
+}
+
+body.activity-bar-at-bottom .monaco-workbench .part.statusbar>.statusbar-item {
+    line-height: 20px !important;
+}
