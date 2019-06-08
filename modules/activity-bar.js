@@ -173,7 +173,7 @@ define([
                 panelInGrid = true;
             }
             if (!statusBarInGrid) {
-                this.workbenchGrid.addView(this.statusBarPartView, "split" /* Split */, this.panelPartView, 1 /* Down */);
+                this.workbenchGrid.addView(this.statusBarPartView, "split" /* Split */, this.state.panel.position === 2 /* bottom */ ? this.panelPartView : this.editorPartView, 1 /* Down */);
                 statusBarInGrid = true;
             }
 
