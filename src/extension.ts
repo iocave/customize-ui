@@ -58,8 +58,14 @@ class Extension {
 
 		// copy the modules to global storage path, which unlike extension path is not versioned
 		// and will work after update
-		this.copyModule("customize-ui.css");
-		this.copyModule("customize-ui.js");
+		this.copyModule("modules/customize-ui.css");
+		this.copyModule("modules/activity-bar.js");
+		this.copyModule("modules/customize-ui.js");
+		this.copyModule("modules/fonts.js");
+		this.copyModule("modules/swizzle.dylib");
+		this.copyModule("modules/title-bar-main-process.js");
+		this.copyModule("modules/title-bar.js");
+		this.copyModule("modules/utils.js");
 
 		let monkeyPatch = vscode.extensions.getExtension("iocave.monkey-patch");
 
@@ -69,7 +75,7 @@ class Extension {
 			exports.contribute("iocave.customize-ui",
 				{
 					folderMap: {
-						"customize-ui": this.sourcePath,
+						"customize-ui": this.modulesPath,
 					},
 					browserModules: [
 						"customize-ui/customize-ui"
