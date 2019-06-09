@@ -1,8 +1,25 @@
 # Customize UI README
 
-This experimental extension allows tweaking certain VSCode UI settings that are otherwise non-configurable. It also allows injecting custom stylesheet rules that can be specified directly in your configuration file.
+This experimental extension allows customizing VSCode user interface beyond what's normally possible, such as
+
+- Changing interface fonts
+- Inline titlebar on macOS
+- Activity bar below sidebar
+- Custom stylesheet rules conveniently specified in settings.json
+
+<div style="text-align:center">
+  <img src="https://raw.githubusercontent.com/iocave/customize-ui/master/screenshot.png" alt="Preview">
+</div>
 
 ## Supported configuration options
+
+### `customizeUI.activityBar`
+
+When set to `bottom`, activity bar will be positioned below the sidebar. Requires `workbench.useExperimentalGridLayout` set to `true`.
+
+### `customizeUI.titleBar`
+
+macOS only. When set to `inline`, titlebar is hidden and window controls become part of sidebar. Requires `workbench.useExperimentalGridLayout` set to true and `window.titleBarStyle` set to native.
 
 ### `customizeUI.fontSizeMap`
 
