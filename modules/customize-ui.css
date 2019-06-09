@@ -275,3 +275,66 @@ body.activity-bar-at-bottom .monaco-workbench .part.statusbar {
 body.activity-bar-at-bottom .monaco-workbench .part.statusbar>.statusbar-item {
     line-height: 20px !important;
 }
+
+/**
+ * Inline Title bar
+ */
+
+body.inline-title-bar:not(.activity-bar-at-bottom) .monaco-workbench:not(.fullscreen) .activitybar:not(.right) .content  {
+    margin-top: var(--traffict-lights-height) !important;
+}
+
+body.inline-title-bar:not(.activity-bar-at-bottom) .monaco-workbench:not(.fullscreen) .activitybar:not(.right) .activity-bar-placeholder {
+    position: absolute;
+    width: 50px;
+    height: var(--traffict-lights-height);
+    -webkit-app-region: drag;
+    top: 0px;
+}
+
+.title-actions a:not([aria-disabled="true"]),
+.title-actions select,
+.title-actions div[role="button"] {
+    -webkit-app-region: no-drag;
+}
+
+body.inline-title-bar .monaco-workbench:not(.fullscreen) .sidebar .composite.title {
+    height: var(--traffict-lights-height) !important;
+}
+
+body.inline-title-bar .monaco-workbench:not(.fullscreen) .sidebar .title-label {
+    line-height: var(--traffict-lights-height) !important;
+}
+
+body.inline-title-bar .monaco-workbench:not(.fullscreen) .sidebar .title-actions {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Allow dragging on side-bar title... */
+body.inline-title-bar .monaco-workbench:not(.fullscreen) .sidebar .composite.title {
+    -webkit-app-region: drag;
+}
+
+body.inline-title-bar .monaco-workbench .part.editor>.content .editor-group-container>.title .tabs-container,
+body.inline-title-bar .monaco-workbench .part.editor>.content .editor-group-container>.title .tabs-container>.tab,
+body.inline-title-bar .monaco-workbench .part.editor>.content .editor-group-container>.title .editor-actions,
+body.inline-title-bar .monaco-workbench .part.editor>.content .editor-group-container>.title .editor-actions .action-label, .monaco-workbench .part.editor>.content .editor-group-container>.title .title-actions .action-label {
+    height: var(--traffict-lights-height) !important;
+    line-height: var(--traffict-lights-height) !important;
+}
+
+body.inline-title-bar .monaco-workbench .part.editor>.content .editor-group-container>.title .tabs-container>.tab .monaco-icon-label:before {
+    height: var(--traffict-lights-height) !important;
+}
+
+body.inline-title-bar div.dragging-area-top {
+    flex-grow: 1.0;
+    -webkit-app-region: drag;
+}
+
+body.inline-title-bar div.dragging-area-left-padding {
+    height: var(--traffict-lights-height);
+    -webkit-app-region: drag;
+}

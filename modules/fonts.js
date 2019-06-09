@@ -1,5 +1,4 @@
 define([
-    "require",
     "exports",
     "customize-ui/utils",
     "vs/workbench/contrib/files/browser/views/explorerViewer",
@@ -15,7 +14,7 @@ define([
     "vs/workbench/contrib/debug/browser/breakpointsView",
     "vs/workbench/contrib/scm/browser/scmViewlet",
     "vs/platform/configuration/common/configuration",
-], function(require, exports, utils, explorerView, panelView, openEditorsView, outlineTree, customView, searchResultsView,
+], function(exports, utils, explorerView, panelView, openEditorsView, outlineTree, customView, searchResultsView,
     variablesView, callStackView, watchExpressionsView, loadedScriptsView, breakpointsView, scm, configuration) {
 
     let override = utils.override;
