@@ -68,3 +68,8 @@ Allow adding custom stylesheet rules. It is in form of a map where selectors are
 
 Customize UI relies on the [Monkey Patch Extension](https://marketplace.visualstudio.com/items?itemName=iocave.monkey-patch) to inject custom javascript in VSCode. After installation you should
 be prompted to enable Monkey Patch. You can always trigger this manually by invoking the "Enable Monkey Patch" command.
+
+## Credits
+
+Inline titlebar inspired by Jürg Lehni's Titlebar-less VSCode extension.
+
