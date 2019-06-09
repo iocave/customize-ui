@@ -23,9 +23,21 @@
 			"type": "object",
 			"title": "Customize UI",
 			"properties": {
-				"customizeUI.bottomActivityBar": {
-					"type": "boolean",
-					"description": "Put activity bar below the sidebar"
+				"customizeUI.activityBar": {
+					"type": "string",
+					"description": "Position activity bar below the sidebar",
+					"enum": [
+						"regular",
+						"bottom"
+					]
+				},
+				"customizeUI.titleBar": {
+					"type": "string",
+					"description": "Inline title bar style for macOS",
+					"enum": [
+						"regular",
+						"inline"
+					]
 				},
 				"customizeUI.stylesheet": {
 					"type": "object",
@@ -93,9 +105,9 @@
 							"type": "string",
 							"title": "Font size for tab title"
 						},
-						"menu" : {
+						"menu": {
 							"type": "string",
-							"title" : "Font size for menu items (windows only)"
+							"title": "Font size for menu items (windows only)"
 						}
 					},
 					"type": "object",
@@ -114,6 +126,9 @@
 		"watch": "tsc -watch -p ./",
 		"postinstall": "node ./node_modules/vscode/bin/install",
 		"test": "npm run compile && node ./node_modules/vscode/bin/test"
+	},
+	"dependencies": {
+		"ffi": "^2.3.0"
 	},
 	"devDependencies": {
 		"typescript": "^3.3.1",

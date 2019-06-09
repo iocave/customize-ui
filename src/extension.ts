@@ -19,13 +19,13 @@ interface API {
 }
 
 function mkdirRecursive(p: string) {
-    if (!fs.existsSync(p)) {
-        if (path.parse(p).root !== p) {
-            let parent = path.join(p, "..");
-            mkdirRecursive(parent);
-        }
-        fs.mkdirSync(p);
-    }
+	if (!fs.existsSync(p)) {
+		if (path.parse(p).root !== p) {
+			let parent = path.join(p, "..");
+			mkdirRecursive(parent);
+		}
+		fs.mkdirSync(p);
+	}
 }
 
 class Extension {
@@ -35,7 +35,7 @@ class Extension {
 
 		context.subscriptions.push(vscode.workspace.onDidChangeConfiguration(e => {
 			if (e.affectsConfiguration('customizeUI.')) {
-				this.configurationChanged();
+				this.configurationChanged(e);
 			}
 		}));
 	}
@@ -48,7 +48,7 @@ class Extension {
 		return path.join(this.context.globalStoragePath, "modules");
 	}
 
-	private copyModule(name : string) {
+	private copyModule(name: string) {
 		fs.copyFileSync(path.join(this.sourcePath, name), path.join(this.modulesPath, name));
 	}
 
@@ -69,12 +69,13 @@ class Extension {
 			exports.contribute("iocave.customize-ui",
 				{
 					folderMap: {
-						"customize-ui": this.modulesPath,
+						"customize-ui": this.sourcePath,
 					},
 					browserModules: [
 						"customize-ui/customize-ui"
 					],
 					mainProcessModules: [
+						"customize-ui/title-bar-main-process",
 					]
 				}
 			);
@@ -83,7 +84,30 @@ class Extension {
 		}
 	}
 
-	async configurationChanged() {
+	async checkExperimentalLayout() {
+		if (vscode.workspace.getConfiguration().get("workbench.useExperimentalGridLayout") !== true) {
+			let res = await vscode.window.showWarningMessage("This option needs the 'useExperimentalGridLayout' option enabled", "Enable");
+			if (res === "Enable") {
+				await vscode.workspace.getConfiguration().update(
+					"workbench.useExperimentalGridLayout", true, vscode.ConfigurationTarget.Global,
+				);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private async promptRestart() {
+		// This is a hacky way to display the restart prompt
+		let v = vscode.workspace.getConfiguration().inspect("window.titleBarStyle");
+		if (v !== undefined) {
+			let value = vscode.workspace.getConfiguration().get("window.titleBarStyle");
+			await vscode.workspace.getConfiguration().update("window.titleBarStyle", value === "native" ? "custom" : "native", vscode.ConfigurationTarget.Global);
+			vscode.workspace.getConfiguration().update("window.titleBarStyle", v.globalValue, vscode.ConfigurationTarget.Global);
+		}
+	}
+
+	async configurationChanged(e: vscode.ConfigurationChangeEvent) {
 		let monkeyPatch = vscode.extensions.getExtension("iocave.monkey-patch");
 		if (monkeyPatch !== undefined) {
 			await monkeyPatch.activate();
@@ -94,6 +118,33 @@ class Extension {
 					vscode.commands.executeCommand("iocave.monkey-patch.enable");
 				}
 			} else {
+				if (e.affectsConfiguration("customizeUI.activityBar") &&
+					vscode.workspace.getConfiguration().get("customizeUI.activityBar") === "bottom") {
+					let res = await this.checkExperimentalLayout();
+					if (res) {
+						return;
+					}
+				}
+				if (e.affectsConfiguration("customizeUI.titleBar")) {
+					let enabled = vscode.workspace.getConfiguration().get("customizeUI.titleBar") === "inline";
+					if (enabled) {
+						let res = await (this.checkExperimentalLayout());
+						if (res) {
+							return;
+						}
+						let titleBarStyle = vscode.workspace.getConfiguration().get("window.titleBarStyle");
+						if (titleBarStyle === "custom") {
+							let res = await vscode.window.showWarningMessage("Inline title bar requires titleBarStyle = 'native'.", "Enable");
+							if (res === "Enable") {
+								await vscode.workspace.getConfiguration().update(
+									"window.titleBarStyle", "native", vscode.ConfigurationTarget.Global,
+								);
+								return;
+							}
+						}
+					}
+					this.promptRestart();
+				}
 				let res = await vscode.window.showInformationMessage("Customizing UI requires window reload", "Reload Window");
 				if (res === "Reload Window") {
 					vscode.commands.executeCommand("workbench.action.reloadWindow");

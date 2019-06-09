@@ -205,6 +205,7 @@ body.row-height-lte20 .monaco-workbench.mac .debug-hover-widget .monaco-list-row
 
  body.activity-bar-at-bottom .monaco-workbench .part.activitybar {
     width: 100% !important;
+    overflow: hidden;
 }
 
 body.activity-bar-at-bottom .monaco-workbench .activitybar > .content {

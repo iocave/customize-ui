@@ -6,14 +6,12 @@ define([
     "customize-ui/activity-bar",
     "customize-ui/fonts",
     "customize-ui/title-bar",
-], function (mod, req, insantiationService, utils, activityBar, fonts, titleBar) {
+], function (module, require, insantiationService, utils, activityBar, fonts, titleBar) {
         'use strict';
 
-        let override = utils.override;
         let addStyleSheet = utils.addStyleSheet;
-        let addStyle = utils.addStyle;
 
-        let url = req.toUrl(mod.id) + ".css";
+        let url = require.toUrl(module.id) + ".css";
         if (!url.startsWith("file://")) {
             url = 'file://' + url;
         }

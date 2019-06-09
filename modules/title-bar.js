@@ -21,7 +21,7 @@ define([
                 this.windowService = windowService;
 
                 if (platform.isMacintosh &&
-                    this.configurationService.getValue("customizeUI.inlineTitleBar")) {
+                    this.configurationService.getValue("customizeUI.titleBar") === "inline") {
                     this.init();
                 }
             }
@@ -39,14 +39,14 @@ define([
                 let dimensions = this.traffictLightDimensions();
                 this.styleTextNode.textContent =
                     `:root {
-                --traffict-lights-width: ${dimensions.width}px;
-                --traffict-lights-height: ${dimensions.height}px;
-            }`;
+                     --traffict-lights-width: ${dimensions.width}px;
+                     --traffict-lights-height: ${dimensions.height}px;
+                }`;
             }
 
             traffictLightDimensions() {
                 let size = {
-                    width: 78,
+                    width: 77,
                     height: 37,
                 }
                 return {
@@ -60,7 +60,7 @@ define([
             }
 
             activityBarIsVertical() {
-                return !this.configurationService.getValue("customizeUI.bottomActivityBar");
+                return this.configurationService.getValue("customizeUI.activityBar") !== "bottom";
             }
 
             activityBarIsVisible() {
@@ -82,7 +82,7 @@ define([
                 utils.override(activitybarPart.ActivitybarPart, "layout", function (original, args) {
                     if (this.layoutService.isVisible("workbench.parts.activitybar") &&
                         self.activityBarIsVertical() &&
-                        self.isFullScreen() &&
+                        !self.isFullScreen() &&
                         this.layoutService.getSideBarPosition() == 0 /* LEFT */)
                         args[1] -= self.traffictLightDimensions().height;
                     original();
@@ -256,6 +256,10 @@ define([
                 editor.EDITOR_TITLE_HEIGHT = this.traffictLightDimensions().height;
                 this.updateStyle();
                 if (this.layout) {
+
+                    // Sometimes layout get computed while we have old isFullScreen value, so force relayout
+                    this.layout.layout();
+
                     if (!this.layout.state.sideBar.hidden) {
                         this.layout.getPart("workbench.parts.sidebar").updateStyles();
                     }

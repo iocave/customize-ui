@@ -1,28 +1,72 @@
 define([
+    "module",
+    "require",
+    "vs/platform/instantiation/common/instantiationService",
+    "vs/code/electron-main/app",
     "vs/code/electron-main/window",
     "vs/base/common/platform",
+    "vs/platform/configuration/common/configuration",
     "customize-ui/utils"
-], function(win, platform, utils) {
+], function (module, require, insantiationService, app, win, platform, configuration, utils) {
+    'use strict';
 
-    utils.override(win.CodeWindow, "createBrowserWindow", function(original){
-
-        if (platform.isMacintosh &&
-            this.configurationService.getValue("customizeUI.inlineTitleBar")) {
-            // Object.defineProperty(Object.prototype, "frame", {
-            //     get() { return false; },
-            //     set() {},
-            //     configurable: true,
-            // });
-            Object.defineProperty(Object.prototype, "titleBarStyle", {
-                get() { return "hiddenInset"; },
-                set() {},
-                configurable: true,
-            });
-            let res = original();
-            delete Object.prototype.titleBarStyle;
-            return res;
-        } else {
-            return original();
+    let MainProcessTitleBar = class MainProcessTitleBar {
+        constructor(configurationService) {
+            if (configurationService.getValue("customizeUI.titleBar") === "inline") {
+                this.init();
+            }
         }
-    });
+
+        init() {
+            this.swizzle();
+
+            utils.override(win.CodeWindow, "createBrowserWindow", function (original) {
+                Object.defineProperty(Object.prototype, "titleBarStyle", {
+                    get() { return "hidden"; },
+                    set() { },
+                    configurable: true,
+                });
+                let res = original();
+                delete Object.prototype.titleBarStyle;
+                return res;
+            });
+        }
+
+        swizzle() {
+            //
+            // titleBarStyle hiddenInset is very buggy, in electron 4 downright unusable,
+            //  so we do it our own way
+            //
+
+            let path = require.__$__nodeRequire('path');
+            let url = require.toUrl(module.id);
+            let dir = path.dirname(url);
+            let swizzle = path.join(dir, "swizzle.dylib");
+
+            try {
+                let r = require.__$__nodeRequire('process');
+                let os = require.__$__nodeRequire('os');
+                let module = { exports: {} }
+                let e = r.dlopen(module, swizzle, os.constants.dlopen.RTLD_NOW);
+            } catch (e) {
+                // "Module did not self-register." is expected error here; the dylib
+                // is not a real node module, it just swizzles some objc code
+                if (!e.message.includes("self-register")) {
+                    console.error(e.message);
+                }
+            }
+        }
+    }
+
+    MainProcessTitleBar = utils.decorate([
+        utils.param(0, configuration.IConfigurationService),
+    ], MainProcessTitleBar);
+
+    if (platform.isMacintosh) {
+        utils.override(app.CodeApplication, "openFirstWindow", function (original) {
+            this.instantiationService.createInstance(MainProcessTitleBar);
+            return original();
+        });
+    }
+
 });

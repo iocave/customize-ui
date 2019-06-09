@@ -224,7 +224,7 @@ define([
 
     let CustomizeActivityBar = class CustomizeActivityBar {
         constructor(configurationService, themeService) {
-            if (configurationService.getValue("customizeUI.bottomActivityBar") === true &&
+            if (configurationService.getValue("customizeUI.activityBar") === "bottom" &&
                 configurationService.getValue("workbench.useExperimentalGridLayout") == true) {
                 moveActivityBarToBottom(themeService.getTheme());
             }
