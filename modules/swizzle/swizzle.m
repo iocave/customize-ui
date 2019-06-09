@@ -1,16 +1,9 @@
-//
-//  lib1.m
-//  TestLibrary
-//
-//  Created by Matej Knopp on 09/06/2019.
-//  Copyright © 2019 Matej Knopp. All rights reserved.
-//
-
 #include <AppKit/AppKit.h>
 #import <Foundation/Foundation.h>
 #import <objc/runtime.h>
 
 @interface Replacement : NSObject
+
 @end
 
 @implementation Replacement

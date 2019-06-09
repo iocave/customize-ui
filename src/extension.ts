@@ -1,9 +1,6 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
-import { openSync } from 'fs';
 
 interface FolderMap { [key: string]: string; }
 
@@ -58,14 +55,14 @@ class Extension {
 
 		// copy the modules to global storage path, which unlike extension path is not versioned
 		// and will work after update
-		this.copyModule("modules/customize-ui.css");
-		this.copyModule("modules/activity-bar.js");
-		this.copyModule("modules/customize-ui.js");
-		this.copyModule("modules/fonts.js");
-		this.copyModule("modules/swizzle.dylib");
-		this.copyModule("modules/title-bar-main-process.js");
-		this.copyModule("modules/title-bar.js");
-		this.copyModule("modules/utils.js");
+		this.copyModule("customize-ui.css");
+		this.copyModule("activity-bar.js");
+		this.copyModule("customize-ui.js");
+		this.copyModule("fonts.js");
+		this.copyModule("swizzle.dylib");
+		this.copyModule("title-bar-main-process.js");
+		this.copyModule("title-bar.js");
+		this.copyModule("utils.js");
 
 		let monkeyPatch = vscode.extensions.getExtension("iocave.monkey-patch");
 
