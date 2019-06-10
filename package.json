@@ -12,7 +12,15 @@
 		"vscode": "^1.34.0"
 	},
 	"categories": [
+		"Themes",
 		"Other"
+	],
+	"keywords": [
+		"font",
+		"fonts",
+		"titlebar",
+		"activity",
+		"interface"
 	],
 	"activationEvents": [
 		"*"
