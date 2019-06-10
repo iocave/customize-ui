@@ -108,15 +108,19 @@ define([
                     this._placeholder.style.backgroundColor = color;
                 });
 
-                // override title height for compostie title
-                utils.override(part.Part, "create", function (original) {
-                    original();
-                    let constructor = this.partLayout.__proto__.constructor;
-                    let onZoomChange = function () {
-                        constructor.TITLE_HEIGHT = self.traffictLightDimensions().height;
+                utils.override(part.Part, "layoutContents", function (original) {
+                    // we need to override height for composite title, but only when laying
+                    // out sidebar title
+                    if (this.id === "workbench.parts.sidebar") {
+                        let c = this.partLayout.__proto__.constructor;
+                        let prev = c.TITLE_HEIGHT;
+                        c.TITLE_HEIGHT = self.traffictLightDimensions().height;
+                        let res = original();
+                        c.TITLE_HEIGHT = prev;
+                        return res;
+                    } else {
+                        return original();
                     }
-                    onZoomChange();
-                    browser.onDidChangeZoomLevel(onZoomChange);
                 });
 
                 utils.override(compositePart.CompositePart, "createTitleArea", function (original) {
