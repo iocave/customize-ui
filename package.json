@@ -2,7 +2,7 @@
 	"name": "customize-ui",
 	"displayName": "Customize UI",
 	"description": "Advanced VSCode user interface customizations. Very experimental.",
-	"version": "0.1.11",
+	"version": "0.1.12",
 	"publisher": "iocave",
 	"repository": {
 		"type": "git",
@@ -29,6 +29,15 @@
 	],
 	"main": "./out/extension.js",
 	"contributes": {
+		"colors": [{
+			"id" : "inlineTitleBar.background",
+			"description": "Color for inline titlebar background",
+			"defaults": {
+				"dark" : "sideBar.background",
+				"light": "sideBar.background",
+				"highContrast": "sideBar.background"
+			}
+		}],
 		"configuration": {
 			"type": "object",
 			"title": "Customize UI",

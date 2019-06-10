@@ -99,12 +99,12 @@ define([
                     return res;
                 });
 
-                let color = colorRegistry.registerColor("window.inlineTitleBar");
+                let color = colorRegistry.registerColor("inlineTitleBar.background");
 
                 // actually change the color
                 utils.override(activitybarPart.ActivitybarPart, "updateStyles", function (original) {
                     original();
-                    let color = this.getColor("window.inlineTitleBar") || this.getColor("sideBar.background");
+                    let color = this.getColor("inlineTitleBar.background") || this.getColor("sideBar.background");
                     this._placeholder.style.backgroundColor = color;
                 });
 
@@ -152,7 +152,7 @@ define([
                 utils.override(compositePart.CompositePart, "updateStyles", function (original) {
                     original();
                     if (this._titleArea) {
-                        let color = this.getColor("window.inlineTitleBar");
+                        let color = this.getColor("inlineTitleBar.background");
                         this._titleArea.style.backgroundColor = color;
                         let padding = 0;
                         if (self.isFullScreen() || self.layout.getSideBarPosition() == 1) {
