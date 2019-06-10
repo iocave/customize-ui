@@ -1,7 +1,7 @@
 {
 	"name": "customize-ui",
 	"displayName": "Customize UI",
-	"description": "Tweak VSCode User Interface",
+	"description": "Advanced VSCode user interface customizations. Very experimental.",
 	"version": "0.1.9",
 	"publisher": "iocave",
 	"repository": {
@@ -18,9 +18,11 @@
 	"keywords": [
 		"font",
 		"fonts",
+		"activity bar",
+		"interface",
 		"titlebar",
-		"activity",
-		"interface"
+		"activitybar",
+		"title bar"
 	],
 	"activationEvents": [
 		"*"
