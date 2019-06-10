@@ -68,5 +68,4 @@ define([
             return original();
         });
     }
-
 });

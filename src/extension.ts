@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as fs from 'fs';
+import { format } from 'util';
 
 interface FolderMap { [key: string]: string; }
 
@@ -46,23 +47,78 @@ class Extension {
 	}
 
 	private copyModule(name: string) {
-		fs.copyFileSync(path.join(this.sourcePath, name), path.join(this.modulesPath, name));
+
+		let src = path.join(this.sourcePath, name);
+		let dst = path.join(this.modulesPath, name);
+
+		let data = fs.readFileSync(src);
+
+		if (fs.existsSync(dst)) {
+			let current = fs.readFileSync(dst);
+			if (current.compare(data) === 0) {
+				return false;
+			}
+		}
+		fs.writeFileSync(dst, data);
+		return true;
+	}
+
+	private get haveBottomActivityBar() {
+		return vscode.workspace.getConfiguration().get("customizeUI.activityBar") === "bottom";
+	}
+
+	private get haveInlineTitleBar() {
+		return vscode.workspace.getConfiguration().get("customizeUI.titleBar") === "inline";
+	}
+
+	private get haveFontCustomizations() {
+		return vscode.workspace.getConfiguration().get("customizeUI.fontSizeMap") !== undefined &&
+			vscode.workspace.getConfiguration().get("customizeUI.font.regular") !== undefined ||
+			vscode.workspace.getConfiguration().get("customizeUI.font.monospace") !== undefined;
+	}
+
+	private get haveStylesheetCustomizations() {
+		return vscode.workspace.getConfiguration().get("customizeUI.stylesheet") !== undefined;
 	}
 
 	async start() {
 
+		let freshStart = !fs.existsSync(this.modulesPath);
 		mkdirRecursive(this.modulesPath);
 
 		// copy the modules to global storage path, which unlike extension path is not versioned
 		// and will work after update
-		this.copyModule("customize-ui.css");
-		this.copyModule("activity-bar.js");
-		this.copyModule("customize-ui.js");
-		this.copyModule("fonts.js");
-		this.copyModule("swizzle.dylib");
-		this.copyModule("title-bar-main-process.js");
-		this.copyModule("title-bar.js");
-		this.copyModule("utils.js");
+
+		let updatedBrowser = false;
+		let updatedMainProcess = false;
+
+		updatedBrowser = updatedBrowser || this.copyModule("customize-ui.css");
+		updatedBrowser = updatedBrowser || this.copyModule("activity-bar.js");
+		updatedBrowser = updatedBrowser || this.copyModule("customize-ui.js");
+		updatedBrowser = updatedBrowser || this.copyModule("fonts.js");
+		updatedBrowser = updatedBrowser || this.copyModule("swizzle.dylib");
+		updatedMainProcess = updatedMainProcess || this.copyModule("title-bar-main-process.js");
+		updatedBrowser = updatedBrowser || this.copyModule("title-bar.js");
+		updatedMainProcess = updatedMainProcess || this.copyModule("utils.js");
+
+		if (!freshStart && (
+			this.haveBottomActivityBar ||
+			this.haveInlineTitleBar ||
+			this.haveFontCustomizations ||
+			this.haveStylesheetCustomizations)) {
+			if (updatedMainProcess) {
+				let res = await vscode.window.showInformationMessage("CustomizeUI extension was updated. Your VSCode instance needs to be restarted", "Restart");
+				if (res === "Restart") {
+					this.promptRestart();
+				}
+			}
+			else if (updatedBrowser) {
+				let res = await vscode.window.showInformationMessage("CustomizeUI extension was updated. Your VSCode window needs to be reloaded.", "Reload Window");
+				if (res === "Reload Window") {
+					vscode.commands.executeCommand("workbench.action.reloadWindow");
+				}
+			}
+		}
 
 		let monkeyPatch = vscode.extensions.getExtension("iocave.monkey-patch");
 
@@ -121,15 +177,14 @@ class Extension {
 					vscode.commands.executeCommand("iocave.monkey-patch.enable");
 				}
 			} else {
-				if (e.affectsConfiguration("customizeUI.activityBar") &&
-					vscode.workspace.getConfiguration().get("customizeUI.activityBar") === "bottom") {
+				if (e.affectsConfiguration("customizeUI.activityBar") && this.haveBottomActivityBar) {
 					let res = await this.checkExperimentalLayout();
 					if (res) {
 						return;
 					}
 				}
 				if (e.affectsConfiguration("customizeUI.titleBar")) {
-					let enabled = vscode.workspace.getConfiguration().get("customizeUI.titleBar") === "inline";
+					let enabled = this.haveInlineTitleBar;
 					if (enabled) {
 						let res = await (this.checkExperimentalLayout());
 						if (res) {
