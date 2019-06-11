@@ -142,8 +142,8 @@
 .explorer-viewlet .explorer-item,
 .explorer-viewlet .open-editor,
 .explorer-viewlet .editor-group {
-	height: var(--row-height) !important;
-	line-height: var(--row-height) !important;
+    height: var(--row-height) !important;
+    line-height: var(--row-height) !important;
 }
 
 .explorer-viewlet .explorer-open-editors .monaco-list .monaco-list-row > .monaco-action-bar .close-editor-action {
@@ -209,7 +209,7 @@ body.row-height-lte20 .monaco-workbench.mac .debug-hover-widget .monaco-list-row
 }
 
 body.activity-bar-at-bottom .monaco-workbench .activitybar > .content {
-	flex-direction: row !important;
+    flex-direction: row !important;
 }
 
 body.activity-bar-at-bottom .monaco-workbench .activitybar>.content .monaco-action-bar .action-item {
@@ -247,14 +247,14 @@ body.activity-bar-at-bottom .monaco-workbench .activitybar>.content .monaco-acti
 }
 
 body.activity-bar-at-bottom .monaco-workbench .activitybar > .content .monaco-action-bar .action-item:focus:before {
-	content: "";
-	position: absolute;
+    content: "";
+    position: absolute;
     top: 0px;
     left: 0px;
     width: var(--activity-bar-action-width);
     height: calc(var(--activity-bar-action-height) - 2px);
     border-left-width: 0px !important;
-	border-bottom: 2px solid var(--focus-border);
+    border-bottom: 2px solid var(--focus-border);
 }
 
 body.activity-bar-at-bottom .monaco-workbench .activitybar > .content .monaco-action-bar .action-item.clicked:focus:before {
@@ -273,7 +273,8 @@ body.activity-bar-at-bottom .monaco-workbench .part.statusbar {
     height: 20px !important;
 }
 
-body.activity-bar-at-bottom .monaco-workbench .part.statusbar>.statusbar-item {
+body.activity-bar-at-bottom .monaco-workbench .part.statusbar>.statusbar-item,
+body.activity-bar-at-bottom .monaco-workbench .part.statusbar>.items-container>.statusbar-item {
     line-height: 20px !important;
 }
 
