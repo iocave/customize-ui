@@ -68,7 +68,7 @@ define([
             let availableWidth = contentAreaSize.width;
             availableWidth -= 2 * sideMargin;
             if (this.globalActionBar) {
-                availableWidth -= (this.globalActionBar.viewItems.length * actionWidth); // adjust height for global actions showing
+                availableWidth -= (this.globalActionBar.viewItems.length * actionWidth); // adjust width for global actions showing
             }
             this.compositeBar.layout(new dom.Dimension(availableWidth, height));
         });
