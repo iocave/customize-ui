@@ -119,8 +119,18 @@ define([
             // custom views in sidebar
             override(customView.CustomTreeView, "createTree", function (original) {
                 let res = original();
-                if (this.tree !== undefined) {
+                // Older version
+                if (this.tree !== undefined && this.tree.context !== undefined) {
                     this.tree.context.configuration.renderer.__proto__.constructor.ITEM_HEIGHT = rowHeight;
+                }
+
+                // newver version
+                if (this.tree !== undefined && this.tree.tree !== undefined &&
+                    this.tree.tree.view !== undefined && this.tree.tree.view.view !== undefined &&
+                    this.tree.tree.view.view.virtualDelegate != undefined) {
+                    this.tree.tree.view.view.virtualDelegate.getHeight = function () {
+                        return rowHeight;
+                    }
                 }
                 return res;
             });
@@ -141,6 +151,7 @@ define([
                 }
                 return res;
             };
+
 
             override(variablesView.VariablesView, "renderBody", replacement);
             override(callStackView.CallStackView, "renderBody", replacement);
