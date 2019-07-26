@@ -6,6 +6,11 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.1.14] - 2019-07-26
+
+- Fix bug when extension repeatedly asks for restart
+- Compatibility with latest insider builds
+
 ## [0.1.7] - 2019-06-06
 
 - Initial release
