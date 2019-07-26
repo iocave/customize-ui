@@ -88,17 +88,22 @@ class Extension {
 		// copy the modules to global storage path, which unlike extension path is not versioned
 		// and will work after update
 
-		let updatedBrowser = false;
-		let updatedMainProcess = false;
+		let browser = [
+			this.copyModule("customize-ui.css"),
+			this.copyModule("activity-bar.js"),
+			this.copyModule("customize-ui.js"),
+			this.copyModule("fonts.js"),
+			this.copyModule("swizzle.dylib"),
+			this.copyModule("title-bar.js")
+		];
 
-		updatedBrowser = updatedBrowser || this.copyModule("customize-ui.css");
-		updatedBrowser = updatedBrowser || this.copyModule("activity-bar.js");
-		updatedBrowser = updatedBrowser || this.copyModule("customize-ui.js");
-		updatedBrowser = updatedBrowser || this.copyModule("fonts.js");
-		updatedBrowser = updatedBrowser || this.copyModule("swizzle.dylib");
-		updatedMainProcess = updatedMainProcess || this.copyModule("title-bar-main-process.js");
-		updatedBrowser = updatedBrowser || this.copyModule("title-bar.js");
-		updatedMainProcess = updatedMainProcess || this.copyModule("utils.js");
+		let mainProcess = [
+			this.copyModule("title-bar-main-process.js"),
+			this.copyModule("utils.js"),
+		];
+
+		let updatedBrowser = browser.includes(true);
+		let updatedMainProcess = mainProcess.includes(true);
 
 		if (!freshStart && (
 			this.haveBottomActivityBar ||
