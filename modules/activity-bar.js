@@ -276,22 +276,36 @@ define([
         });
 
         override(layout.Layout, "createWorkbenchLayout", function(original){
+
+            let storageService = this.storageService;
+            let prevGet = storageService.get;
+            let prevStore = storageService.store;
+
+            // Serialize grid layout under different key
+
+            storageService.get = function() {
+                if (arguments[0] === "workbench.grid.layout")
+                    arguments[0] = "workbench.grid.layout-bottom-activity-bar";
+                return prevGet.apply(storageService, arguments);
+            }
+
+            storageService.store = function() {
+                if (arguments[0] === "workbench.grid.layout")
+                    arguments[0] = "workbench.grid.layout-bottom-activity-bar";
+                return prevStore.apply(storageService, arguments);
+            }
+
+            let activityBarPartView =  this.getPart("workbench.parts.activitybar");
+            let statusBarPartView = this.getPart("workbench.parts.statusbar");
+
+            activityBarPartView.minimumWidth = 0;
+            activityBarPartView.maximumWidth = Infinity;
+            activityBarPartView.minimumHeight = actionHeight;
+            activityBarPartView.maximumHeight = actionHeight;
+
+            statusBarPartView.maximumHeight = 20;
+
             let res = original();
-
-            if (this.workbenchGrid.hasView(this.sideBarPartView)) {
-                this.workbenchGrid.removeView(this.sideBarPartView);
-            }
-            if (this.workbenchGrid.hasView(this.activityBarPartView)) {
-                this.workbenchGrid.removeView(this.activityBarPartView);
-            }
-            if (this.workbenchGrid.hasView(this.statusBarPartView)) {
-                this.workbenchGrid.removeView(this.statusBarPartView);
-            }
-            if (this.workbenchGrid.hasView(this.panelPartView)) {
-                this.workbenchGrid.removeView(this.panelPartView);
-            }
-
-            this.layoutGrid();
 
             return res;
         });
@@ -311,15 +325,6 @@ define([
             if (!titlebarInGrid && windowService.getTitleBarStyle(this.configurationService, this.environmentService) === 'custom') {
                 this.workbenchGrid.addView(this.titleBarPartView, "split" /* Split */, this.editorPartView, 0 /* Up */);
                 titlebarInGrid = true;
-            }
-
-            if (!this._propertiesOverriden) {
-                this.activityBarPartView.minimumWidth = 0;
-                this.activityBarPartView.maximumWidth = Infinity;
-                this.activityBarPartView.minimumHeight = actionHeight;
-                this.activityBarPartView.maximumHeight = actionHeight;
-                this.statusBarPartView.maximumHeight = 20;
-                this._propertiesOverriden = true;
             }
 
             if (!sidebarInGrid) {
