@@ -412,7 +412,7 @@ define([
 
     CustomizeActivityBar = utils.decorate([
         utils.param(0, configuration.IConfigurationService),
-        utils.param(1, telemetry.ITelemetryService), // workaround of cyclical dependency error, as it theme service depends on it
+        utils.param(1, telemetry.ITelemetryService), // workaround of cyclical dependency error, as theme service depends on it
         utils.param(2, themeService.IThemeService)
     ], CustomizeActivityBar);
 
