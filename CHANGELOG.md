@@ -6,6 +6,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.1.15] - 2019-07-27
+
+- Fix issues with workbench grid serialization when having activity bar at bottom
+
 ## [0.1.14] - 2019-07-26
 
 - Fix bug when extension repeatedly asks for restart
