@@ -295,17 +295,42 @@ define([
                 return prevStore.apply(storageService, arguments);
             }
 
-            let activityBarPartView =  this.getPart("workbench.parts.activitybar");
             let statusBarPartView = this.getPart("workbench.parts.statusbar");
 
-            activityBarPartView.minimumWidth = 0;
-            activityBarPartView.maximumWidth = Infinity;
-            activityBarPartView.minimumHeight = actionHeight;
-            activityBarPartView.maximumHeight = actionHeight;
+            this.updateActivityPartSize = (visible) => {
+                let activityBarPartView =  this.getPart("workbench.parts.activitybar");
+                if (visible) {
+                    activityBarPartView.minimumWidth = 0;
+                    activityBarPartView.maximumWidth = Infinity;
+                    activityBarPartView.minimumHeight = actionHeight;
+                    activityBarPartView.maximumHeight = actionHeight;
+                } else {
+                    activityBarPartView.minimumWidth = 0;
+                    activityBarPartView.maximumWidth = 0;
+                    activityBarPartView.minimumHeight = 0;
+                    activityBarPartView.maximumHeight = Infinity;
+                }
+            }
 
+            this.updateActivityPartSize(!this.state.sideBar.hidden);
             statusBarPartView.maximumHeight = 20;
 
+            // this is hacky workaround for Bad grid exception after deserialization
+
+            this.state.sideBar.position = this.state.sideBar.hidden ? 0 : 1;
+            let prevIsGridBranchNode = grid.isGridBranchNode;
+            grid.isGridBranchNode = function(node) {
+                if (typeof node === "undefined")
+                    return true;
+                else
+                    return prevIsGridBranchNode(node);
+            }
+
             let res = original();
+
+            grid.isGridBranchNode = prevIsGridBranchNode;
+
+            this.state.sideBar.position = 0;
 
             return res;
         });
@@ -322,7 +347,7 @@ define([
             let statusBarInGrid = this.workbenchGrid.hasView(this.statusBarPartView);
             let titlebarInGrid = this.workbenchGrid.hasView(this.titleBarPartView);
 
-            if (!titlebarInGrid && windowService.getTitleBarStyle(this.configurationService, this.environmentService) === 'custom') {
+            if (!titlebarInGrid) {
                 this.workbenchGrid.addView(this.titleBarPartView, "split" /* Split */, this.editorPartView, 0 /* Up */);
                 titlebarInGrid = true;
             }
@@ -370,9 +395,17 @@ define([
                 }
             }
 
-            this.activityBarPartView.maximumWidth = hidden ? 0 : Infinity;
-
-            original();
+            if (hidden) {
+                this.updateActivityPartSize(false);
+                this.workbenchGrid.removeView(this.activityBarPartView);
+                this.workbenchGrid.addView(this.activityBarPartView, "split" /* Split */, this.sideBarPartView, 2);
+                original();
+            } else {
+                original();
+                this.workbenchGrid.removeView(this.activityBarPartView);
+                this.workbenchGrid.addView(this.activityBarPartView, "split" /* Split */, this.sideBarPartView, 1);
+                this.updateActivityPartSize(true);
+            }
         });
 
         let focusBorder = theme.getColor("focusBorder") || "transparent";
