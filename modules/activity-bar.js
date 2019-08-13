@@ -50,7 +50,7 @@ define([
         }
     }
 
-    moveActivityBarToBottomLegacy = function (theme) {
+    moveActivityBarToBottomLegacy1 = function (theme) {
 
         compositeBar.CompositeBar = _CompositeBar;
         actionBar.ActionBar = _ActionBar;
@@ -223,16 +223,16 @@ define([
             }`);
     }
 
-    let CustomizeActivityBarLegacy = class CustomizeActivityBarLegacy {
+    let CustomizeActivityBarLegacy1 = class CustomizeActivityBarLegacy1 {
         constructor(configurationService, themeService) {
             if (configurationService.getValue("customizeUI.activityBar") === "bottom" &&
                 configurationService.getValue("workbench.useExperimentalGridLayout") == true) {
-                moveActivityBarToBottomLegacy(themeService.getTheme());
+                moveActivityBarToBottomLegacy1(themeService.getTheme());
             }
         }
     }
 
-    moveActivityBarToBottom = function (theme) {
+    moveActivityBarToBottomLegacy2 = function (theme) {
         compositeBar.CompositeBar = _CompositeBar;
         actionBar.ActionBar = _ActionBar;
 
@@ -429,6 +429,141 @@ define([
             }`);
     }
 
+    let CustomizeActivityBarLegacy2 = class CustomizeActivityBarLegacy2 {
+        constructor(configurationService, telemetry, themeService) {
+            if (configurationService.getValue("customizeUI.activityBar") === "bottom" &&
+                configurationService.getValue("workbench.useExperimentalGridLayout") == true) {
+                moveActivityBarToBottomLegacy2(themeService.getTheme());
+            }
+        }
+    }
+
+    moveActivityBarToBottom = function(theme) {
+        compositeBar.CompositeBar = _CompositeBar;
+        actionBar.ActionBar = _ActionBar;
+
+        override(activitybarPart.ActivitybarPart, "layout", function (original, args) {
+            let width = args[0];
+            let height = args[1];
+
+            if (!this.layoutService.isVisible("workbench.parts.activitybar" /* ACTIVITYBAR_PART */)) {
+                return;
+            }
+            // Layout contents
+            const contentAreaSize = this.layoutContents(width, height).contentSize;
+
+            // Layout composite bar
+            let availableWidth = contentAreaSize.width;
+            availableWidth -= 2 * sideMargin;
+            if (this.globalActivityActionBar) {
+                availableWidth -= (this.globalActivityActionBar.viewItems.length * actionWidth); // adjust width for global actions showing
+            }
+            this.compositeBar.layout(new dom.Dimension(availableWidth, height));
+        });
+
+        override(activitybarPart.ActivitybarPart, "updateStyles", function(original) {
+            original();
+            const container = this.getContainer();
+            const sideBorderColor = this.getColor("sideBar.border") || this.getColor("contrastBorder");
+            const borderColor = this.getColor("activityBar.border") || this.getColor("contrastBorder");
+            const isPositionLeft = this.layoutService.getSideBarPosition() === 0 /* left */;
+            container.style.borderRightWidth = sideBorderColor && isPositionLeft ? '1px' : null;
+            container.style.borderRightStyle = sideBorderColor && isPositionLeft ? 'solid' : null;
+            container.style.borderRightColor = isPositionLeft ? sideBorderColor : null;
+            container.style.borderLeftWidth = sideBorderColor && !isPositionLeft ? '1px' : null;
+            container.style.borderLeftStyle = sideBorderColor && !isPositionLeft ? 'solid' : null;
+            container.style.borderLeftColor = !isPositionLeft ? sideBorderColor : null;
+            container.style.borderTopColor = borderColor ? borderColor : null;
+            container.style.borderTopWidth = borderColor ? "1px" : null;
+            container.style.borderTopStyle = borderColor ? "solid" : null;
+
+            // Not ideal, but changing layout because of border seems to be bit of overkill
+            container.style.marginTop = borderColor ? "-1px" : null;
+        });
+
+        let focusBorder = theme.getColor("focusBorder") || "transparent";
+
+        override(activitybarActions.ViewletActivityAction, "run", function(original) {
+            // don't let action hide sidebar
+            let orig = this.layoutService.setSideBarHidden;
+            this.layoutService.setSideBarHidden = function() {}
+            let res = original();
+            this.layoutService.setSideBarHidden = orig;
+            return res;
+        });
+
+        layout.Layout.prototype._updateActivityBar = function(visible) {
+            let a = this.activityBarPartView;
+            if (visible) {
+                a.minimumWidth = 0;
+				a.maximumWidth = Infinity;
+				a.minimumHeight = actionHeight;
+				a.maximumHeight = actionHeight;
+				this.workbenchGrid.moveView(this.activityBarPartView, a.minimumHeight, this.sideBarPartView, 1 /* Down */);
+				this.workbenchGrid.setViewVisible(this.activityBarPartView, !this.state.activityBar.hidden);
+            } else {
+                a.minimumWidth = 0;
+				a.maximumWidth = 0;
+				a.minimumHeight = 0;
+				a.maximumHeight = Infinity;
+				if (this.state.sideBar.position === 0 /* Left */) {
+					this.workbenchGrid.moveViewTo(this.activityBarPartView, [1, 0]);
+				} else {
+				    this.workbenchGrid.moveView(this.activityBarPartView, 0, this.sideBarPartView, 3 /* Right */);
+				}
+            }
+        }
+
+        layout.Layout.prototype._updateStatusBar = function(active) {
+            this.statusBarPartView.maximumHeight = 20;
+            if (active) {
+                if (this.state.panel.position === 1 /* right */) {
+					this.workbenchGrid.moveView(this.statusBarPartView, this.statusBarPartView.minimumHeight, this.editorPartView, 1 /* Down */);
+				} else {
+					this.workbenchGrid.moveView(this.statusBarPartView, this.statusBarPartView.minimumHeight, this.panelPartView, 1 /* Down */);
+				}
+            } else {
+                this.workbenchGrid.moveViewTo(this.statusBarPartView, [2]);
+            }
+        }
+
+        override(layout.Layout, "createWorkbenchLayout", function(original) {
+            original();
+            this.layout();
+            this._updateActivityBar(!this.state.sideBar.hidden);
+            this._updateStatusBar(true);
+        });
+
+        override(layout.Layout, "setSideBarHidden", function(original) {
+            this._updateActivityBar(false);
+            original();
+            if (!this.state.sideBar.hidden) {
+                this._updateActivityBar(true);
+            }
+        });
+
+        override(layout.Layout, "setSideBarPosition", function(original) {
+            this._updateActivityBar(false);
+            original();
+            this._updateActivityBar(!this.state.sideBar.hidden);
+        });
+
+        override(layout.Layout, "setPanelPosition", function(original) {
+            this._updateStatusBar(false);
+            original();
+            this._updateStatusBar(true);
+        });
+
+        document.body.classList.add("activity-bar-at-bottom");
+
+        utils.addStyle(`:root {
+            --activity-bar-action-width: ${actionWidth}px;
+            --activity-bar-action-height: ${actionHeight}px;
+            --activity-bar-side-margin: ${sideMargin}px;
+            --focus-border: ${focusBorder};
+            }`);
+    }
+
     let CustomizeActivityBar = class CustomizeActivityBar {
         constructor(configurationService, telemetry, themeService) {
             if (configurationService.getValue("customizeUI.activityBar") === "bottom" &&
@@ -438,10 +573,16 @@ define([
         }
     }
 
-    CustomizeActivityBarLegacy = utils.decorate([
+    CustomizeActivityBarLegacy1 = utils.decorate([
         utils.param(0, configuration.IConfigurationService),
         utils.param(1, themeService.IThemeService)
-    ], CustomizeActivityBarLegacy);
+    ], CustomizeActivityBarLegacy1);
+
+    CustomizeActivityBarLegacy2 = utils.decorate([
+        utils.param(0, configuration.IConfigurationService),
+        utils.param(1, telemetry.ITelemetryService), // workaround of cyclical dependency error, as theme service depends on it
+        utils.param(2, themeService.IThemeService)
+    ], CustomizeActivityBarLegacy2);
 
     CustomizeActivityBar = utils.decorate([
         utils.param(0, configuration.IConfigurationService),
@@ -451,7 +592,9 @@ define([
 
     exports.run = function (instantationService) {
         if (grid.View !== undefined) {
-            instantationService.createInstance(CustomizeActivityBarLegacy);
+            instantationService.createInstance(CustomizeActivityBarLegacy1);
+        } else if (layout.Layout.prototype["layoutGrid"] !== undefined) {
+            instantationService.createInstance(CustomizeActivityBarLegacy2);
         } else {
             instantationService.createInstance(CustomizeActivityBar);
         }
