@@ -6,6 +6,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.1.16] - 2019-08-13
+
+- Fix compatibility with latest insider build
+
 ## [0.1.16] - 2019-07-27
 
 - Fix issues with workbench grid serialization when having activity bar at bottom (insider build)
