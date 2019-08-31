@@ -221,7 +221,7 @@ body.activity-bar-at-bottom .monaco-workbench .activitybar > .content .monaco-ac
 }
 
 body.activity-bar-at-bottom .monaco-workbench .activitybar .monaco-action-bar .action-label {
-    -webkit-mask-size: 22px 22px !important;
+    -webkit-mask-size: 18px 18px !important;
 }
 
 body.activity-bar-at-bottom .monaco-workbench .activitybar>.content .monaco-action-bar .badge {
@@ -296,7 +296,8 @@ body.inline-title-bar:not(.activity-bar-at-bottom) .monaco-workbench:not(.fullsc
 
 .title-actions a:not([aria-disabled="true"]),
 .title-actions select,
-.title-actions div[role="button"] {
+.title-actions div[role="button"],
+.debug-toolbar {
     -webkit-app-region: no-drag;
 }
 
@@ -312,6 +313,11 @@ body.inline-title-bar .sidebar .title-actions {
     position: relative;
     top: 50%;
     transform: translateY(-50%);
+}
+
+/* Make debug buttons slightly smaller */
+body.inline-title-bar .part>.title>.title-actions .action-label {
+    min-width: 24px !important;
 }
 
 /* Allow dragging on side-bar title... */
