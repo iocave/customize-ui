@@ -6,6 +6,11 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.1.18] - 2019-09-01
+
+- Fix dragging of debug toolbar when inline titlebar is enabled
+- Tweak icon sizes
+
 ## [0.1.16] - 2019-08-13
 
 - Fix compatibility with latest insider build
