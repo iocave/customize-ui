@@ -276,13 +276,38 @@ define([
             }
         };
 
-        CustomizeTitleBar = utils.decorate([
-            utils.param(0, configuration.IConfigurationService),
-            utils.param(1, windows.IWindowService),
-        ], CustomizeTitleBar);
-
-        exports.run = function (instantiationService) {
+        let init = function(instantiationService, windowService) {
+            CustomizeTitleBar = utils.decorate([
+                utils.param(0, configuration.IConfigurationService),
+                utils.param(1, windowService ? () => windowService : windows.IWindowService),
+            ], CustomizeTitleBar);
             instantiationService.createInstance(CustomizeTitleBar);
+        }
+
+        // IWindowService got replaced by IElectronService;
+        exports.run = function (instantiationService) {
+            if (windows.IWindowService) {
+                init(instantiationService);
+            } else {
+
+                let ElectronHelper = class ElectronHelper {
+                    constructor(electronService) {
+                        this.electronService = electronService;
+
+                        this.onWindowTitleDoubleClick = function() {
+                            this.electronService.handleTitleDoubleClick();
+                        }
+                    }
+                }
+
+                require(["vs/platform/electron/node/electron"], function(electron) {
+                    ElectronHelper = utils.decorate([
+                        utils.param(0, electron.IElectronService),
+                    ], ElectronHelper);
+                    let helper = instantiationService.createInstance(ElectronHelper);
+                    init(instantiationService, helper);
+                }, function(error) {} );
+            }
         }
 
     });

@@ -177,8 +177,28 @@ define([
                 return res;
             }
 
-            override(scm.MainPanel, "renderBody", replacement);
-            override(scm.RepositoryPanel, "renderBody", replacement);
+            if (scm.MainPanel) {
+                override(scm.MainPanel, "renderBody", replacement);
+            }
+
+            if (scm.RepositoryPanel) {
+                override(scm.RepositoryPanel, "renderBody", replacement);
+            }
+
+            replacement = function (original) {
+                let res = original();
+                this.tree.view.view.virtualDelegate.getHeight = function () {
+                    return rowHeight;
+                }
+                return res;
+            }
+
+            require(["vs/workbench/contrib/scm/browser/mainPanel"], function(mp) {
+                override(mp.MainPanel, "renderBody", replacement);
+            }, function(error) {});
+            require(["vs/workbench/contrib/scm/browser/repositoryPanel"], function(rp) {
+                override(rp.RepositoryPanel, "renderBody", replacement);
+            }, function(error) {});
         }
     }
 
