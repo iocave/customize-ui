@@ -17,6 +17,7 @@ define([
 
         let CustomizeTitleBar = class CustomizeTitleBar {
             constructor(configurationService, windowService) {
+
                 this.configurationService = configurationService;
                 this.windowService = windowService;
 
@@ -277,11 +278,17 @@ define([
         };
 
         let init = function(instantiationService, windowService) {
-            CustomizeTitleBar = utils.decorate([
-                utils.param(0, configuration.IConfigurationService),
-                utils.param(1, windowService ? () => windowService : windows.IWindowService),
-            ], CustomizeTitleBar);
-            instantiationService.createInstance(CustomizeTitleBar);
+            let args = [
+                utils.param(0, configuration.IConfigurationService)
+            ];
+            if (!windowService) {
+                args.push(utils.param(1, windows.IWindowService));
+            }
+            CustomizeTitleBar = utils.decorate(args, CustomizeTitleBar);
+            let instance = instantiationService.createInstance(CustomizeTitleBar);
+            if (windowService) {
+                instance.windowService = windowService;
+            }
         }
 
         // IWindowService got replaced by IElectronService;
