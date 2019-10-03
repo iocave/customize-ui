@@ -6,6 +6,11 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.1.20] - 2019-10-03
+
+- Fix icon size
+- Fix title bar double-click with latest insider build
+
 ## [0.1.19] - 2019-09-27
 
 - Fix compatibility with latest insider build
