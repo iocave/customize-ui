@@ -62,7 +62,6 @@
     font-size: var(--font-size-12) !important;
 }
 
-.monaco-action-bar .action-label,
 .monaco-keybinding > .monaco-keybinding-key,
 .monaco-panel-view .panel > .panel-header,
 .monaco-panel-view .panel > .panel-header h3.title,
