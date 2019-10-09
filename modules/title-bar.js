@@ -153,6 +153,11 @@ define([
                     self.update();
                 });
 
+                utils.override(layout.Layout, "centerEditorLayout", function (original) {
+                    original();
+                    self.update();
+                });
+
                 // Pad title to account for traffic lights
                 utils.override(compositePart.CompositePart, "updateStyles", function (original) {
                     original();
