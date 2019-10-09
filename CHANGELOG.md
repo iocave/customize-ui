@@ -6,6 +6,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.1.21] - 2019-10-09
+
+- Fix https://github.com/iocave/customize-ui/issues/8
+
 ## [0.1.20] - 2019-10-03
 
 - Fix icon size
