@@ -18,18 +18,22 @@ define([
         }
 
         init() {
+
             this.swizzle();
 
-            utils.override(win.CodeWindow, "createBrowserWindow", function (original) {
-                Object.defineProperty(Object.prototype, "titleBarStyle", {
-                    get() { return "hidden"; },
-                    set() { },
-                    configurable: true,
-                });
-                let res = original();
-                delete Object.prototype.titleBarStyle;
-                return res;
-            });
+            class _CodeWindow extends win.CodeWindow {
+                constructor() {
+                    Object.defineProperty(Object.prototype, "titleBarStyle", {
+                        get() { return "hidden"; },
+                        set() { },
+                        configurable: true,
+                    });
+                    super(...arguments);
+                    delete Object.prototype.titleBarStyle;
+                }
+            }
+
+            win.CodeWindow = _CodeWindow;
         }
 
         swizzle() {

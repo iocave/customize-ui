@@ -6,6 +6,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.1.22] - 2019-10-11
+
+- Fix compatibility with latest insider build (electron 6)
+
 ## [0.1.21] - 2019-10-09
 
 - Fix https://github.com/iocave/customize-ui/issues/8
