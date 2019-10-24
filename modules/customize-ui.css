@@ -216,11 +216,13 @@ body.activity-bar-at-bottom .monaco-workbench .activitybar>.content .monaco-acti
 }
 
 body.activity-bar-at-bottom .monaco-workbench .activitybar > .content .monaco-action-bar .action-label {
-    padding: 0 0 0 var(--activity-bar-action-width) !important;
+    /* padding: 0 0 0 var(--activity-bar-action-width) !important; */
+    padding: 0px !important;
 }
 
 body.activity-bar-at-bottom .monaco-workbench .activitybar .monaco-action-bar .action-label {
-    -webkit-mask-size: 18px 18px !important;
+    -webkit-mask-size: 19px 19px !important;
+    font-size: 17.5px !important;
 }
 
 body.activity-bar-at-bottom .monaco-workbench .activitybar>.content .monaco-action-bar .badge {
@@ -234,6 +236,7 @@ body.activity-bar-at-bottom .monaco-workbench .activitybar>.content .monaco-acti
 
 body.activity-bar-at-bottom .monaco-workbench .activitybar>.content .monaco-action-bar .action-label {
     height: var(--activity-bar-action-height) !important;
+    width: var(--activity-bar-action-width) !important;
 }
 
 body.activity-bar-at-bottom .monaco-workbench .activitybar>.content .monaco-action-bar .badge .badge-content {
@@ -275,6 +278,10 @@ body.activity-bar-at-bottom .monaco-workbench .part.statusbar {
 body.activity-bar-at-bottom .monaco-workbench .part.statusbar>.statusbar-item,
 body.activity-bar-at-bottom .monaco-workbench .part.statusbar>.items-container>.statusbar-item {
     line-height: 20px !important;
+}
+
+body.activity-bar-at-bottom .monaco-workbench .activitybar .active-item-indicator {
+    display:none !important;
 }
 
 /**

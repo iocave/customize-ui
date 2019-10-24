@@ -6,6 +6,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.1.23] - 2019-10-24
+
+- Fix activity bar style in latest insider build
+
 ## [0.1.22] - 2019-10-11
 
 - Fix compatibility with latest insider build (electron 6)
