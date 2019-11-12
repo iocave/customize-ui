@@ -6,6 +6,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.1.24] - 2019-11-12
+
+- Fix activity bar icon size
+
 ## [0.1.23] - 2019-10-24
 
 - Fix activity bar style in latest insider build

@@ -2,11 +2,6 @@
     font-size: var(--font-size-16) !important;
 }
 
-.monaco-action-bar .action-label.octicon,
-.monaco-workbench .activitybar > .content .monaco-action-bar .action-label {
-    font-size: var(--font-size-15) !important;
-}
-
 .monaco-list .outline-element .outline-element-decoration.bubble,
 .monaco-workbench .part.statusbar > .statusbar-entry span.octicon,
 .extension-editor > .header,
