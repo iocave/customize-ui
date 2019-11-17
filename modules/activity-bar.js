@@ -225,8 +225,7 @@ define([
 
     let CustomizeActivityBarLegacy1 = class CustomizeActivityBarLegacy1 {
         constructor(configurationService, themeService) {
-            if (configurationService.getValue("customizeUI.activityBar") === "bottom" &&
-                configurationService.getValue("workbench.useExperimentalGridLayout") == true) {
+            if (configurationService.getValue("customizeUI.activityBar") === "bottom") {
                 moveActivityBarToBottomLegacy1(themeService.getTheme());
             }
         }
@@ -431,8 +430,7 @@ define([
 
     let CustomizeActivityBarLegacy2 = class CustomizeActivityBarLegacy2 {
         constructor(configurationService, telemetry, themeService) {
-            if (configurationService.getValue("customizeUI.activityBar") === "bottom" &&
-                configurationService.getValue("workbench.useExperimentalGridLayout") == true) {
+            if (configurationService.getValue("customizeUI.activityBar") === "bottom") {
                 moveActivityBarToBottomLegacy2(themeService.getTheme());
             }
         }
@@ -566,8 +564,7 @@ define([
 
     let CustomizeActivityBar = class CustomizeActivityBar {
         constructor(configurationService, telemetry, themeService) {
-            if (configurationService.getValue("customizeUI.activityBar") === "bottom" &&
-                configurationService.getValue("workbench.useExperimentalGridLayout") == true) {
+            if (configurationService.getValue("customizeUI.activityBar") === "bottom") {
                 moveActivityBarToBottom(themeService.getTheme());
             }
         }

@@ -147,19 +147,6 @@ class Extension {
 		}
 	}
 
-	async checkExperimentalLayout() {
-		if (vscode.workspace.getConfiguration().get("workbench.useExperimentalGridLayout") !== true) {
-			let res = await vscode.window.showWarningMessage("This option needs the 'useExperimentalGridLayout' option enabled", "Enable");
-			if (res === "Enable") {
-				await vscode.workspace.getConfiguration().update(
-					"workbench.useExperimentalGridLayout", true, vscode.ConfigurationTarget.Global,
-				);
-				return true;
-			}
-		}
-		return false;
-	}
-
 	private async promptRestart() {
 		// This is a hacky way to display the restart prompt
 		let v = vscode.workspace.getConfiguration().inspect("window.titleBarStyle");
@@ -181,19 +168,9 @@ class Extension {
 					vscode.commands.executeCommand("iocave.monkey-patch.enable");
 				}
 			} else {
-				if (e.affectsConfiguration("customizeUI.activityBar") && this.haveBottomActivityBar) {
-					let res = await this.checkExperimentalLayout();
-					if (res) {
-						return;
-					}
-				}
 				if (e.affectsConfiguration("customizeUI.titleBar")) {
 					let enabled = this.haveInlineTitleBar;
 					if (enabled) {
-						let res = await (this.checkExperimentalLayout());
-						if (res) {
-							return;
-						}
 						let titleBarStyle = vscode.workspace.getConfiguration().get("window.titleBarStyle");
 						if (titleBarStyle === "custom") {
 							let res = await vscode.window.showWarningMessage("Inline title bar requires titleBarStyle = 'native'.", "Enable");

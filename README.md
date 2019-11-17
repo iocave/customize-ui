@@ -15,11 +15,11 @@ This experimental extension allows customizing VSCode user interface beyond what
 
 ### `customizeUI.activityBar`
 
-When set to `bottom`, activity bar will be positioned below the sidebar. Requires `workbench.useExperimentalGridLayout` set to `true`.
+When set to `bottom`, activity bar will be positioned below the sidebar.
 
 ### `customizeUI.titleBar`
 
-macOS only. When set to `inline`, titlebar is hidden and window controls become part of sidebar. Requires `workbench.useExperimentalGridLayout` set to `true` and `window.titleBarStyle` set to native.
+macOS only. When set to `inline`, titlebar is hidden and window controls become part of sidebar.
 
 ### `customizeUI.fontSizeMap`
 
