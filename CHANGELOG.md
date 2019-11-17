@@ -6,6 +6,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.1.25] - 2019-11-17
+
+- workbench.useExperimentalGridLayout is no longer required (the grid layout is now by default on in vscode)
+
 ## [0.1.24] - 2019-11-12
 
 - Fix activity bar icon size
