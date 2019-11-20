@@ -19,7 +19,7 @@ When set to `bottom`, activity bar will be positioned below the sidebar.
 
 ### `customizeUI.titleBar`
 
-macOS only. When set to `inline`, titlebar is hidden and window controls become part of sidebar.
+macOS only. When set to `inline`, titlebar is hidden and window controls become part of sidebar. Note that this setting requires that `"window.titleBarStyle": "native"` is also set.
 
 ### `customizeUI.fontSizeMap`
 
