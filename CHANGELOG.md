@@ -6,6 +6,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.1.26] - 2019-11-21
+
+- Fix compatibility with latest insider build
+
 ## [0.1.25] - 2019-11-17
 
 - workbench.useExperimentalGridLayout is no longer required (the grid layout is now by default on in vscode)
