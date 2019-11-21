@@ -2,7 +2,6 @@ define([
     "exports",
     "customize-ui/utils",
     "vs/workbench/contrib/files/browser/views/explorerViewer",
-    "vs/base/browser/ui/splitview/panelview",
     "vs/workbench/contrib/files/browser/views/openEditorsView",
     "vs/editor/contrib/documentSymbols/outlineTree",
     "vs/workbench/browser/parts/views/customView",
@@ -14,7 +13,7 @@ define([
     "vs/workbench/contrib/debug/browser/breakpointsView",
     "vs/workbench/contrib/scm/browser/scmViewlet",
     "vs/platform/configuration/common/configuration",
-], function(exports, utils, explorerView, panelView, openEditorsView, outlineTree, customView, searchResultsView,
+], function(exports, utils, explorerView, openEditorsView, outlineTree, customView, searchResultsView,
     variablesView, callStackView, watchExpressionsView, loadedScriptsView, breakpointsView, scm, configuration) {
 
     let override = utils.override;
@@ -97,9 +96,6 @@ define([
         updateRowHeight(rowHeight) {
             // explorer view
             explorerView.ExplorerDelegate.ITEM_HEIGHT = rowHeight;
-
-            // panel height (OUTLINE, DEPENDENCIES, ...)
-            panelView.Panel.HEADER_SIZE = rowHeight;
 
             addStyle(`:root { --row-height: ${rowHeight}px; --factor: ${rowHeight / 22}; }`);
 
@@ -196,8 +192,19 @@ define([
             require(["vs/workbench/contrib/scm/browser/mainPanel"], function(mp) {
                 override(mp.MainPanel, "renderBody", replacement);
             }, function(error) {});
+
             require(["vs/workbench/contrib/scm/browser/repositoryPanel"], function(rp) {
                 override(rp.RepositoryPanel, "renderBody", replacement);
+            }, function(error) {});
+
+            // panel height (OUTLINE, DEPENDENCIES, ...)
+            require(["vs/base/browser/ui/splitview/panelview"], function(panelView) {
+                panelView.Panel.HEADER_SIZE = rowHeight;
+            }, function(error) {});
+
+            // Version: 1.41.0-insider
+            require(["vs/base/browser/ui/splitview/paneview"], function(paneView) {
+                paneView.Pane.HEADER_SIZE = rowHeight;
             }, function(error) {});
         }
     }
