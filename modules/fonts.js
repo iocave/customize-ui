@@ -193,8 +193,16 @@ define([
                 override(mp.MainPanel, "renderBody", replacement);
             }, function(error) {});
 
+            require(["vs/workbench/contrib/scm/browser/mainPane"], function(mp) {
+                override(mp.MainPane, "renderBody", replacement);
+            }, function(error) {});
+
             require(["vs/workbench/contrib/scm/browser/repositoryPanel"], function(rp) {
                 override(rp.RepositoryPanel, "renderBody", replacement);
+            }, function(error) {});
+
+            require(["vs/workbench/contrib/scm/browser/repositoryPane"], function(rp) {
+                override(rp.RepositoryPane, "renderBody", replacement);
             }, function(error) {});
 
             // panel height (OUTLINE, DEPENDENCIES, ...)
