@@ -6,6 +6,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.1.27] - 2019-11-24
+
+- Fix line height customizations for SCM panes
+
 ## [0.1.26] - 2019-11-21
 
 - Fix compatibility with latest insider build
