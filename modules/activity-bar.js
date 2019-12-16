@@ -518,7 +518,9 @@ define([
                 if (this.state.panel.position === 1 /* right */) {
 					this.workbenchGrid.moveView(this.statusBarPartView, this.statusBarPartView.minimumHeight, this.editorPartView, 1 /* Down */);
 				} else {
-					this.workbenchGrid.moveView(this.statusBarPartView, this.statusBarPartView.minimumHeight, this.panelPartView, 1 /* Down */);
+                    let size = this.workbenchGrid.getViewSize(this.panelPartView);
+                    this.workbenchGrid.moveView(this.statusBarPartView, this.statusBarPartView.minimumHeight, this.panelPartView, 1 /* Down */);
+                    this.workbenchGrid.resizeView(this.panelPartView, size);
 				}
             } else {
                 this.workbenchGrid.moveViewTo(this.statusBarPartView, [2]);
