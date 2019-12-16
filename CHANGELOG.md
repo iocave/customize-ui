@@ -6,6 +6,11 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.1.28] - 2019-12-16
+
+- Fix christmas cap location in insider build
+- Fix panel shrinking every window reload
+
 ## [0.1.27] - 2019-11-24
 
 - Fix line height customizations for SCM panes
