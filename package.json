@@ -44,10 +44,11 @@
 			"properties": {
 				"customizeUI.activityBar": {
 					"type": "string",
-					"description": "Position activity bar below the sidebar",
+					"description": "Position activity bar below the sidebar or make match traffic lights dimensions (for inline title bar)",
 					"enum": [
 						"regular",
-						"bottom"
+						"bottom",
+						"wide"
 					]
 				},
 				"customizeUI.titleBar": {

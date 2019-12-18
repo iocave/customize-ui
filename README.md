@@ -17,6 +17,8 @@ This experimental extension allows customizing VSCode user interface beyond what
 
 When set to `bottom`, activity bar will be positioned below the sidebar.
 
+When set to `wide`, activity bar will match the width of traffic lights (for macOS inline menu bar).
+
 ### `customizeUI.titleBar`
 
 macOS only. When set to `inline`, titlebar is hidden and window controls become part of sidebar.

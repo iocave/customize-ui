@@ -285,6 +285,15 @@ body.activity-bar-at-bottom  .activitybar .global-activity .actions-container:be
     background-size: 17px !important;
 }
 
+body.activity-bar-wide .activitybar {
+    width: var(--traffic-lights-width) !important;
+}
+
+/* christmas... */
+body.activity-bar-wide  .activitybar .global-activity .actions-container:before {
+    display: none;
+}
+
 /**
  * Inline Title bar
  */

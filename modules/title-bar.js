@@ -51,8 +51,8 @@ define([
                     height: 37,
                 }
                 return {
-                    width: Math.max(size.width / browser.getZoomFactor(), size.width),
-                    height: Math.max(size.height / browser.getZoomFactor(), size.height),
+                    width: size.width / browser.getZoomFactor(),
+                    height: size.height / browser.getZoomFactor(),
                 };
             }
 
@@ -64,9 +64,17 @@ define([
                 return this.configurationService.getValue("customizeUI.activityBar") !== "bottom";
             }
 
+            activityBarIsWide() {
+                return this.configurationService.getValue("customizeUI.activityBar") === "wide";
+            }
+
             activityBarIsVisible() {
                 return this.layout && this.layout.isVisible("workbench.parts.activitybar") &&
                     this.activityBarIsVertical();
+            }
+
+            activityBarWidth() {
+                return this.activityBarIsWide() ? this.traffictLightDimensions().width : 50;
             }
 
             init() {
@@ -92,10 +100,14 @@ define([
                 // add placeholder so that we can change color of activity bar behind traffic lights
                 utils.override(activitybarPart.ActivitybarPart, "createContentArea", function (original, args) {
                     let res = original();
+
                     let parent = args[0];
                     this._placeholder = document.createElement('div');
                     this._placeholder.classList.add("activity-bar-placeholder");
-                    parent.appendChild(this._placeholder);
+
+                    if (!self.activityBarIsWide()) {
+                        parent.appendChild(this._placeholder);
+                    }
 
                     return res;
                 });
@@ -168,7 +180,7 @@ define([
                         if (self.isFullScreen() || self.layout.getSideBarPosition() == 1) {
                             padding = 8; // default
                         } else if (self.activityBarIsVisible()) {
-                            padding = Math.max(self.traffictLightDimensions().width - 50 - 14, 0);
+                            padding = Math.max(self.traffictLightDimensions().width - self.activityBarWidth() - 14, 0);
                         } else {
                             padding = self.traffictLightDimensions().width - 14;
                         }
@@ -255,7 +267,7 @@ define([
                     (this.layout.state.sideBar.hidden || this.layout.state.sideBar.position == 1 /* rigth */)) {
                     let val = this.traffictLightDimensions().width;
                     if (this.activityBarIsVisible() && this.layout.state.sideBar.position != 1)
-                        val -= 50;
+                        val -= this.activityBarWidth();
                     node.style.width = `${val}px`;
                 } else {
                     node.style.width = "0px";

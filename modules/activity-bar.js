@@ -12,7 +12,8 @@ define([
     "vs/workbench/browser/parts/activitybar/activitybarActions",
     "vs/platform/theme/common/themeService",
     "vs/platform/telemetry/common/telemetry", // required to instantiate before theme service otherwise there's cyclical dependency error :-/
-], function (exports, utils, compositeBar, actionBar, activitybarPart, dom, grid, windowService, layout, configuration, activitybarActions, themeService, telemetry) {
+    "vs/base/browser/browser",
+], function (exports, utils, compositeBar, actionBar, activitybarPart, dom, grid, windowService, layout, configuration, activitybarActions, themeService, telemetry, browser) {
 
     let override = utils.override;
 
@@ -436,6 +437,35 @@ define([
         }
     }
 
+    extendActivityBar = function() {
+
+        // FIXME - this is copy and paste from title-bar module;
+        let traffictLightDimensions = function() {
+            let size = {
+                width: 77,
+                height: 37,
+            }
+            return {
+                width: size.width / browser.getZoomFactor(),
+                height: size.height / browser.getZoomFactor(),
+            };
+        }
+
+        layout.Layout.prototype._updateActivityBar = function(visible) {
+            let a = this.activityBarPartView;
+            a.minimumWidth = traffictLightDimensions().width;
+            a.maximumWidth = traffictLightDimensions().width;
+        }
+
+        override(layout.Layout, "createWorkbenchLayout", function(original) {
+            original();
+            this.layout();
+            this._updateActivityBar(!this.state.sideBar.hidden);
+        });
+
+        document.body.classList.add("activity-bar-wide");
+    }
+
     moveActivityBarToBottom = function(theme) {
         compositeBar.CompositeBar = _CompositeBar;
         actionBar.ActionBar = _ActionBar;
@@ -568,6 +598,9 @@ define([
         constructor(configurationService, telemetry, themeService) {
             if (configurationService.getValue("customizeUI.activityBar") === "bottom") {
                 moveActivityBarToBottom(themeService.getTheme());
+            }
+            if (configurationService.getValue("customizeUI.activityBar") === "wide") {
+                extendActivityBar();
             }
         }
     }
