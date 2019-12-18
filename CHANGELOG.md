@@ -6,6 +6,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.1.29] - 2019-12-18
+
+- Add 'wide' setting for activity-bar to match width of traffic lights for inline menu bar (on macOS)
+
 ## [0.1.28] - 2019-12-16
 
 - Fix christmas cap location in insider build
