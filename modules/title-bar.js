@@ -41,7 +41,7 @@ define([
                 this.styleTextNode.textContent =
                     `:root {
                      --traffict-lights-width: ${dimensions.width}px;
-                     --traffict-lights-height: ${dimensions.height}px;
+                     --traffic-lights-height: ${dimensions.height}px;
                 }`;
             }
 

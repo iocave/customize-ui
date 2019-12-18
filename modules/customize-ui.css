@@ -290,13 +290,13 @@ body.activity-bar-at-bottom  .activitybar .global-activity .actions-container:be
  */
 
 body.inline-title-bar:not(.activity-bar-at-bottom) .monaco-workbench:not(.fullscreen) .activitybar:not(.right) .content  {
-    margin-top: var(--traffict-lights-height) !important;
+    margin-top: var(--traffic-lights-height) !important;
 }
 
 body.inline-title-bar:not(.activity-bar-at-bottom) .monaco-workbench:not(.fullscreen) .activitybar:not(.right) .activity-bar-placeholder {
     position: absolute;
     width: 50px;
-    height: var(--traffict-lights-height);
+    height: var(--traffic-lights-height);
     -webkit-app-region: drag;
     top: 0px;
 }
@@ -309,11 +309,11 @@ body.inline-title-bar:not(.activity-bar-at-bottom) .monaco-workbench:not(.fullsc
 }
 
 body.inline-title-bar .sidebar .composite.title {
-    height: var(--traffict-lights-height) !important;
+    height: var(--traffic-lights-height) !important;
 }
 
 body.inline-title-bar .sidebar .title-label {
-    line-height: var(--traffict-lights-height) !important;
+    line-height: var(--traffic-lights-height) !important;
 }
 
 body.inline-title-bar .sidebar .title-actions {
@@ -336,16 +336,16 @@ body.inline-title-bar .monaco-workbench .part.editor>.content .editor-group-cont
 body.inline-title-bar .monaco-workbench .part.editor>.content .editor-group-container>.title .tabs-container>.tab,
 body.inline-title-bar .monaco-workbench .part.editor>.content .editor-group-container>.title .editor-actions,
 body.inline-title-bar .monaco-workbench .part.editor>.content .editor-group-container>.title .editor-actions .action-label, .monaco-workbench .part.editor>.content .editor-group-container>.title .title-actions .action-label {
-    height: var(--traffict-lights-height) !important;
-    line-height: var(--traffict-lights-height) !important;
+    height: var(--traffic-lights-height) !important;
+    line-height: var(--traffic-lights-height) !important;
 }
 
 body.inline-title-bar .monaco-workbench .part.editor>.content .editor-group-container>.title .tabs-container>.tab .monaco-icon-label:before {
-    height: var(--traffict-lights-height) !important;
+    height: var(--traffic-lights-height) !important;
 }
 
 body.inline-title-bar .monaco-workbench .part>.title>.title-actions {
-    height: calc(var(--traffict-lights-height) - 1px) !important;
+    height: calc(var(--traffic-lights-height) - 1px) !important;
 }
 
 body.inline-title-bar div.dragging-area-top {
@@ -354,6 +354,6 @@ body.inline-title-bar div.dragging-area-top {
 }
 
 body.inline-title-bar div.dragging-area-left-padding {
-    height: var(--traffict-lights-height);
+    height: var(--traffic-lights-height);
     -webkit-app-region: drag;
 }
