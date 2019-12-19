@@ -21,7 +21,7 @@ When set to `wide`, activity bar will match the width of traffic lights (for mac
 
 ### `customizeUI.titleBar`
 
-macOS only. When set to `inline`, titlebar is hidden and window controls become part of sidebar.
+macOS only. When set to `inline`, titlebar is hidden and window controls become part of sidebar. Note that this setting requires that `"window.titleBarStyle": "native"` is also set.
 
 ### `customizeUI.fontSizeMap`
 
