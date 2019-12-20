@@ -294,6 +294,11 @@ body.activity-bar-wide .activitybar {
     width: var(--traffic-lights-width) !important;
 }
 
+body.activity-bar-wide .activitybar > .content :not(.monaco-menu) > .monaco-action-bar .badge .badge-content {
+    left: calc(50% + 0.5em);
+    right: auto;
+}
+
 /* christmas... */
 body.activity-bar-wide  .activitybar .global-activity .actions-container:before {
     display: none;
