@@ -280,6 +280,11 @@ body.activity-bar-at-bottom .monaco-workbench .activitybar .active-item-indicato
 }
 
 /* christmas... */
+
+body.activity-bar-at-bottom .nosidebar  .activitybar .global-activity .actions-container:before {
+    display:none;
+}
+
 body.activity-bar-at-bottom  .activitybar .global-activity .actions-container:before {
     width:35px !important;
     background-size: 17px !important;
