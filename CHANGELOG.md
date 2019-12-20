@@ -6,6 +6,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.1.30] - 2019-12-20
+
+- Tweaked badge position when having 'wide' activity bar
+
 ## [0.1.29] - 2019-12-18
 
 - Add 'wide' setting for activity-bar to match width of traffic lights for inline menu bar (on macOS)
