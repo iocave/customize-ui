@@ -10,10 +10,11 @@ define([
     "vs/workbench/browser/part",
     "vs/workbench/browser/parts/compositePart",
     "vs/workbench/browser/parts/editor/tabsTitleControl",
+    "vs/workbench/browser/parts/editor/noTabsTitleControl",
     "vs/platform/windows/common/windows",
     "vs/workbench/browser/parts/editor/editor",
 ], function (exports, utils, configuration, platform, browser, layout, activitybarPart, colorRegistry,
-    part, compositePart, ttt, windows, editor) {
+    part, compositePart, ttt, titleControl, windows, editor) {
 
         let CustomizeTitleBar = class CustomizeTitleBar {
             constructor(configurationService, windowService) {
@@ -257,6 +258,21 @@ define([
                     if (!self._paddingUpdated) {
                         self.updateTabsLeftPadding(leftPadding, 0);
                         self._paddingUpdated = true;
+                    }
+                });
+
+                utils.override(titleControl.NoTabsTitleControl, "create", function(original) {
+                    original();
+                    let tabsAndActions = this.titleContainer.childNodes[0];
+                    let leftPadding = document.createElement("div");
+                    leftPadding.classList.add("dragging-area-left-padding");
+                    tabsAndActions.insertBefore(leftPadding, tabsAndActions.childNodes[0]);
+                    tabsAndActions.classList.add("no-tabs");
+
+                    // Set padding for first tab
+                    if (!self._paddingUpdatedNoTabs) {
+                        self.updateTabsLeftPadding(leftPadding, 0);
+                        self._paddingUpdatedNoTabs = true;
                     }
                 });
             }

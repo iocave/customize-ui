@@ -376,3 +376,14 @@ body.inline-title-bar div.dragging-area-left-padding {
     height: var(--traffic-lights-height);
     -webkit-app-region: drag;
 }
+
+/* Inline titlebar, no tabs */
+body.inline-title-bar .monaco-workbench:not(.fullscreen) .label-container.no-tabs,
+body.inline-title-bar .monaco-workbench:not(.fullscreen) .label-container.no-tabs + div.title-actions {
+    -webkit-app-region: drag;
+}
+
+body.inline-title-bar .monaco-workbench:not(.fullscreen) .label-container.no-tabs .monaco-breadcrumb-item,
+body.inline-title-bar .monaco-workbench:not(.fullscreen) .label-container.no-tabs .monaco-icon-label-container {
+    -webkit-app-region: no-drag;
+}
