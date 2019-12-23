@@ -6,6 +6,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.1.31] - 2019-12-23
+
+- Added support for inline titlebar with tabs disabled
+
 ## [0.1.30] - 2019-12-20
 
 - Tweaked badge position when having 'wide' activity bar
