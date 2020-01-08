@@ -56,7 +56,8 @@
 					"description": "Inline title bar style for macOS",
 					"enum": [
 						"regular",
-						"inline"
+						"inline",
+            "frameless"
 					]
 				},
 				"customizeUI.stylesheet": {
