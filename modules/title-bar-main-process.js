@@ -12,24 +12,39 @@ define([
 
     let MainProcessTitleBar = class MainProcessTitleBar {
         constructor(configurationService) {
-            if (configurationService.getValue("customizeUI.titleBar") === "inline") {
-                this.init();
+            const titleBar = configurationService.getValue("customizeUI.titleBar");
+
+            if (titleBar === "inline" || titleBar === "frameless") {
+                this.init(titleBar);
             }
         }
 
-        init() {
+        init(titleBar) {
 
             this.swizzle();
 
             class _CodeWindow extends win.CodeWindow {
                 constructor() {
-                    Object.defineProperty(Object.prototype, "titleBarStyle", {
-                        get() { return "hidden"; },
-                        set() { },
-                        configurable: true,
-                    });
-                    super(...arguments);
-                    delete Object.prototype.titleBarStyle;
+                    // https://electronjs.org/docs/api/frameless-window
+                    //
+                    if (titleBar === "frameless") {
+                        Object.defineProperty(Object.prototype, "frame", {
+                            get() { return false; },
+                            set() { },
+                            configurable: true,
+                        });
+                        super(...arguments);
+                        delete Object.prototype.frame;
+
+                    } else {
+                        Object.defineProperty(Object.prototype, "titleBarStyle", {
+                            get() { return "hidden"; },
+                            set() { },
+                            configurable: true,
+                        });
+                        super(...arguments);
+                        delete Object.prototype.titleBarStyle;
+                    }
                 }
             }
 

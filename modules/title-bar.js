@@ -22,9 +22,12 @@ define([
                 this.configurationService = configurationService;
                 this.windowService = windowService;
 
-                if (platform.isMacintosh &&
-                    this.configurationService.getValue("customizeUI.titleBar") === "inline") {
-                    this.init();
+                if (platform.isMacintosh) {
+                    const titleBar = configurationService.getValue("customizeUI.titleBar");
+                    
+                    if (titleBar === "inline" || titleBar === "frameless") {
+                        this.init(titleBar === "inline");
+                    }
                 }
             }
 
@@ -78,7 +81,7 @@ define([
                 return this.activityBarIsWide() ? this.traffictLightDimensions().width : 50;
             }
 
-            init() {
+            init(titleBarIsInline) {
 
                 document.body.classList.add("inline-title-bar");
 
@@ -97,30 +100,32 @@ define([
                         args[1] -= self.traffictLightDimensions().height;
                     original();
                 });
+                
+                if (titleBarIsInline) {
+                    // add placeholder so that we can change color of activity bar behind traffic lights
+                    utils.override(activitybarPart.ActivitybarPart, "createContentArea", function (original, args) {
+                        let res = original();
 
-                // add placeholder so that we can change color of activity bar behind traffic lights
-                utils.override(activitybarPart.ActivitybarPart, "createContentArea", function (original, args) {
-                    let res = original();
+                        let parent = args[0];
+                        this._placeholder = document.createElement('div');
+                        this._placeholder.classList.add("activity-bar-placeholder");
 
-                    let parent = args[0];
-                    this._placeholder = document.createElement('div');
-                    this._placeholder.classList.add("activity-bar-placeholder");
+                        if (!self.activityBarIsWide()) {
+                            parent.appendChild(this._placeholder);
+                        }
 
-                    if (!self.activityBarIsWide()) {
-                        parent.appendChild(this._placeholder);
-                    }
+                        return res;
+                    });
 
-                    return res;
-                });
+                    let color = colorRegistry.registerColor("inlineTitleBar.background");
 
-                let color = colorRegistry.registerColor("inlineTitleBar.background");
-
-                // actually change the color
-                utils.override(activitybarPart.ActivitybarPart, "updateStyles", function (original) {
-                    original();
-                    let color = this.getColor("inlineTitleBar.background") || this.getColor("sideBar.background");
-                    this._placeholder.style.backgroundColor = color;
-                });
+                    // actually change the color
+                    utils.override(activitybarPart.ActivitybarPart, "updateStyles", function (original) {
+                        original();
+                        let color = this.getColor("inlineTitleBar.background") || this.getColor("sideBar.background");
+                        this._placeholder.style.backgroundColor = color;
+                    });
+                }
 
                 utils.override(part.Part, "layoutContents", function (original) {
                     // we need to override height for composite title, but only when laying
@@ -171,23 +176,26 @@ define([
                     self.update();
                 });
 
-                // Pad title to account for traffic lights
-                utils.override(compositePart.CompositePart, "updateStyles", function (original) {
-                    original();
-                    if (this._titleArea) {
-                        let color = this.getColor("inlineTitleBar.background");
-                        this._titleArea.style.backgroundColor = color;
-                        let padding = 0;
-                        if (self.isFullScreen() || self.layout.getSideBarPosition() == 1) {
-                            padding = 8; // default
-                        } else if (self.activityBarIsVisible()) {
-                            padding = Math.max(self.traffictLightDimensions().width - self.activityBarWidth() - 14, 0);
-                        } else {
-                            padding = self.traffictLightDimensions().width - 14;
+                if (titleBarIsInline) {
+                    // Pad title to account for traffic lights
+                    utils.override(compositePart.CompositePart, "updateStyles", function (original) {
+                        original();
+                        if (this._titleArea) {
+                            let color = this.getColor("inlineTitleBar.background");
+                            this._titleArea.style.backgroundColor = color;
+                            let padding = 0;
+                            if (self.isFullScreen() || self.layout.getSideBarPosition() == 1) {
+                                padding = 8; // default
+                            } else if (self.activityBarIsVisible()) {
+                                padding = Math.max(self.traffictLightDimensions().width - self.activityBarWidth() - 14, 0);
+                            } else {
+                                padding = self.traffictLightDimensions().width - 14;
+                            }
+                            this._titleArea.style.paddingLeft = `${padding}px`;
                         }
-                        this._titleArea.style.paddingLeft = `${padding}px`;
-                    }
-                });
+                    });
+                }
+
 
                 // Dragging in empty space after tabs
                 let replacement = function (original) {
@@ -245,36 +253,38 @@ define([
                 utils.override(ttt.TabsTitleControl, "openEditor", replacement);
                 utils.override(ttt.TabsTitleControl, "handleClosedEditors", replacement);
 
-                // left padding when sidebar is disabled
-                utils.override(ttt.TabsTitleControl, "create", function (original) {
-                    original();
+                if (titleBarIsInline) {
+                    // left padding when sidebar is disabled
+                    utils.override(ttt.TabsTitleControl, "create", function (original) {
+                        original();
 
-                    let tabsAndActions = this.titleContainer.childNodes[0];
-                    let leftPadding = document.createElement("div");
-                    leftPadding.classList.add("dragging-area-left-padding");
-                    tabsAndActions.insertBefore(leftPadding, tabsAndActions.childNodes[0]);
+                        let tabsAndActions = this.titleContainer.childNodes[0];
+                        let leftPadding = document.createElement("div");
+                        leftPadding.classList.add("dragging-area-left-padding");
+                        tabsAndActions.insertBefore(leftPadding, tabsAndActions.childNodes[0]);
 
-                    // Set padding for first tab
-                    if (!self._paddingUpdated) {
-                        self.updateTabsLeftPadding(leftPadding, 0);
-                        self._paddingUpdated = true;
-                    }
-                });
+                        // Set padding for first tab
+                        if (!self._paddingUpdated) {
+                            self.updateTabsLeftPadding(leftPadding, 0);
+                            self._paddingUpdated = true;
+                        }
+                    });
 
-                utils.override(titleControl.NoTabsTitleControl, "create", function(original) {
-                    original();
-                    let tabsAndActions = this.titleContainer.childNodes[0];
-                    let leftPadding = document.createElement("div");
-                    leftPadding.classList.add("dragging-area-left-padding");
-                    tabsAndActions.insertBefore(leftPadding, tabsAndActions.childNodes[0]);
-                    tabsAndActions.classList.add("no-tabs");
+                    utils.override(titleControl.NoTabsTitleControl, "create", function(original) {
+                        original();
+                        let tabsAndActions = this.titleContainer.childNodes[0];
+                        let leftPadding = document.createElement("div");
+                        leftPadding.classList.add("dragging-area-left-padding");
+                        tabsAndActions.insertBefore(leftPadding, tabsAndActions.childNodes[0]);
+                        tabsAndActions.classList.add("no-tabs");
 
-                    // Set padding for first tab
-                    if (!self._paddingUpdatedNoTabs) {
-                        self.updateTabsLeftPadding(leftPadding, 0);
-                        self._paddingUpdatedNoTabs = true;
-                    }
-                });
+                        // Set padding for first tab
+                        if (!self._paddingUpdatedNoTabs) {
+                            self.updateTabsLeftPadding(leftPadding, 0);
+                            self._paddingUpdatedNoTabs = true;
+                        }
+                    });
+                }
             }
 
             updateTabsLeftPadding(node, index) {
@@ -303,8 +313,10 @@ define([
                     }
 
                     let padding = document.getElementsByClassName("dragging-area-left-padding");
-                    for (let i = 0; i < padding.length; ++i) {
-                        this.updateTabsLeftPadding(padding[i], i);
+                    if (padding) {
+                        for (let i = 0; i < padding.length; ++i) {
+                            this.updateTabsLeftPadding(padding[i], i);
+                        }
                     }
                 }
             }
