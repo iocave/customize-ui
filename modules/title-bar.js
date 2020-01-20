@@ -85,6 +85,13 @@ define([
 
                 document.body.classList.add("inline-title-bar");
 
+                window.setTimeout(function() {
+                    // workaround for https://github.com/electron/electron/issues/21034
+                    let fix = document.createElement("div");
+                    fix.style.webkitAppRegion="no-drag";
+                    document.body.appendChild(fix);
+                }, 0);
+
                 browser.onDidChangeZoomLevel(this.update.bind(this));
                 browser.onDidChangeFullscreen(this.update.bind(this));
                 this.update();
