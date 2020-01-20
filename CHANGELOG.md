@@ -6,6 +6,11 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.1.32] - 2020-01-20
+
+- Added support for frameless titlebar on macOS (thanks to Darren Prentice)
+- Added workaround for broken window dragging after resize with electron 7
+
 ## [0.1.31] - 2019-12-23
 
 - Added support for inline titlebar with tabs disabled
