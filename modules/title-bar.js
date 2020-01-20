@@ -24,7 +24,7 @@ define([
 
                 if (platform.isMacintosh) {
                     const titleBar = configurationService.getValue("customizeUI.titleBar");
-                    
+
                     if (titleBar === "inline" || titleBar === "frameless") {
                         this.init(titleBar === "inline");
                     }
@@ -100,7 +100,7 @@ define([
                         args[1] -= self.traffictLightDimensions().height;
                     original();
                 });
-                
+
                 if (titleBarIsInline) {
                     // add placeholder so that we can change color of activity bar behind traffic lights
                     utils.override(activitybarPart.ActivitybarPart, "createContentArea", function (original, args) {
