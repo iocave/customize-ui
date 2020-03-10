@@ -183,8 +183,10 @@ define([
 
             replacement = function (original) {
                 let res = original();
-                this.tree.view.view.virtualDelegate.getHeight = function () {
-                    return rowHeight;
+                if (this.tree) {
+                    this.tree.view.view.virtualDelegate.getHeight = function () {
+                        return rowHeight;
+                    }
                 }
                 return res;
             }
