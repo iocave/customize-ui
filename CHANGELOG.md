@@ -6,6 +6,11 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.1.33] - 2020-03-10
+
+- Fix panel sizing when on right
+- Fix scm providers view missing (#35)
+
 ## [0.1.32] - 2020-01-20
 
 - Added support for frameless titlebar (thanks to Darren Prentice)
