@@ -438,7 +438,6 @@ define([
     }
 
     extendActivityBar = function() {
-
         // FIXME - this is copy and paste from title-bar module;
         let traffictLightDimensions = function() {
             let size = {
@@ -467,6 +466,7 @@ define([
     }
 
     moveActivityBarToBottom = function(theme) {
+
         compositeBar.CompositeBar = _CompositeBar;
         actionBar.ActionBar = _ActionBar;
 
@@ -526,10 +526,25 @@ define([
                 a.minimumWidth = 0;
 				a.maximumWidth = Infinity;
 				a.minimumHeight = actionHeight;
-				a.maximumHeight = actionHeight;
+                a.maximumHeight = actionHeight;
 				this.workbenchGrid.moveView(this.activityBarPartView, a.minimumHeight, this.sideBarPartView, 1 /* Down */);
-				this.workbenchGrid.setViewVisible(this.activityBarPartView, !this.state.activityBar.hidden);
+                this.workbenchGrid.setViewVisible(this.activityBarPartView, !this.state.activityBar.hidden);
+
+                // restore sidebar size
+                if (this._prevSidebarSize) {
+                    let size = this.workbenchGrid.getViewSize(this.sideBarPartView);
+                    size.width = this._prevSidebarSize;
+                    this.workbenchGrid.resizeView(this.sideBarPartView, size);
+                }
             } else {
+                // preserve sidebar size when hidden; this is necessary when sidebar is on right
+                const sideBarSize = this.state.sideBar.hidden
+				    ? this.workbenchGrid.getViewCachedVisibleSize(this.sideBarPartView)
+                    : this.workbenchGrid.getViewSize(this.sideBarPartView).width;
+                if (sideBarSize > 0) {
+                    this._prevSidebarSize = sideBarSize;
+                }
+
                 a.minimumWidth = 0;
 				a.maximumWidth = 0;
 				a.minimumHeight = 0;
@@ -560,8 +575,12 @@ define([
         override(layout.Layout, "createWorkbenchLayout", function(original) {
             original();
             this.layout();
+            // preserve size after updating status bar; this is necessary for sidebar to not grow
+            // during startup when moved right
+            let size = this.workbenchGrid.getViewSize(this.sideBarPartView);
             this._updateActivityBar(!this.state.sideBar.hidden);
             this._updateStatusBar(true);
+            this.workbenchGrid.resizeView(this.sideBarPartView, size);
         });
 
         override(layout.Layout, "setSideBarHidden", function(original) {
