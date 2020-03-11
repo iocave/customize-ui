@@ -4,7 +4,6 @@ define([
     "vs/workbench/contrib/files/browser/views/explorerViewer",
     "vs/workbench/contrib/files/browser/views/openEditorsView",
     "vs/editor/contrib/documentSymbols/outlineTree",
-    "vs/workbench/browser/parts/views/customView",
     "vs/workbench/contrib/search/browser/searchResultsView",
     "vs/workbench/contrib/debug/browser/variablesView",
     "vs/workbench/contrib/debug/browser/callStackView",
@@ -13,7 +12,7 @@ define([
     "vs/workbench/contrib/debug/browser/breakpointsView",
     "vs/workbench/contrib/scm/browser/scmViewlet",
     "vs/platform/configuration/common/configuration",
-], function(exports, utils, explorerView, openEditorsView, outlineTree, customView, searchResultsView,
+], function(exports, utils, explorerView, openEditorsView, outlineTree, searchResultsView,
     variablesView, callStackView, watchExpressionsView, loadedScriptsView, breakpointsView, scm, configuration) {
 
     let override = utils.override;
@@ -113,7 +112,7 @@ define([
             };
 
             // custom views in sidebar
-            override(customView.CustomTreeView, "createTree", function (original) {
+            let replacement = function (original) {
                 let res = original();
                 // Older version
                 if (this.tree !== undefined && this.tree.context !== undefined) {
@@ -129,7 +128,15 @@ define([
                     }
                 }
                 return res;
-            });
+            };
+
+            require(["vs/workbench/browser/parts/views/customView"], function(customView) {
+                override(customView.CustomTreeView, "createTree", replacement);
+            }, function(error) {});
+
+            require(["vs/workbench/browser/parts/views/treeView"], function(treeView) {
+                override(treeView.TreeView, "createTree", replacement);
+            }, function(error) {});
 
             // search
             searchResultsView.SearchDelegate.prototype.getHeight = function () {
@@ -140,7 +147,7 @@ define([
             // Debugger
             //
 
-            let replacement = function (original) {
+            replacement = function (original) {
                 let res = original();
                 this.tree.tree.view.view.virtualDelegate.getHeight = function () {
                     return rowHeight;

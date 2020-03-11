@@ -616,7 +616,8 @@ define([
     let CustomizeActivityBar = class CustomizeActivityBar {
         constructor(configurationService, telemetry, themeService) {
             if (configurationService.getValue("customizeUI.activityBar") === "bottom") {
-                moveActivityBarToBottom(themeService.getTheme());
+                let theme = themeService.getColorTheme ? themeService.getColorTheme() : themeService.getTheme();
+                moveActivityBarToBottom(theme);
             }
             if (configurationService.getValue("customizeUI.activityBar") === "wide") {
                 extendActivityBar();
