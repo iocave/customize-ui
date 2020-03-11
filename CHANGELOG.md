@@ -6,6 +6,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.1.34] - 2020-03-11
+
+- Fix compatibility with latest insiders
+
 ## [0.1.33] - 2020-03-10
 
 - Fix panel sizing when on right
