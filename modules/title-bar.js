@@ -311,9 +311,9 @@ define([
                 editor.EDITOR_TITLE_HEIGHT = this.traffictLightDimensions().height;
                 this.updateStyle();
                 if (this.layout) {
-
                     // Sometimes layout get computed while we have old isFullScreen value, so force relayout
-                    this.layout.layout();
+                    if (this.layout.workbenchGrid)
+                        this.layout.layout();
 
                     if (!this.layout.state.sideBar.hidden) {
                         this.layout.getPart("workbench.parts.sidebar").updateStyles();
