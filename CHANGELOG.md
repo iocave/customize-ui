@@ -6,6 +6,11 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.1.36] - 2020-05-15
+
+- Fix compatibility with latest insiders
+- Add customizeUI.activityBarHideSettings option
+
 ## [0.1.34] - 2020-03-11
 
 - Fix compatibility with latest insiders

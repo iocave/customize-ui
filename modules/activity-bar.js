@@ -25,7 +25,8 @@ define([
 
     class _CompositeBar extends compositeBar.CompositeBar {
         constructor(items, options) {
-            if (options && options.compositeSize == 50 && options.orientation == 2) { // action bar
+            if (options && (options.compositeSize == 50 || options.compositeSize == 52)  &&
+                options.orientation == 2) { // action bar
                 options.orientation = 0; // horizontal
                 options.compositeSize = actionWidth;
                 options.overflowActionSize = actionWidth;
@@ -72,6 +73,7 @@ define([
             if (this.globalActionBar) {
                 availableWidth -= (this.globalActionBar.viewItems.length * actionWidth); // adjust width for global actions showing
             }
+
             this.compositeBar.layout(new dom.Dimension(availableWidth, height));
         });
 
@@ -465,7 +467,7 @@ define([
         document.body.classList.add("activity-bar-wide");
     }
 
-    moveActivityBarToBottom = function(theme) {
+    moveActivityBarToBottom = function(theme, hideSettings) {
 
         compositeBar.CompositeBar = _CompositeBar;
         actionBar.ActionBar = _ActionBar;
@@ -483,10 +485,24 @@ define([
             // Layout composite bar
             let availableWidth = contentAreaSize.width;
             availableWidth -= 2 * sideMargin;
+
+            if (this.homeBarContainer) {
+                availableWidth -= this.homeBarContainer.clientHeight;
+            }
+            if (this.menuBarContainer) {
+                availableWidth -= this.menuBarContainer.clientHeight;
+            }
+
             if (this.globalActivityActionBar) {
                 availableWidth -= (this.globalActivityActionBar.viewItems.length * actionWidth); // adjust width for global actions showing
             }
             this.compositeBar.layout(new dom.Dimension(availableWidth, height));
+        });
+
+        override(activitybarPart.ActivitybarPart, "createGlobalActivityActionBar", function(original) {
+            if (!hideSettings) {
+                original();
+            }
         });
 
         override(activitybarPart.ActivitybarPart, "updateStyles", function(original) {
@@ -617,7 +633,8 @@ define([
         constructor(configurationService, telemetry, themeService) {
             if (configurationService.getValue("customizeUI.activityBar") === "bottom") {
                 let theme = themeService.getColorTheme ? themeService.getColorTheme() : themeService.getTheme();
-                moveActivityBarToBottom(theme);
+                let hideSettings = configurationService.getValue("customizeUI.activityBarHideSettings");
+                moveActivityBarToBottom(theme, hideSettings);
             }
             if (configurationService.getValue("customizeUI.activityBar") === "wide") {
                 extendActivityBar();

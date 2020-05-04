@@ -19,13 +19,17 @@ When set to `bottom`, activity bar will be positioned below the sidebar.
 
 When set to `wide`, activity bar will match the width of traffic lights (for macOS inline menu bar).
 
+### `customizeUI.activityBarHideSettings`
+
+When enabled hides the Settings (and Accounts) icon in horizontal (`bottom`) activity bar. Useful when the activity bar gets too crowded.
+
 ### `customizeUI.titleBar`
 
 macOS only. Setting this hides the titlebar, and the tab bar becomes draggable.
 
-* `inline`: places window controls in the sidebar or tab bar. 
+* `inline`: places window controls in the sidebar or tab bar.
 
-* `frameless`: hides window controls. 
+* `frameless`: hides window controls.
 
 Note that this setting requires that `"window.titleBarStyle": "native"` is also set.
 

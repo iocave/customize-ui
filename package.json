@@ -2,7 +2,7 @@
 	"name": "customize-ui",
 	"displayName": "Customize UI",
 	"description": "Advanced VSCode user interface customizations. Very experimental.",
-	"version": "0.1.35",
+	"version": "0.1.36",
 	"publisher": "iocave",
 	"repository": {
 		"type": "git",
@@ -50,6 +50,10 @@
 						"bottom",
 						"wide"
 					]
+				},
+				"customizeUI.activityBarHideSettings": {
+					"type" : "boolean",
+					"description": "Hides settings and accounts icon in activity bar if positioned bottom"
 				},
 				"customizeUI.titleBar": {
 					"type": "string",
