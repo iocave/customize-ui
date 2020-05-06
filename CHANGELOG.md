@@ -6,7 +6,11 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
-## [0.1.36] - 2020-05-15
+## [0.1.37] - 2020-05-06
+
+- Fix title action icons on linux (thanks to manuhornung)
+
+## [0.1.36] - 2020-05-05
 
 - Fix compatibility with latest insiders
 - Add customizeUI.activityBarHideSettings option
