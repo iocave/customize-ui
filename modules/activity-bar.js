@@ -527,14 +527,22 @@ define([
 
         let focusBorder = theme.getColor("focusBorder") || "transparent";
 
-        override(activitybarActions.ViewletActivityAction, "run", function(original) {
+        let replacement = function(original) {
             // don't let action hide sidebar
             let orig = this.layoutService.setSideBarHidden;
             this.layoutService.setSideBarHidden = function() {}
             let res = original();
             this.layoutService.setSideBarHidden = orig;
             return res;
-        });
+        }
+
+        if (activitybarActions.ViewContainerActivityAction) {
+            override(activitybarActions.ViewContainerActivityAction, "run", replacement);
+        }
+
+        if (activitybarActions.ViewletActivityAction) {
+            override(activitybarActions.ViewletActivityAction, "run", replacement);
+        }
 
         layout.Layout.prototype._updateActivityBar = function(visible) {
             let a = this.activityBarPartView;

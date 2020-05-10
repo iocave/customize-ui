@@ -6,6 +6,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.1.38] - 2020-05-10
+
+- Fix compatibility with latest insiders
+
 ## [0.1.37] - 2020-05-06
 
 - Fix title action icons on linux (thanks to manuhornung)
