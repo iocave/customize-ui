@@ -14,7 +14,8 @@
 
     NSView * v = (NSView *)self;
 
-    if (![v.window.className isEqualToString:@"AtomNSWindow"] ||
+    if ((![v.window.className isEqualToString:@"AtomNSWindow"] &&
+         ![v.window.className isEqualToString:@"ElectronNSWindow"])||
          v.window.titleVisibility != NSWindowTitleHidden)
     {
         return;
