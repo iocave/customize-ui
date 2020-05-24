@@ -6,6 +6,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.1.39] - 2020-05-24
+
+- Fix compatibitity with latest insiders
+
 ## [0.1.38] - 2020-05-10
 
 - Fix compatibility with latest insiders
