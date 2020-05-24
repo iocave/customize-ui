@@ -4,6 +4,7 @@
 	"description": "Advanced VSCode user interface customizations. Very experimental.",
 	"version": "0.1.38",
 	"publisher": "iocave",
+	"license": "MIT",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/iocave/customize-ui"
