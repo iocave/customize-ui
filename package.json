@@ -29,15 +29,17 @@
 	],
 	"main": "./out/extension.js",
 	"contributes": {
-		"colors": [{
-			"id" : "inlineTitleBar.background",
-			"description": "Color for inline titlebar background",
-			"defaults": {
-				"dark" : "sideBar.background",
-				"light": "sideBar.background",
-				"highContrast": "sideBar.background"
+		"colors": [
+			{
+				"id": "inlineTitleBar.background",
+				"description": "Color for inline titlebar background",
+				"defaults": {
+					"dark": "sideBar.background",
+					"light": "sideBar.background",
+					"highContrast": "sideBar.background"
+				}
 			}
-		}],
+		],
 		"configuration": {
 			"type": "object",
 			"title": "Customize UI",
@@ -52,7 +54,7 @@
 					]
 				},
 				"customizeUI.activityBarHideSettings": {
-					"type" : "boolean",
+					"type": "boolean",
 					"description": "Hides settings and accounts icon in activity bar if positioned bottom"
 				},
 				"customizeUI.titleBar": {
@@ -61,7 +63,7 @@
 					"enum": [
 						"regular",
 						"inline",
-            "frameless"
+						"frameless"
 					]
 				},
 				"customizeUI.stylesheet": {
