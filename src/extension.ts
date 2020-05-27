@@ -93,7 +93,6 @@ class Extension {
 			this.copyModule("activity-bar.js"),
 			this.copyModule("customize-ui.js"),
 			this.copyModule("fonts.js"),
-			this.copyModule("swizzle.dylib"),
 			this.copyModule("title-bar.js")
 		];
 
