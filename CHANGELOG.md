@@ -6,6 +6,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.1.40] - 2020-05-27
+
+- Fix codesigning regression for swizzle.dylib
+
 ## [0.1.39] - 2020-05-24
 
 - Fix compatibitity with latest insiders
