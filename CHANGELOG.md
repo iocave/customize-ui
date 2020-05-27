@@ -6,6 +6,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.1.41] - 2020-05-27
+
+- Remove swizzle.dylib completely as it causes problem with SIP enabled
+
 ## [0.1.40] - 2020-05-27
 
 - Fix codesigning regression for swizzle.dylib
