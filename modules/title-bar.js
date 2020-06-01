@@ -316,7 +316,10 @@ define([
                         this.layout.layout();
 
                     if (!this.layout.state.sideBar.hidden) {
-                        this.layout.getPart("workbench.parts.sidebar").updateStyles();
+                        let part = this.layout.getPart("workbench.parts.sidebar");
+                        if (part.getContainer()) {                            
+                            part.updateStyles();
+                    }
                     }
 
                     let padding = document.getElementsByClassName("dragging-area-left-padding");
