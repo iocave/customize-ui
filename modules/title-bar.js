@@ -362,13 +362,16 @@ define([
                     }
                 }
 
-                require(["vs/platform/electron/node/electron"], function(electron) {
+                let haveElectron = function(electron) {
                     ElectronHelper = utils.decorate([
                         utils.param(0, electron.IElectronService),
                     ], ElectronHelper);
                     let helper = instantiationService.createInstance(ElectronHelper);
                     init(instantiationService, helper);
-                }, function(error) {} );
+                }                
+
+                require(["vs/platform/electron/node/electron"], haveElectron, function(error) { } );
+                require(["vs/platform/electron/electron-sandbox/electron"], haveElectron, function(error) {});
             }
         }
 
