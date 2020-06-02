@@ -319,7 +319,7 @@ define([
                         let part = this.layout.getPart("workbench.parts.sidebar");
                         if (part.getContainer()) {                            
                             part.updateStyles();
-                    }
+                        }
                     }
 
                     let padding = document.getElementsByClassName("dragging-area-left-padding");
