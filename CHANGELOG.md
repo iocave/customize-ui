@@ -6,6 +6,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.1.43] - 2020-06-02
+
+- Fix compatibility with latest insiders
+
 ## [0.1.42] - 2020-05-27
 
 - Looks like swizzle.dylib was not removed completely...
