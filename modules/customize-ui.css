@@ -357,9 +357,7 @@ body.inline-title-bar .monaco-workbench:not(.fullscreen) .sidebar .composite.tit
 
 body.inline-title-bar .monaco-workbench .part.editor>.content .editor-group-container>.title .tabs-container,
 body.inline-title-bar .monaco-workbench .part.editor>.content .editor-group-container>.title .tabs-container>.tab,
-body.inline-title-bar .monaco-workbench .part.editor>.content .editor-group-container>.title .editor-actions,
-body.inline-title-bar .monaco-workbench .part.editor>.content .editor-group-container>.title .editor-actions .action-label,
-body.inline-title-bar .monaco-workbench .part.editor>.content .editor-group-container>.title .title-actions .action-label {
+body.inline-title-bar .monaco-workbench .part.editor>.content .editor-group-container>.title .editor-actions {
     height: var(--traffic-lights-height) !important;
     line-height: var(--traffic-lights-height) !important;
 }
