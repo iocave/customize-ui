@@ -133,6 +133,16 @@
     line-height: var(--row-height) !important;
 }
 
+.monaco-pane-view .pane > .pane-header {
+    height: var(--row-height) !important;
+}
+
+/* TODO: actions should be part of the pane, but they aren't yet */
+.monaco-pane-view .pane > .pane-header > .actions .action-label.icon,
+.monaco-pane-view .pane > .pane-header > .actions .action-label.codicon {
+    height: var(--row-height) !important;    
+}
+
 .explorer-viewlet .explorer-item,
 .explorer-viewlet .open-editor,
 .explorer-viewlet .editor-group {
