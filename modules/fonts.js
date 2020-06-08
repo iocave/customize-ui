@@ -214,6 +214,10 @@ define([
                 override(rp.RepositoryPane, "renderBody", replacement);
             }, function(error) {});
 
+            require(["vs/workbench/contrib/timeline/browser/timelinePane"], function(tp) {
+                override(tp.TimelinePane, "renderBody", replacement);
+            }, function(error) {});
+
             // panel height (OUTLINE, DEPENDENCIES, ...)
             require(["vs/base/browser/ui/splitview/panelview"], function(panelView) {
                 panelView.Panel.HEADER_SIZE = rowHeight;
