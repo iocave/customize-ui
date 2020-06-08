@@ -119,7 +119,7 @@ define([
                     this.tree.context.configuration.renderer.__proto__.constructor.ITEM_HEIGHT = rowHeight;
                 }
 
-                // newver version
+                // newer version
                 if (this.tree !== undefined && this.tree.tree !== undefined &&
                     this.tree.tree.view !== undefined && this.tree.tree.view.view !== undefined &&
                     this.tree.tree.view.view.virtualDelegate != undefined) {
