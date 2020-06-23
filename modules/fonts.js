@@ -135,7 +135,10 @@ define([
             }, function(error) {});
 
             require(["vs/workbench/browser/parts/views/treeView"], function(treeView) {
-                override(treeView.TreeView, "createTree", replacement);
+                if (treeView.TreeView)
+                    override(treeView.TreeView, "createTree", replacement);
+                if (treeView.TreeViewPane)
+                    override(treeView.TreeViewPane, "createTree", replacement);
             }, function(error) {});
 
             // search
