@@ -10,10 +10,9 @@ define([
     "vs/workbench/contrib/debug/browser/watchExpressionsView",
     "vs/workbench/contrib/debug/browser/loadedScriptsView",
     "vs/workbench/contrib/debug/browser/breakpointsView",
-    "vs/workbench/contrib/scm/browser/scmViewlet",
     "vs/platform/configuration/common/configuration",
 ], function(exports, utils, explorerView, openEditorsView, outlineTree, searchResultsView,
-    variablesView, callStackView, watchExpressionsView, loadedScriptsView, breakpointsView, scm, configuration) {
+    variablesView, callStackView, watchExpressionsView, loadedScriptsView, breakpointsView, configuration) {
 
     let override = utils.override;
     let addStyle = utils.addStyle;
@@ -183,13 +182,15 @@ define([
                 return res;
             }
 
-            if (scm.MainPanel) {
-                override(scm.MainPanel, "renderBody", replacement);
-            }
-
-            if (scm.RepositoryPanel) {
-                override(scm.RepositoryPanel, "renderBody", replacement);
-            }
+            require(["vs/workbench/contrib/scm/browser/scmViewlet"], function(scm) {
+                if (scm.MainPanel) {
+                    override(scm.MainPanel, "renderBody", replacement);
+                }
+    
+                if (scm.RepositoryPanel) {
+                    override(scm.RepositoryPanel, "renderBody", replacement);
+                }    
+            }, function(error) {});
 
             replacement = function (original) {
                 let res = original();
@@ -200,6 +201,10 @@ define([
                 }
                 return res;
             }
+
+            require(["vs/workbench/contrib/scm/browser/scmViewPane"], function(mp) {
+                override(mp.SCMViewPane, "renderBody", replacement);
+            }, function(error) {});
 
             require(["vs/workbench/contrib/scm/browser/mainPanel"], function(mp) {
                 override(mp.MainPanel, "renderBody", replacement);

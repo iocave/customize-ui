@@ -133,6 +133,18 @@
     line-height: var(--row-height) !important;
 }
 
+.scm-view .monaco-list-row {
+    line-height: var(--row-height) !important;
+}
+
+.scm-view .monaco-list-row .resource>.name>.monaco-icon-label>.actions .action-label.codicon {
+    line-height: var(--row-height) !important;
+}
+
+.scm-view .monaco-list-row .scm-input {
+    line-height: 22px !important;
+}
+
 .monaco-pane-view .pane > .pane-header {
     height: var(--row-height) !important;
 }
