@@ -193,10 +193,13 @@ define([
             }, function(error) {});
 
             replacement = function (original) {
-                let res = original();
-                if (this.tree) {
-                    this.tree.view.view.virtualDelegate.getHeight = function () {
-                        return rowHeight;
+                let res = original();                
+                if (this.tree && this.element) {                    
+                    let prev = this.tree.view.view.virtualDelegate.delegate.getHeight;
+                    let self = this.tree.view.view.virtualDelegate.delegate;
+                    this.tree.view.view.virtualDelegate.delegate.getHeight = (element) => {
+                        res = prev.apply(self, [element]);
+                        return res != 22 ? res : rowHeight;
                     }
                 }
                 return res;
@@ -205,6 +208,16 @@ define([
             require(["vs/workbench/contrib/scm/browser/scmViewPane"], function(mp) {
                 override(mp.SCMViewPane, "renderBody", replacement);
             }, function(error) {});
+
+            replacement = function (original) {
+                let res = original();
+                if (this.tree) {
+                    this.tree.view.view.virtualDelegate.getHeight = function () {
+                        return rowHeight;
+                    }
+                }
+                return res;
+            }
 
             require(["vs/workbench/contrib/scm/browser/mainPanel"], function(mp) {
                 override(mp.MainPanel, "renderBody", replacement);
