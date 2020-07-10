@@ -6,6 +6,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.1.46] - 2020-07-10
+
+- Fix compatibility with latest vscode
+
 ## [0.1.45] - 2020-06-29
 
 - Fix compatibility with latest insiders
