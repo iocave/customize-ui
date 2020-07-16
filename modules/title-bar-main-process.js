@@ -1,13 +1,14 @@
 define([
     "module",
     "require",
+    "electron",
     "vs/platform/instantiation/common/instantiationService",
     "vs/code/electron-main/app",
     "vs/code/electron-main/window",
     "vs/base/common/platform",
     "vs/platform/configuration/common/configuration",
     "customize-ui/utils"
-], function (module, require, insantiationService, app, win, platform, configuration, utils) {
+], function (module, require, electron, insantiationService, app, win, platform, configuration, utils) {
     'use strict';
 
     let MainProcessTitleBar = class MainProcessTitleBar {
@@ -35,13 +36,22 @@ define([
                         delete Object.prototype.frame;
 
                     } else {
+                        let hasSetTrafficLightPosition = electron.BrowserWindow.prototype.setTrafficLightPosition !== undefined;
+                                                
                         Object.defineProperty(Object.prototype, "titleBarStyle", {
-                            get() { return "hiddenInset"; },
+                            get() { return hasSetTrafficLightPosition ? "hidden" : "hiddenInset"; },
                             set() { },
                             configurable: true,
                         });
-                        super(...arguments);
-                        delete Object.prototype.titleBarStyle;
+           
+                        super(...arguments);            
+                                            
+                        if (hasSetTrafficLightPosition) {
+                            this._win.setRepresentedFilename = function() {} // this resets traffic lights
+                            this._win.setTrafficLightPosition({"x": 12, "y": 22});
+                        }
+                        
+                        delete Object.prototype.titleBarStyle;                        
                     }
                 }
             }
