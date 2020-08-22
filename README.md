@@ -86,3 +86,7 @@ be prompted to enable Monkey Patch. You can always trigger this manually by invo
 
 Inline titlebar inspired by Jürg Lehni's Titlebar-less VSCode extension.
 
+## Coffee
+
+If you like this this extension, consider [buying me a coffee](https://www.buymeacoffee.com/matt1). Thank you!
+
