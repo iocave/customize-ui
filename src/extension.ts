@@ -35,6 +35,8 @@ class Extension {
 				this.configurationChanged(e);
 			}
 		}));
+
+		this.coffee = new Coffee(context);
 	}
 
 	get sourcePath() {
@@ -191,9 +193,56 @@ class Extension {
 		}
 	}
 
-	context: vscode.ExtensionContext;
+	private context: vscode.ExtensionContext;
+	private coffee: Coffee;
 }
 
+class Coffee {
+	constructor(context: vscode.ExtensionContext) {
+		this.context = context;
+
+		setTimeout(()=>this.check(), 1000);
+		setInterval(()=>this.check(), 1000 * 3600);
+	}
+
+	check() : void
+	{
+		let snoozeUntil = this.context.globalState.get<number>("coffee-snooze-until");
+
+		if (snoozeUntil === undefined || snoozeUntil < Date.now()) {
+			this.show();
+		}
+	}
+
+	private async show()
+	{
+		let buttons = ["Buy me a coffee", "Maybe later", "Don't ask again"];
+		let b = await vscode.window.showInformationMessage(
+					"Hey! " +
+					"Customize UI requires constant maintenance to keep up with vscode changes. " +
+					"If you like what it does, please consider buying me a coffee.",
+					...buttons);
+		if (b === buttons[0]) {
+			vscode.env.openExternal(vscode.Uri.parse("https://www.buymeacoffee.com/matt1"));
+			this.snooze(90);
+		}
+		else if (b === buttons[1]) {
+			this.snooze(7);
+		}
+		else if (b === buttons[2]) {
+			// maybe change mind in ten years :)
+			this.snooze(365 * 10);
+		}
+	}
+
+	private snooze(days: number) {
+		let until = Date.now() + days * 24 * 60 * 60 * 1000;
+		console.log(`Snoozing until ${new Date(until).toString()}`);
+		this.context.globalState.update("coffee-snooze-until", until);
+	}
+
+	private context: vscode.ExtensionContext;
+}
 
 export function activate(context: vscode.ExtensionContext) {
 	new Extension(context).start();
