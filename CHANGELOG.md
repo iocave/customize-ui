@@ -6,6 +6,11 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.1.47] - 2020-08-22
+
+- Coffee prompt
+- Better inline titlebar on electron 9
+
 ## [0.1.46] - 2020-07-10
 
 - Fix compatibility with latest vscode
