@@ -36,7 +36,7 @@ define([
                         delete Object.prototype.frame;
 
                     } else {
-                        let hasSetTrafficLightPosition = electron.BrowserWindow.prototype.setTrafficLightPosition !== undefined;
+                        let hasSetTrafficLightPosition = electron.BrowserWindow.prototype.setTrafficLightPosition !== undefined;                        
                                                 
                         Object.defineProperty(Object.prototype, "titleBarStyle", {
                             get() { return hasSetTrafficLightPosition ? "hidden" : "hiddenInset"; },
@@ -48,6 +48,7 @@ define([
                                             
                         if (hasSetTrafficLightPosition) {
                             this._win.setRepresentedFilename = function() {} // this resets traffic lights
+                            this._win.setDocumentEdited = function() {} // this resets traffic lights
                             this._win.setTrafficLightPosition({"x": 12, "y": 22});
                         }
                         
