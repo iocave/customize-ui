@@ -20,7 +20,27 @@ define([
             }
         }
 
-        init(titleBar) {
+        init(titleBar) {            
+            let hasSetTrafficLightPosition = electron.BrowserWindow.prototype.setTrafficLightPosition !== undefined;            
+
+            // Fix glitch with traffic lights moved top when showing dialog
+            if (hasSetTrafficLightPosition) {
+                let fix = function(where, name) {
+                    let prev = where[name];
+                    where[name] = function() {                        
+                        let res = prev(...arguments);
+                        try {                            
+                            if (arguments[0].setTrafficLightPosition)
+                                arguments[0].setTrafficLightPosition(arguments[0].getTrafficLightPosition());
+                        } catch (ignore) {                            
+                        }
+                        return res;                        
+                    };
+                }
+                fix(electron.dialog, "showMessageBox");
+                fix(electron.dialog, "showOpenDialog");
+                fix(electron.dialog, "showSaveDialog");                
+            }            
 
             class _CodeWindow extends win.CodeWindow {
                 constructor() {
@@ -36,23 +56,21 @@ define([
                         delete Object.prototype.frame;
 
                     } else {
-                        let hasSetTrafficLightPosition = electron.BrowserWindow.prototype.setTrafficLightPosition !== undefined;                        
-                                                
                         Object.defineProperty(Object.prototype, "titleBarStyle", {
                             get() { return hasSetTrafficLightPosition ? "hidden" : "hiddenInset"; },
                             set() { },
                             configurable: true,
                         });
-           
-                        super(...arguments);            
-                                            
+
+                        super(...arguments);
+
                         if (hasSetTrafficLightPosition) {
                             this._win.setRepresentedFilename = function() {} // this resets traffic lights
                             this._win.setDocumentEdited = function() {} // this resets traffic lights
                             this._win.setTrafficLightPosition({"x": 12, "y": 22});
                         }
-                        
-                        delete Object.prototype.titleBarStyle;                        
+
+                        delete Object.prototype.titleBarStyle;
                     }
                 }
             }
