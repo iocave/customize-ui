@@ -6,6 +6,11 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.1.48] - 2020-09-08
+
+- Fixed empty debug view when debugging nodejs scripts
+- Workaround for traffic light glitches when opening dialogs with Electron 9
+
 ## [0.1.47] - 2020-08-22
 
 - Coffee prompt
