@@ -161,7 +161,13 @@ define([
             override(variablesView.VariablesView, "renderBody", replacement);
             override(callStackView.CallStackView, "renderBody", replacement);
             override(watchExpressionsView.WatchExpressionsView, "renderBody", replacement);
-            override(loadedScriptsView.LoadedScriptsView, "renderBody", replacement);
+            override(loadedScriptsView.LoadedScriptsView, "renderBody", function(original) {
+                let res = original();
+                this.tree.view.view.virtualDelegate.getHeight = function () {
+                    return rowHeight;
+                }                
+                return res;
+            });
             override(breakpointsView.BreakpointsView, "renderBody", function (original) {
                 let res = original();
                 this.list.view.virtualDelegate.getHeight = function () {
