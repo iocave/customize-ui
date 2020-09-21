@@ -24,16 +24,16 @@ define([
                 let service = this;
 
                 let run = function(what) {
-                    try {
-                        what.run(service);
+                    try {                        
+                        what.run(service);                        
                     } catch (e) {
                         console.error(e);
                     }
                 };
 
                 run(activityBar);
-                run(fonts);
-                run(titleBar);
+                run(fonts);                
+                run(titleBar);                
             }
         }
 
