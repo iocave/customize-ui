@@ -6,6 +6,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.1.49] - 2020-09-21
+
+- Fix compabibility with latest insiders
+
 ## [0.1.48] - 2020-09-08
 
 - Fixed empty debug view when debugging nodejs scripts
