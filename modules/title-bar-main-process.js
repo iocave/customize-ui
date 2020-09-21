@@ -21,7 +21,7 @@ define([
         }
 
         init(titleBar) {            
-            let hasSetTrafficLightPosition = electron.BrowserWindow.prototype.setTrafficLightPosition !== undefined;            
+            let hasSetTrafficLightPosition = false; // electron.BrowserWindow.prototype.setTrafficLightPosition !== undefined;            
 
             // Fix glitch with traffic lights moved top when showing dialog
             if (hasSetTrafficLightPosition) {
