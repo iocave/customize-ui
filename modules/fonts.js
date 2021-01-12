@@ -3,7 +3,6 @@ define([
     "customize-ui/utils",
     "vs/workbench/contrib/files/browser/views/explorerViewer",
     "vs/workbench/contrib/files/browser/views/openEditorsView",
-    "vs/editor/contrib/documentSymbols/outlineTree",
     "vs/workbench/contrib/search/browser/searchResultsView",
     "vs/workbench/contrib/debug/browser/variablesView",
     "vs/workbench/contrib/debug/browser/callStackView",
@@ -11,7 +10,7 @@ define([
     "vs/workbench/contrib/debug/browser/loadedScriptsView",
     "vs/workbench/contrib/debug/browser/breakpointsView",
     "vs/platform/configuration/common/configuration",
-], function(exports, utils, explorerView, openEditorsView, outlineTree, searchResultsView,
+], function(exports, utils, explorerView, openEditorsView, searchResultsView,
     variablesView, callStackView, watchExpressionsView, loadedScriptsView, breakpointsView, configuration) {
 
     let override = utils.override;
@@ -106,9 +105,18 @@ define([
             });
 
             // outline
-            outlineTree.OutlineVirtualDelegate.prototype.getHeight = function () {
-                return rowHeight;
-            };
+            require(["vs/editor/contrib/documentSymbols/outlineTree"], function(outlineTree) {
+                outlineTree.OutlineVirtualDelegate.prototype.getHeight = function () {
+                    return rowHeight;
+                };
+            }, function(error) {});
+
+            // newer version
+            require(["vs/workbench/contrib/codeEditor/browser/outline/documentSymbolsTree"], function(symbolsTree) {
+                symbolsTree.DocumentSymbolVirtualDelegate.prototype.getHeight = function () {
+                    return rowHeight;
+                };
+            }, function(error) {});
 
             // custom views in sidebar
             let replacement = function (original) {
@@ -165,7 +173,7 @@ define([
                 let res = original();
                 this.tree.view.view.virtualDelegate.getHeight = function () {
                     return rowHeight;
-                }                
+                }
                 return res;
             });
             override(breakpointsView.BreakpointsView, "renderBody", function (original) {
@@ -192,15 +200,15 @@ define([
                 if (scm.MainPanel) {
                     override(scm.MainPanel, "renderBody", replacement);
                 }
-    
+
                 if (scm.RepositoryPanel) {
                     override(scm.RepositoryPanel, "renderBody", replacement);
-                }    
+                }
             }, function(error) {});
 
             replacement = function (original) {
-                let res = original();                
-                if (this.tree && this.element) {                    
+                let res = original();
+                if (this.tree && this.element) {
                     let prev = this.tree.view.view.virtualDelegate.delegate.getHeight;
                     let self = this.tree.view.view.virtualDelegate.delegate;
                     this.tree.view.view.virtualDelegate.delegate.getHeight = (element) => {
