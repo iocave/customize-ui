@@ -47,7 +47,12 @@ define([
         }
 
         addCustomStyleSheet(styleSheet) {
-            let string = Object.entries(styleSheet).map(([key, value]) => `${key} { ${value}; }`).join("\n");
+            let string = Object.entries(styleSheet).map(([key, value]) => {
+                if (typeof value === 'object') {
+                    value = Object.entries(value).map(([key, value]) => `${key}: ${value};`).join("\n")
+                }
+                return `${key} { ${value}; }`
+            }).join("\n");
             addStyle(string);
         }
 
