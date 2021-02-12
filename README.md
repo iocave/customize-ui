@@ -15,9 +15,18 @@ This experimental extension allows customizing VSCode user interface beyond what
 
 ### `customizeUI.activityBar`
 
+When set to `top`, activity bar will be positioned over the sidebar.
+
 When set to `bottom`, activity bar will be positioned below the sidebar.
 
 When set to `wide`, activity bar will match the width of traffic lights (for macOS inline menu bar).
+
+### `customizeUI.moveStatusbar`
+
+When enabled move the statusbar below the panel (Terminal, Output, Problems). Useful to gain some space for the sidebar.
+
+**WARNING:** don't works well if panel is set to left or right,  
+this setting was added to be able to disable the default behavior.
 
 ### `customizeUI.activityBarHideSettings`
 
