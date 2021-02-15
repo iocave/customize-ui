@@ -2,13 +2,11 @@ define([
     "module",
     "require",
     "electron",
-    "vs/platform/instantiation/common/instantiationService",
     "vs/code/electron-main/app",
-    "vs/code/electron-main/window",
     "vs/base/common/platform",
     "vs/platform/configuration/common/configuration",
     "customize-ui/utils"
-], function (module, require, electron, insantiationService, app, win, platform, configuration, utils) {
+], function (module, require, electron, app, platform, configuration, utils) {
     'use strict';
 
     let MainProcessTitleBar = class MainProcessTitleBar {
@@ -16,31 +14,38 @@ define([
             const titleBar = configurationService.getValue("customizeUI.titleBar");
 
             if (titleBar === "inline" || titleBar === "frameless") {
-                this.init(titleBar);
+                let self = this;                
+                require(["vs/code/electron-main/window"], function (win) {
+                    self.__init(titleBar, win);
+                }, function (err) { });
+
+                require(["vs/platform/windows/electron-main/window"], function (win) {
+                    self.__init(titleBar, win);
+                }, function (err) { });
             }
         }
 
-        init(titleBar) {            
+        __init(titleBar, win) {
             let hasSetTrafficLightPosition = false; // electron.BrowserWindow.prototype.setTrafficLightPosition !== undefined;            
 
             // Fix glitch with traffic lights moved top when showing dialog
             if (hasSetTrafficLightPosition) {
-                let fix = function(where, name) {
+                let fix = function (where, name) {
                     let prev = where[name];
-                    where[name] = function() {                        
+                    where[name] = function () {
                         let res = prev(...arguments);
-                        try {                            
+                        try {
                             if (arguments[0].setTrafficLightPosition)
                                 arguments[0].setTrafficLightPosition(arguments[0].getTrafficLightPosition());
-                        } catch (ignore) {                            
+                        } catch (ignore) {
                         }
-                        return res;                        
+                        return res;
                     };
                 }
                 fix(electron.dialog, "showMessageBox");
                 fix(electron.dialog, "showOpenDialog");
-                fix(electron.dialog, "showSaveDialog");                
-            }            
+                fix(electron.dialog, "showSaveDialog");
+            }
 
             class _CodeWindow extends win.CodeWindow {
                 constructor() {
@@ -65,9 +70,9 @@ define([
                         super(...arguments);
 
                         if (hasSetTrafficLightPosition) {
-                            this._win.setRepresentedFilename = function() {} // this resets traffic lights
-                            this._win.setDocumentEdited = function() {} // this resets traffic lights
-                            this._win.setTrafficLightPosition({"x": 12, "y": 22});
+                            this._win.setRepresentedFilename = function () { } // this resets traffic lights
+                            this._win.setDocumentEdited = function () { } // this resets traffic lights
+                            this._win.setTrafficLightPosition({ "x": 12, "y": 22 });
                         }
 
                         delete Object.prototype.titleBarStyle;
@@ -85,7 +90,11 @@ define([
 
     if (platform.isMacintosh) {
         utils.override(app.CodeApplication, "openFirstWindow", function (original) {
-            this.instantiationService.createInstance(MainProcessTitleBar);
+            if (this.mainInstantiationService) {
+                this.mainInstantiationService.createInstance(MainProcessTitleBar);
+            } else {
+                this.instantiationService.createInstance(MainProcessTitleBar);
+            }
             return original();
         });
     }

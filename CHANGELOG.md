@@ -6,6 +6,12 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.1.51] - 2021-02-15
+
+- Fix compatibility with latest insiders
+
+- Merged PR #72 (Add object type suppor) and #69 (fix vertical alignment of icons in explorer with custom `listRowHeight`)
+
 ## [0.1.50] - 2021-01-12
 
 - Fix compabibility with latest insiders
