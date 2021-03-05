@@ -167,6 +167,10 @@
     height: var(--row-height) !important;
 }
 
+.monaco-workbench .debug-pane .monaco-action-bar .action-item>.action-label {
+    height: var(--row-height) !important;
+}
+
 .monaco-workbench.linux .explorer-viewlet .explorer-item .monaco-inputbox,
 .monaco-workbench.mac .explorer-viewlet .explorer-item .monaco-inputbox {
     height: var(--row-height) !important;

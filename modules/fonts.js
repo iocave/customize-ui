@@ -181,11 +181,14 @@ define([
                 }
                 return res;
             });
-            override(breakpointsView.BreakpointsView, "renderBody", function (original) {
-                let res = original();
-                this.list.view.virtualDelegate.getHeight = function () {
-                    return rowHeight;
+            // renderBody is too late
+            override(breakpointsView.BreakpointsView, "_register", function (original) {
+                if (this.list && this.list.view) {
+                    this.list.view.virtualDelegate.getHeight = function () {
+                        return rowHeight;
+                    }
                 }
+                let res = original();
                 return res;
             });
 

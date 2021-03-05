@@ -26,7 +26,7 @@ define([
     class _CompositeBar extends compositeBar.CompositeBar {
         constructor(items, options) {
             if (options && (options.compositeSize == 50 || options.compositeSize == 52)  &&
-                options.orientation == 2) { // action bar
+                (options.orientation == 1 || options.orientation == 2)) { // action bar
                 options.orientation = 0; // horizontal
                 options.compositeSize = actionWidth;
                 options.overflowActionSize = actionWidth;
