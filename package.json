@@ -50,9 +50,14 @@
 					"description": "Position activity bar below the sidebar or make match traffic lights dimensions (for inline title bar)",
 					"enum": [
 						"regular",
+						"top",
 						"bottom",
 						"wide"
 					]
+				},
+				"customizeUI.moveStatusbar": {
+					"type": "boolean",
+					"description": "Move statusbar under panel."
 				},
 				"customizeUI.activityBarHideSettings": {
 					"type": "boolean",
@@ -148,7 +153,7 @@
 	"extensionDependencies": [
 		"iocave.monkey-patch"
 	],
-	"extensionKind": "ui",
+	"extensionKind": ["ui"],
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
 		"compile": "tsc -p ./",
