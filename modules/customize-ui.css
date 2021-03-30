@@ -417,3 +417,12 @@ body.inline-title-bar .monaco-workbench:not(.fullscreen) .label-container.no-tab
 body.inline-title-bar .monaco-workbench:not(.fullscreen) .label-container.no-tabs .monaco-icon-label-container {
     -webkit-app-region: no-drag;
 }
+
+/* Inline titlebar, zen mode max panel */
+body.inline-title-bar .monaco-workbench.noeditorarea.nosidebar .part.panel.bottom .composite.title .title-actions { 
+    -webkit-app-region: drag; 
+}
+
+body.inline-title-bar .monaco-workbench.noeditorarea.nosidebar .part.panel.bottom .composite.title {
+    padding-left: var(--traffict-lights-width) !important;
+}
