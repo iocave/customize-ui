@@ -580,9 +580,9 @@ define([
 				}
             }
         }
-        
-        if (moveStatusbar) {
-            layout.Layout.prototype._updateStatusBar = function(active) {
+
+        layout.Layout.prototype._updateStatusBar = function(active) {
+            if (moveStatusbar) {
                 this.statusBarPartView.maximumHeight = 20;
                 if (active) {
                     if (this.state.panel.position === 1 /* right */) {
