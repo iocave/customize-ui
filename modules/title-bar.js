@@ -51,7 +51,7 @@ define([
                     document.getElementsByTagName("head")[0].appendChild(css);
                 }
 
-                let dimensions = this.traffictLightDimensions();
+                let dimensions = this.trafficLightDimensions();
                 this.styleTextNode.textContent =
                     `:root {
                      --traffict-lights-width: ${dimensions.width}px;
@@ -59,7 +59,7 @@ define([
                 }`;
             }
 
-            traffictLightDimensions() {
+            trafficLightDimensions() {
                 let size = {
                     width: 77,
                     height: 37,
@@ -88,7 +88,7 @@ define([
             }
 
             activityBarWidth() {
-                return this.activityBarIsWide() ? this.traffictLightDimensions().width : 50;
+                return this.activityBarIsWide() ? this.trafficLightDimensions().width : 50;
             }
 
             init(titleBarIsInline) {
@@ -117,7 +117,7 @@ define([
                         self.activityBarIsVertical() &&
                         !self.isFullScreen() &&
                         this.layoutService.getSideBarPosition() == 0 /* LEFT */)
-                        args[1] -= self.traffictLightDimensions().height;
+                        args[1] -= self.trafficLightDimensions().height;
                     original();
                 });
 
@@ -153,7 +153,7 @@ define([
                     if (this.id === "workbench.parts.sidebar") {
                         let c = this.partLayout.__proto__.constructor;
                         let prev = c.TITLE_HEIGHT;
-                        c.TITLE_HEIGHT = self.traffictLightDimensions().height;
+                        c.TITLE_HEIGHT = self.trafficLightDimensions().height;
                         let res = original();
                         c.TITLE_HEIGHT = prev;
                         return res;
@@ -207,9 +207,9 @@ define([
                             if (self.isFullScreen() || self.layout.getSideBarPosition() == 1) {
                                 padding = 8; // default
                             } else if (self.activityBarIsVisible()) {
-                                padding = Math.max(self.traffictLightDimensions().width - self.activityBarWidth() - 14, 0);
+                                padding = Math.max(self.trafficLightDimensions().width - self.activityBarWidth() - 14, 0);
                             } else {
-                                padding = self.traffictLightDimensions().width - 14;
+                                padding = self.trafficLightDimensions().width - 14;
                             }
                             this._titleArea.style.paddingLeft = `${padding}px`;
                         }
@@ -327,7 +327,7 @@ define([
                 if (index == 0 &&
                     !this.isFullScreen() &&
                     (this.sideBarHidden() || this.sideBarPosition() == 1 /* rigth */)) {
-                    let val = this.traffictLightDimensions().width;
+                    let val = this.trafficLightDimensions().width;
                     if (this.activityBarIsVisible() && this.sideBarPosition() != 1)
                         val -= this.activityBarWidth();
                     node.style.width = `${val}px`;
@@ -337,7 +337,7 @@ define([
             }
 
             update() {
-                editor.EDITOR_TITLE_HEIGHT = this.traffictLightDimensions().height;
+                editor.EDITOR_TITLE_HEIGHT = this.trafficLightDimensions().height;
                 this.updateStyle();
                 if (this.layout) {
                     // Sometimes layout get computed while we have old isFullScreen value, so force relayout
