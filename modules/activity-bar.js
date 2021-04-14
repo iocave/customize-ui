@@ -21,6 +21,18 @@ define([
         let actionHeight = 38;
         let sideMargin = 4;
 
+        // FIXME - this is copy and paste from title-bar module;
+        let trafficLightDimensions = function () {
+            let size = {
+                width: 77,
+                height: 37,
+            }
+            return {
+                width: size.width / browser.getZoomFactor(),
+                height: size.height / browser.getZoomFactor(),
+            };
+        }
+
         // CompositeBar
 
         class _CompositeBar extends compositeBar.CompositeBar {
@@ -440,22 +452,10 @@ define([
         }
 
         resizeActivityBarLegacy3 = function (activityBarPosition) {
-            // FIXME - this is copy and paste from title-bar module;
-            let traffictLightDimensions = function () {
-                let size = {
-                    width: 77,
-                    height: 37,
-                }
-                return {
-                    width: size.width / browser.getZoomFactor(),
-                    height: size.height / browser.getZoomFactor(),
-                };
-            }
-
             layout.Layout.prototype._updateActivityBar = function (visible) {
                 let a = this.activityBarPartView;
-                a.minimumWidth = traffictLightDimensions().width;
-                a.maximumWidth = traffictLightDimensions().width;
+                a.minimumWidth = trafficLightDimensions().width;
+                a.maximumWidth = trafficLightDimensions().width;
             }
 
             override(layout.Layout, "createWorkbenchLayout", function (original) {
@@ -469,22 +469,11 @@ define([
 
         resizeActivityBar = function (layoutState, activityBarPosition) {
             console.log(activityBarPosition)
-            // FIXME - this is copy and paste from title-bar module;
-            let traffictLightDimensions = function () {
-                let size = {
-                    width: 77,
-                    height: 37,
-                }
-                return {
-                    width: size.width / browser.getZoomFactor(),
-                    height: size.height / browser.getZoomFactor(),
-                };
-            }
 
             layout.Layout.prototype._updateActivityBar = function (visible) {
                 let a = this.activityBarPartView;
-                a.minimumWidth = traffictLightDimensions().width;
-                a.maximumWidth = traffictLightDimensions().width;
+                a.minimumWidth = trafficLightDimensions().width;
+                a.maximumWidth = trafficLightDimensions().width;
             }
 
             override(layout.Layout, "createWorkbenchLayout", function (original) {
