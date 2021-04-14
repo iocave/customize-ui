@@ -62,7 +62,17 @@
 				},
 				"customizeUI.moveStatusbar": {
 					"type": "boolean",
-					"description": "Move statusbar under panel."
+					"description": "Move statusbar under panel.",
+					"deprecationMessage": "Use customizeUI.statusbarPosition: under-panel instead"
+				},
+				"customizeUI.statusBarPosition": {
+					"type": "string",
+					"default": null,
+					"enum": [
+						"top",
+						"bottom",
+						"under-panel"
+					]
 				},
 				"customizeUI.activityBarHideSettings": {
 					"type": "boolean",
