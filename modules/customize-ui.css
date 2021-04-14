@@ -309,6 +309,9 @@ body.status-bar-at-top .notifications-center {
     top: var(--traffic-lights-height);
     margin-top: var(--activity-bar-action-height);
 }
+body.status-bar-at-top .notifications-center {
+    top: 0;
+}
 body.status-bar-at-top .codicon-notifications-collapse,
 body.status-bar-at-top .codicon-notifications-expand,
 body.status-bar-at-top .notifications-center .codicon-notifications-hide {
@@ -316,6 +319,16 @@ body.status-bar-at-top .notifications-center .codicon-notifications-hide {
 }
 body.status-bar-at-top .notification-toast {
     transform: translate3d(0,-100%,0)
+}
+
+/* tweak hover styles */
+body.status-bar-at-top .statusbar-item {
+    -webkit-app-region: no-drag;
+    padding: 7px 0;
+    box-sizing: border-box;
+}
+body.status-bar-at-top .statusbar-item a {
+    border-radius: 5px;
 }
 
 body.activity-bar-at-bottom:not(.status-bar-at-top) .monaco-workbench .part.statusbar>.statusbar-item,
