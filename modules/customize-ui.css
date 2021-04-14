@@ -302,6 +302,22 @@ body.status-bar-at-top .monaco-workbench .part.statusbar {
     -webkit-app-region: drag;
 }
 
+/* fix positioning of notifications */
+body.status-bar-at-top .notifications-toasts,
+body.status-bar-at-top .notifications-center {
+    bottom: auto;
+    top: var(--traffic-lights-height);
+    margin-top: var(--activity-bar-action-height);
+}
+body.status-bar-at-top .codicon-notifications-collapse,
+body.status-bar-at-top .codicon-notifications-expand,
+body.status-bar-at-top .notifications-center .codicon-notifications-hide {
+    transform: scaleY(-1)
+}
+body.status-bar-at-top .notification-toast {
+    transform: translate3d(0,-100%,0)
+}
+
 body.activity-bar-at-bottom:not(.status-bar-at-top) .monaco-workbench .part.statusbar>.statusbar-item,
 body.activity-bar-at-bottom:not(.status-bar-at-top) .monaco-workbench .part.statusbar>.items-container>.statusbar-item {
     line-height: 20px !important;
