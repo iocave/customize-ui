@@ -158,7 +158,9 @@
 	"extensionDependencies": [
 		"iocave.monkey-patch"
 	],
-	"extensionKind": ["ui"],
+	"extensionKind": [
+		"ui"
+	],
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
 		"compile": "tsc -p ./",
