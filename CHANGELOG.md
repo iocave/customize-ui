@@ -6,6 +6,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.1.54] - 202106-11
+
+- Fix compatibility with latest insiders
+
 ## [0.1.53] - 2021-04-02
 
 - Fixed regression introduced in PR #80
