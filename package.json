@@ -28,6 +28,11 @@
 	"activationEvents": [
 		"*"
 	],
+	"capabilities": {
+		"untrustedWorkspaces": {
+			"supported": true
+		}
+	},
 	"main": "./out/extension.js",
 	"contributes": {
 		"colors": [
