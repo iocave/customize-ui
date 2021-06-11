@@ -12,7 +12,7 @@ define([
         let addStyleSheet = utils.addStyleSheet;
 
         let url = require.toUrl(module.id) + ".css";
-        if (!url.startsWith("file://")) {
+        if (!url.startsWith("file://") && !url.startsWith("vscode-file://")) {
             url = 'file://' + url;
         }
         addStyleSheet(url);
