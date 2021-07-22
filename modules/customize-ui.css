@@ -148,6 +148,9 @@
 .monaco-pane-view .pane > .pane-header {
     height: var(--row-height) !important;
 }
+.monaco-pane-view .pane.horizontal:not(.expanded) > .pane-header {
+    height: 100% !important;
+}
 
 /* TODO: actions should be part of the pane, but they aren't yet */
 .monaco-pane-view .pane > .pane-header > .actions .action-label.icon,
