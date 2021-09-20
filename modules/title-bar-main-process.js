@@ -14,7 +14,7 @@ define([
             const titleBar = configurationService.getValue("customizeUI.titleBar");
 
             if (titleBar === "inline" || titleBar === "frameless") {
-                let self = this;                
+                let self = this;
                 require(["vs/code/electron-main/window"], function (win) {
                     self.__init(titleBar, win);
                 }, function (err) { });
@@ -26,7 +26,7 @@ define([
         }
 
         __init(titleBar, win) {
-            let hasSetTrafficLightPosition = false; // electron.BrowserWindow.prototype.setTrafficLightPosition !== undefined;            
+            let hasSetTrafficLightPosition = false; // electron.BrowserWindow.prototype.setTrafficLightPosition !== undefined;
 
             // Fix glitch with traffic lights moved top when showing dialog
             if (hasSetTrafficLightPosition) {
@@ -69,9 +69,9 @@ define([
 
                         super(...arguments);
 
+                        this._win.setRepresentedFilename = function () { } // this resets traffic lights
+                        this._win.setDocumentEdited = function () { } // this resets traffic lights
                         if (hasSetTrafficLightPosition) {
-                            this._win.setRepresentedFilename = function () { } // this resets traffic lights
-                            this._win.setDocumentEdited = function () { } // this resets traffic lights
                             this._win.setTrafficLightPosition({ "x": 12, "y": 22 });
                         }
 
