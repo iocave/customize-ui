@@ -6,7 +6,11 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
-## [0.1.54] - 202106-11
+## [0.1.55] - 2021-11-20
+
+- Fix compatibility with latest insiders
+
+## [0.1.54] - 2021-06-11
 
 - Fix compatibility with latest insiders
 
