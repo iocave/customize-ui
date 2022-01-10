@@ -7,8 +7,9 @@ define([
     "customize-ui/fonts",
     "customize-ui/title-bar",
 ], function (module, require, insantiationService, utils, activityBar, fonts, titleBar) {
-        'use strict';
+    'use strict';
 
+    try {
         let addStyleSheet = utils.addStyleSheet;
 
         let url = require.toUrl(module.id) + ".css";
@@ -38,4 +39,7 @@ define([
         }
 
         insantiationService.InstantiationService = _InstantiationService;
-    });
+    } catch (e) {
+        console.error('Couldn\'t initialize CustomizeUI', e);
+    }
+});

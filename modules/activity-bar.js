@@ -7,7 +7,7 @@ define([
     "vs/base/browser/dom",
     "vs/base/browser/ui/grid/grid",
     "vs/platform/windows/common/windows",
-    "vs/workbench/browser/layout",
+    "vs/workbench/browser/layout",    
     "vs/platform/configuration/common/configuration",
     "vs/workbench/browser/parts/activitybar/activitybarActions",
     "vs/platform/theme/common/themeService",
@@ -439,7 +439,7 @@ define([
         }
     }
 
-    resizeActivityBar = function(activityBarPosition) {
+    resizeActivityBarLegacy3 = function(activityBarPosition) {
         // FIXME - this is copy and paste from title-bar module;
         let traffictLightDimensions = function() {
             let size = {
@@ -467,7 +467,178 @@ define([
         document.body.classList.add("activity-bar-wide");
     }
 
-    moveActivityBarToPosition = function(theme, hideSettings, activityBarPosition, moveStatusbar) {
+    moveActivityBarToPosition = function(layoutState, theme, hideSettings, activityBarPosition, moveStatusbar) {
+        compositeBar.CompositeBar = _CompositeBar;
+        actionBar.ActionBar = _ActionBar;
+        const order = activityBarPosition === "bottom" ? 1 : 0;
+        override(activitybarPart.ActivitybarPart, "layout", function (original, args) {
+            let width = args[0];
+            let height = args[1];
+
+            if (!this.layoutService.isVisible("workbench.parts.activitybar" /* ACTIVITYBAR_PART */)) {
+                return;
+            }
+            // Layout contents
+            const contentAreaSize = this.layoutContents(width, height).contentSize;
+
+            // Layout composite bar
+            let availableWidth = contentAreaSize.width;
+            availableWidth -= 2 * sideMargin;
+
+            if (this.homeBarContainer) {
+                availableWidth -= this.homeBarContainer.clientHeight;
+            }
+            if (this.menuBarContainer) {
+                availableWidth -= this.menuBarContainer.clientHeight;
+            }
+
+            if (this.globalActivityActionBar) {
+                availableWidth -= (this.globalActivityActionBar.viewItems.length * actionWidth); // adjust width for global actions showing
+            }
+            this.compositeBar.layout(new dom.Dimension(availableWidth, height));
+        });
+
+        override(activitybarPart.ActivitybarPart, "createGlobalActivityActionBar", function(original) {
+            if (!hideSettings) {
+                original();
+            }
+        });
+
+        override(activitybarPart.ActivitybarPart, "updateStyles", function(original) {
+            original();
+            const container = this.getContainer();
+            const sideBorderColor = this.getColor("sideBar.border") || this.getColor("contrastBorder");
+            const borderColor = this.getColor("activityBar.border") || this.getColor("contrastBorder");
+            const isPositionLeft = this.layoutService.getSideBarPosition() === 0 /* left */;
+            container.style.borderRightWidth = sideBorderColor && isPositionLeft ? '1px' : null;
+            container.style.borderRightStyle = sideBorderColor && isPositionLeft ? 'solid' : null;
+            container.style.borderRightColor = isPositionLeft ? sideBorderColor : null;
+            container.style.borderLeftWidth = sideBorderColor && !isPositionLeft ? '1px' : null;
+            container.style.borderLeftStyle = sideBorderColor && !isPositionLeft ? 'solid' : null;
+            container.style.borderLeftColor = !isPositionLeft ? sideBorderColor : null;
+            container.style.borderTopColor = borderColor ? borderColor : null;
+            container.style.borderTopWidth = borderColor ? "1px" : null;
+            container.style.borderTopStyle = borderColor ? "solid" : null;
+
+            // Not ideal, but changing layout because of border seems to be bit of overkill
+            container.style.marginTop = borderColor ? "-1px" : null;
+        });
+
+        let focusBorder = theme.getColor("focusBorder") || "transparent";
+
+        let replacement = function(original) {
+            // don't let action hide sidebar
+            let orig = this.layoutService.setSideBarHidden;
+            this.layoutService.setSideBarHidden = function() {}
+            let res = original();
+            this.layoutService.setSideBarHidden = orig;
+            return res;
+        }
+
+        if (activitybarActions.ViewContainerActivityAction) {
+            override(activitybarActions.ViewContainerActivityAction, "run", replacement);
+        }
+
+        if (activitybarActions.ViewletActivityAction) {
+            override(activitybarActions.ViewletActivityAction, "run", replacement);
+        }
+
+        layout.Layout.prototype._updateActivityBar = function(visible) {
+            let a = this.activityBarPartView;
+            if (visible) {
+                a.minimumWidth = 0;
+				a.maximumWidth = Infinity;
+				a.minimumHeight = actionHeight;
+                a.maximumHeight = actionHeight;
+				this.workbenchGrid.moveView(this.activityBarPartView, a.minimumHeight, this.sideBarPartView, order /* Down */);
+                this.workbenchGrid.setViewVisible(this.activityBarPartView, !this.stateModel.getRuntimeValue(layoutState.LayoutStateKeys.ACTIVITYBAR_HIDDEN));
+
+                // restore sidebar size
+                if (this._prevSidebarSize) {
+                    let size = this.workbenchGrid.getViewSize(this.sideBarPartView);
+                    size.width = this._prevSidebarSize;
+                    this.workbenchGrid.resizeView(this.sideBarPartView, size);
+                }
+            } else {
+                // preserve sidebar size when hidden; this is necessary when sidebar is on right
+                const sideBarSize = this.stateModel.getRuntimeValue(layoutState.LayoutStateKeys.SIDEBAR_HIDDEN)
+				    ? this.workbenchGrid.getViewCachedVisibleSize(this.sideBarPartView)
+                    : this.workbenchGrid.getViewSize(this.sideBarPartView).width;
+                if (sideBarSize > 0) {
+                    this._prevSidebarSize = sideBarSize;
+                }
+
+                a.minimumWidth = 0;
+				a.maximumWidth = 0;
+				a.minimumHeight = 0;
+				a.maximumHeight = Infinity;
+				if (this.stateModel.getRuntimeValue(layoutState.LayoutStateKeys.SIDEBAR_POSITION) === 0 /* Left */) {
+                    this.workbenchGrid.moveViewTo(this.activityBarPartView, [order, 1 - order]);
+				} else {
+				    this.workbenchGrid.moveView(this.activityBarPartView, 0, this.sideBarPartView, 3 /* Right */);
+				}
+            }
+        }
+
+        layout.Layout.prototype._updateStatusBar = function(active) {
+            if (moveStatusbar) {
+                this.statusBarPartView.maximumHeight = 20;
+                if (active) {
+                    if (this.stateModel.getRuntimeValue(layoutState.LayoutStateKeys.PANEL_POSITION) === 1 /* right */) {
+                        this.workbenchGrid.moveView(this.statusBarPartView, this.statusBarPartView.minimumHeight, this.editorPartView, 1 /* Down */);
+                    } else {
+                        let size = this.workbenchGrid.getViewSize(this.panelPartView);
+                        this.workbenchGrid.moveView(this.statusBarPartView, this.statusBarPartView.minimumHeight, this.panelPartView, 1 /* Down */);
+                        this.workbenchGrid.resizeView(this.panelPartView, size);
+                    }
+                } else {
+                    this.workbenchGrid.moveViewTo(this.statusBarPartView, [2]);
+                }
+            }
+        }
+
+        override(layout.Layout, "createWorkbenchLayout", function(original) {
+            original();
+            this.layout();
+            // preserve size after updating status bar; this is necessary for sidebar to not grow
+            // during startup when moved right
+            let size = this.workbenchGrid.getViewSize(this.sideBarPartView);  
+            this._updateActivityBar(!this.stateModel.getRuntimeValue(layoutState.LayoutStateKeys.SIDEBAR_HIDDEN));
+            this._updateStatusBar(true);
+            this.workbenchGrid.resizeView(this.sideBarPartView, size);
+        });
+
+        override(layout.Layout, "setSideBarHidden", function(original) {
+            this._updateActivityBar(false);
+            original();
+            if (!this.stateModel.getRuntimeValue(layoutState.LayoutStateKeys.SIDEBAR_HIDDEN)) {
+                this._updateActivityBar(true);
+            }
+        });
+
+        override(layout.Layout, "setSideBarPosition", function(original) {
+            this._updateActivityBar(false);
+            original();
+            this._updateActivityBar(!this.state.sideBar.hidden);
+        });
+
+        override(layout.Layout, "setPanelPosition", function(original) {
+            this._updateStatusBar(false);
+            original();
+            this._updateStatusBar(true);
+        });
+
+        document.body.classList.add("activity-bar-at-bottom");
+
+        utils.addStyle(`:root {
+            --activity-bar-action-width: ${actionWidth}px;
+            --activity-bar-action-height: ${actionHeight}px;
+            --activity-bar-side-margin: ${sideMargin}px;
+            --focus-border: ${focusBorder};
+            }`);
+    }
+
+    moveActivityBarToPositionLegacy3 = function(theme, hideSettings, activityBarPosition, moveStatusbar) {
 
         compositeBar.CompositeBar = _CompositeBar;
         actionBar.ActionBar = _ActionBar;
@@ -639,8 +810,8 @@ define([
             }`);
     }
 
-    let CustomizeActivityBar = class CustomizeActivityBar {
-        constructor(configurationService, telemetry, themeService) {
+    let CustomizeActivityBarLegacy3 = class CustomizeActivityBarLegacy3 {
+        constructor(configurationService, telemetry, themeService) {            
             let activityBarPosition = configurationService.getValue("customizeUI.activityBar");
             switch (activityBarPosition) {
                 case "top":
@@ -648,13 +819,34 @@ define([
                     let theme = themeService.getColorTheme ? themeService.getColorTheme() : themeService.getTheme();
                     let hideSettings = configurationService.getValue("customizeUI.activityBarHideSettings");
                     let moveStatusbar = configurationService.getValue("customizeUI.moveStatusbar");
-                    moveActivityBarToPosition(theme, hideSettings, activityBarPosition, moveStatusbar);
+                    moveActivityBarToPositionLegacy3(theme, hideSettings, activityBarPosition, moveStatusbar);
                     break;
                 case "narrow": /* TODO: narrow sized activity bar */
                 case "wide":
-                    resizeActivityBar(activityBarPosition);
+                    resizeActivityBarLegacy3(activityBarPosition);
                     break;
             }
+        }
+    }
+
+    let CustomizeActivityBar = class CustomizeActivityBar {
+        constructor(configurationService, telemetry, themeService) {
+            require(['vs/workbench/browser/layoutState'], function(layoutState) {
+                let activityBarPosition = configurationService.getValue("customizeUI.activityBar");
+                switch (activityBarPosition) {
+                    case "top":
+                    case "bottom":
+                        let theme = themeService.getColorTheme ? themeService.getColorTheme() : themeService.getTheme();
+                        let hideSettings = configurationService.getValue("customizeUI.activityBarHideSettings");
+                        let moveStatusbar = configurationService.getValue("customizeUI.moveStatusbar");
+                        moveActivityBarToPosition(layoutState, theme, hideSettings, activityBarPosition, moveStatusbar);
+                        break;
+                    case "narrow": /* TODO: narrow sized activity bar */
+                    case "wide":
+                        // resizeActivityBar(activityBarPosition);
+                        break;
+                }
+            });
         }
     }
 
@@ -681,7 +873,15 @@ define([
         } else if (layout.Layout.prototype["layoutGrid"] !== undefined) {
             instantationService.createInstance(CustomizeActivityBarLegacy2);
         } else {
-            instantationService.createInstance(CustomizeActivityBar);
+            require(['vs/workbench/browser/layoutState'], function(layoutState) {
+                // Typo in vscode. Make alias in case it gets fixed
+                if (layoutState.LayoutStateKeys.SIDEBAR_POSITON && !layoutState.LayoutStateKeys.SIDEBAR_POSITION) {
+                    layoutState.LayoutStateKeys.SIDEBAR_POSITION = layoutState.LayoutStateKeys.SIDEBAR_POSITON;
+                }
+                instantationService.createInstance(CustomizeActivityBar);
+            }, function(error) {
+                instantationService.createInstance(CustomizeActivityBarLegacy3);
+            })
         }
     }
 

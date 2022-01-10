@@ -24,9 +24,16 @@ define([
 
                 if (platform.isMacintosh) {
                     const titleBar = configurationService.getValue("customizeUI.titleBar");
-
                     if (titleBar === "inline" || titleBar === "frameless") {
-                        this.init(titleBar === "inline");
+                        let init = () => {
+                            this.init(titleBar === "inline");
+                        }
+                        require(['vs/workbench/browser/layoutState'], (layoutState) => {
+                            this.layoutState = layoutState;
+                            init();
+                        }, (error) => {
+                            init();
+                        });
                     }
                 }
             }
@@ -81,7 +88,7 @@ define([
                 return this.activityBarIsWide() ? this.traffictLightDimensions().width : 50;
             }
             
-            init(titleBarIsInline) {                
+            init(titleBarIsInline) {                   
                 document.body.classList.add("inline-title-bar");
 
                 window.setTimeout(function() {
@@ -180,7 +187,7 @@ define([
                 utils.override(layout.Layout, "centerEditorLayout", function (original) {
                     original();
                     self.update();
-                });
+                });  
 
                 if (titleBarIsInline) {
                     // Pad title to account for traffic lights
@@ -293,12 +300,28 @@ define([
                 }
             }
 
+            sideBarHidden() {
+                if (this.layoutState) {
+                    return this.layout.stateModel.getRuntimeValue(this.layoutState.LayoutStateKeys.SIDEBAR_HIDDEN)
+                } else {
+                    return this.layout.state.sideBar.hidden
+                }
+            }
+
+            sideBarPosition() {
+                if (this.layoutState) {
+                    return this.layout.stateModel.getRuntimeValue(this.layoutState.LayoutStateKeys.SIDEBAR_POSITION)
+                } else {
+                    return this.layout.state.sideBar.position
+                }
+            }
+
             updateTabsLeftPadding(node, index) {
                 if (index == 0 &&
                     !this.isFullScreen() &&
-                    (this.layout.state.sideBar.hidden || this.layout.state.sideBar.position == 1 /* rigth */)) {
+                    (this.sideBarHidden() || this.sideBarPosition() == 1 /* rigth */)) {
                     let val = this.traffictLightDimensions().width;
-                    if (this.activityBarIsVisible() && this.layout.state.sideBar.position != 1)
+                    if (this.activityBarIsVisible() && this.sideBarPosition() != 1)
                         val -= this.activityBarWidth();
                     node.style.width = `${val}px`;
                 } else {
@@ -314,7 +337,7 @@ define([
                     if (this.layout.workbenchGrid)
                         this.layout.layout();
 
-                    if (!this.layout.state.sideBar.hidden) {
+                    if (!this.sideBarHidden()) {
                         let part = this.layout.getPart("workbench.parts.sidebar");
                         if (part.getContainer()) {                            
                             part.updateStyles();
