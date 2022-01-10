@@ -28,12 +28,14 @@ define([
                         let init = () => {
                             this.init(titleBar === "inline");
                         }
-                        require(['vs/workbench/browser/layoutState'], (layoutState) => {
-                            this.layoutState = layoutState;
+                        if (layout.Settings) { // old layout (not using LayoutState)
                             init();
-                        }, (error) => {
-                            init();
-                        });
+                        } else {
+                            require(['vs/workbench/browser/layoutState'], (layoutState) => {
+                                this.layoutState = layoutState;
+                                init();
+                            });
+                        }
                     }
                 }
             }

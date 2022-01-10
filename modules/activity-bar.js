@@ -861,6 +861,12 @@ define([
         utils.param(2, themeService.IThemeService)
     ], CustomizeActivityBarLegacy2);
 
+    CustomizeActivityBarLegacy3 = utils.decorate([
+        utils.param(0, configuration.IConfigurationService),
+        utils.param(1, telemetry.ITelemetryService), // workaround of cyclical dependency error, as theme service depends on it
+        utils.param(2, themeService.IThemeService)
+    ], CustomizeActivityBarLegacy3);
+
     CustomizeActivityBar = utils.decorate([
         utils.param(0, configuration.IConfigurationService),
         utils.param(1, telemetry.ITelemetryService), // workaround of cyclical dependency error, as theme service depends on it
@@ -872,15 +878,15 @@ define([
             instantationService.createInstance(CustomizeActivityBarLegacy1);
         } else if (layout.Layout.prototype["layoutGrid"] !== undefined) {
             instantationService.createInstance(CustomizeActivityBarLegacy2);
-        } else {
+        } else if (layout.Settings) {
+            instantationService.createInstance(CustomizeActivityBarLegacy3);
+        } else {  
             require(['vs/workbench/browser/layoutState'], function(layoutState) {
                 // Typo in vscode. Make alias in case it gets fixed
                 if (layoutState.LayoutStateKeys.SIDEBAR_POSITON && !layoutState.LayoutStateKeys.SIDEBAR_POSITION) {
                     layoutState.LayoutStateKeys.SIDEBAR_POSITION = layoutState.LayoutStateKeys.SIDEBAR_POSITON;
                 }
                 instantationService.createInstance(CustomizeActivityBar);
-            }, function(error) {
-                instantationService.createInstance(CustomizeActivityBarLegacy3);
             })
         }
     }
