@@ -201,7 +201,6 @@ class Coffee {
 	constructor(context: vscode.ExtensionContext) {
 		this.context = context;
 
-		setTimeout(()=>this.check(), 1000);
 		setInterval(()=>this.check(), 1000 * 3600);
 	}
 
