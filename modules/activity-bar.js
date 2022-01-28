@@ -584,12 +584,18 @@ define([
             if (moveStatusbar) {
                 this.statusBarPartView.maximumHeight = 20;
                 if (active) {
-                    if (this.stateModel.getRuntimeValue(layoutState.LayoutStateKeys.PANEL_POSITION) === 1 /* right */) {
+                    if (layoutState.LayoutStateKeys.PANEL_POSITION != undefined) { // old mode
+                        if (this.stateModel.getRuntimeValue(layoutState.LayoutStateKeys.PANEL_POSITION) === 1 /* right */) {
+                            this.workbenchGrid.moveView(this.statusBarPartView, this.statusBarPartView.minimumHeight, this.editorPartView, 1 /* Down */);
+                        } else {
+                            let size = this.workbenchGrid.getViewSize(this.panelPartView);
+                            this.workbenchGrid.moveView(this.statusBarPartView, this.statusBarPartView.minimumHeight, this.panelPartView, 1 /* Down */);
+                            this.workbenchGrid.resizeView(this.panelPartView, size);
+                        }
                         this.workbenchGrid.moveView(this.statusBarPartView, this.statusBarPartView.minimumHeight, this.editorPartView, 1 /* Down */);
-                    } else {
-                        let size = this.workbenchGrid.getViewSize(this.panelPartView);
                         this.workbenchGrid.moveView(this.statusBarPartView, this.statusBarPartView.minimumHeight, this.panelPartView, 1 /* Down */);
-                        this.workbenchGrid.resizeView(this.panelPartView, size);
+                    } else {
+                        this.workbenchGrid.moveView(this.statusBarPartView, this.statusBarPartView.minimumHeight, this.panelPartView, 1 /* Down */);
                     }
                 } else {
                     this.workbenchGrid.moveViewTo(this.statusBarPartView, [2]);

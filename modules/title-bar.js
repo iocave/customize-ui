@@ -100,7 +100,11 @@ define([
                     document.body.appendChild(fix);
                 }, 0);
 
-                browser.onDidChangeZoomLevel(this.update.bind(this));
+                if (browser.PixelRatio) {
+                    browser.PixelRatio.onDidChange(this.update.bind(this));
+                } else if (browser.onDidChangeZoomLevel) {
+                    browser.onDidChangeZoomLevel(this.update.bind(this));
+                }
                 browser.onDidChangeFullscreen(this.update.bind(this));
                 this.update();
 
