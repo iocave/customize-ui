@@ -152,7 +152,7 @@
 /* TODO: actions should be part of the pane, but they aren't yet */
 .monaco-pane-view .pane > .pane-header > .actions .action-label.icon,
 .monaco-pane-view .pane > .pane-header > .actions .action-label.codicon {
-    height: var(--row-height) !important;    
+    height: var(--row-height) !important;
 }
 
 .explorer-viewlet .explorer-item,
@@ -321,7 +321,8 @@ body.activity-bar-at-bottom .activitybar > div {
     overflow: hidden;
 }
 
-body.activity-bar-wide .activitybar {
+body.activity-bar-wide .activitybar,
+body.activity-bar-wide .activitybar > .content :not(.monaco-menu) > .monaco-action-bar .action-label  {
     width: var(--traffic-lights-width) !important;
 }
 

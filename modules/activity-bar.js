@@ -7,7 +7,7 @@ define([
     "vs/base/browser/dom",
     "vs/base/browser/ui/grid/grid",
     "vs/platform/windows/common/windows",
-    "vs/workbench/browser/layout",    
+    "vs/workbench/browser/layout",
     "vs/platform/configuration/common/configuration",
     "vs/workbench/browser/parts/activitybar/activitybarActions",
     "vs/platform/theme/common/themeService",
@@ -467,6 +467,35 @@ define([
         document.body.classList.add("activity-bar-wide");
     }
 
+    resizeActivityBar = function (layoutState, activityBarPosition) {
+        console.log(activityBarPosition)
+        // FIXME - this is copy and paste from title-bar module;
+        let traffictLightDimensions = function () {
+            let size = {
+                width: 77,
+                height: 37,
+            }
+            return {
+                width: size.width / browser.getZoomFactor(),
+                height: size.height / browser.getZoomFactor(),
+            };
+        }
+
+        layout.Layout.prototype._updateActivityBar = function (visible) {
+            let a = this.activityBarPartView;
+            a.minimumWidth = traffictLightDimensions().width;
+            a.maximumWidth = traffictLightDimensions().width;
+        }
+
+        override(layout.Layout, "createWorkbenchLayout", function (original) {
+            original();
+            this.layout();
+            this._updateActivityBar(!this.stateModel.getRuntimeValue(layoutState.LayoutStateKeys.SIDEBAR_HIDDEN));
+        });
+
+        document.body.classList.add("activity-bar-wide");
+    }
+
     moveActivityBarToPosition = function(layoutState, theme, hideSettings, activityBarPosition, moveStatusbar) {
         compositeBar.CompositeBar = _CompositeBar;
         actionBar.ActionBar = _ActionBar;
@@ -608,7 +637,7 @@ define([
             this.layout();
             // preserve size after updating status bar; this is necessary for sidebar to not grow
             // during startup when moved right
-            let size = this.workbenchGrid.getViewSize(this.sideBarPartView);  
+            let size = this.workbenchGrid.getViewSize(this.sideBarPartView);
             this._updateActivityBar(!this.stateModel.getRuntimeValue(layoutState.LayoutStateKeys.SIDEBAR_HIDDEN));
             this._updateStatusBar(true);
             this.workbenchGrid.resizeView(this.sideBarPartView, size);
@@ -817,7 +846,7 @@ define([
     }
 
     let CustomizeActivityBarLegacy3 = class CustomizeActivityBarLegacy3 {
-        constructor(configurationService, telemetry, themeService) {            
+        constructor(configurationService, telemetry, themeService) {
             let activityBarPosition = configurationService.getValue("customizeUI.activityBar");
             switch (activityBarPosition) {
                 case "top":
@@ -849,7 +878,7 @@ define([
                         break;
                     case "narrow": /* TODO: narrow sized activity bar */
                     case "wide":
-                        // resizeActivityBar(activityBarPosition);
+                        resizeActivityBar(layoutState, activityBarPosition);
                         break;
                 }
             });
@@ -886,7 +915,7 @@ define([
             instantationService.createInstance(CustomizeActivityBarLegacy2);
         } else if (layout.Settings) {
             instantationService.createInstance(CustomizeActivityBarLegacy3);
-        } else {  
+        } else {
             require(['vs/workbench/browser/layoutState'], function(layoutState) {
                 // Typo in vscode. Make alias in case it gets fixed
                 if (layoutState.LayoutStateKeys.SIDEBAR_POSITON && !layoutState.LayoutStateKeys.SIDEBAR_POSITION) {
