@@ -18,7 +18,7 @@ define([
         let override = utils.override;
 
         let actionWidth = 32;
-        let actionHeight = 38;
+        let actionHeight = 35;
         let sideMargin = 4;
 
         // FIXME - this is copy and paste from title-bar module;
@@ -485,7 +485,7 @@ define([
             document.body.classList.add("activity-bar-wide");
         }
 
-        moveActivityBarToPosition = function (layoutState, theme, hideSettings, activityBarPosition, activityBarPosition) {
+        moveActivityBarToPosition = function (layoutState, theme, hideSettings, activityBarPosition, statusBarPosition) {
             compositeBar.CompositeBar = _CompositeBar;
             actionBar.ActionBar = _ActionBar;
             const order = activityBarPosition === "bottom" ? 1 : 0;
@@ -540,6 +540,11 @@ define([
 
                 // Not ideal, but changing layout because of border seems to be bit of overkill
                 container.style.marginTop = borderColor ? "-1px" : null;
+
+                if (this.configurationService.getValue("customizeUI.statusBarPosition") === "top" && this.configurationService.getValue("customizeUI.activityBar") == "top") {
+                    container.style.backgroundColor = this.getColor("tab.inactiveBackground")
+                    container.style.backgroundColor = this.getColor("tab.inactiveBackground")
+                }
             });
 
             let focusBorder = theme.getColor("focusBorder") || "transparent";

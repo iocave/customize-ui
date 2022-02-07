@@ -25,9 +25,10 @@ define([
 
                 if (platform.isMacintosh) {
                     const titleBar = configurationService.getValue("customizeUI.titleBar");
+                    const statusBar = configurationService.getValue("customizeUI.statusBarPosition");
                     if (titleBar === "inline" || titleBar === "frameless") {
                         let init = () => {
-                            this.init(titleBar === "inline");
+                            this.init(titleBar === "inline" && statusBar !== "top");
                         }
                         if (layout.Settings) { // old layout (not using LayoutState)
                             init();
@@ -52,11 +53,14 @@ define([
                 }
 
                 let dimensions = this.trafficLightDimensions();
-                this.styleTextNode.textContent =
-                    `:root {
-                     --traffict-lights-width: ${dimensions.width}px;
-                     --traffic-lights-height: ${dimensions.height}px;
-                }`;
+                this.styleTextNode.textContent = `
+                    :root {
+                        --traffict-lights-width: ${dimensions.width}px;
+                        --traffict-lights-height: ${dimensions.height}px;
+                        --traffic-lights-width: ${dimensions.width}px;
+                        --traffic-lights-height: ${dimensions.height}px;
+                    }
+                `;
             }
 
             trafficLightDimensions() {
@@ -92,7 +96,7 @@ define([
             }
 
             init(titleBarIsInline) {
-                document.body.classList.add("inline-title-bar");
+                if (titleBarIsInline) document.body.classList.add("inline-title-bar");
 
                 window.setTimeout(function() {
                     // workaround for https://github.com/electron/electron/issues/21034
