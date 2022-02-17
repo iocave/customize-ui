@@ -6,6 +6,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.1.59] - 2021-02-17
+
+- Fix compatiblity with latest insiders
+
 ## [0.1.58] - 2022-02-05
 
 - Fix regression with activitybar: wide
