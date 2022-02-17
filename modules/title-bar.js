@@ -11,10 +11,11 @@ define([
     "vs/workbench/browser/parts/compositePart",
     "vs/workbench/browser/parts/editor/tabsTitleControl",
     "vs/workbench/browser/parts/editor/noTabsTitleControl",
-    "vs/platform/windows/common/windows",
     "vs/workbench/browser/parts/editor/editor",
 ], function (exports, utils, configuration, platform, browser, layout, activitybarPart, colorRegistry,
-    part, compositePart, ttt, titleControl, windows, editor) {
+    part, compositePart, ttt, titleControl, editor) {
+
+    function perform(windows) {
 
         let CustomizeTitleBar = class CustomizeTitleBar {
             constructor(configurationService, windowService) {
@@ -89,8 +90,8 @@ define([
             activityBarWidth() {
                 return this.activityBarIsWide() ? this.traffictLightDimensions().width : 50;
             }
-            
-            init(titleBarIsInline) {                   
+
+            init(titleBarIsInline) {
                 document.body.classList.add("inline-title-bar");
 
                 window.setTimeout(function() {
@@ -193,7 +194,7 @@ define([
                 utils.override(layout.Layout, "centerEditorLayout", function (original) {
                     original();
                     self.update();
-                });  
+                });
 
                 if (titleBarIsInline) {
                     // Pad title to account for traffic lights
@@ -345,7 +346,7 @@ define([
 
                     if (!this.sideBarHidden()) {
                         let part = this.layout.getPart("workbench.parts.sidebar");
-                        if (part.getContainer()) {                            
+                        if (part.getContainer()) {
                             part.updateStyles();
                         }
                     }
@@ -398,7 +399,7 @@ define([
                     init(instantiationService, helper);
                 }
 
-                let haveElectron2 = function(electron) {                    
+                let haveElectron2 = function(electron) {
                     ElectronHelper = utils.decorate([
                         utils.param(0, electron.INativeHostService),
                     ], ElectronHelper);
@@ -408,8 +409,12 @@ define([
 
                 require(["vs/platform/electron/node/electron"], haveElectron, function(error) {} );
                 require(["vs/platform/electron/electron-sandbox/electron"], haveElectron, function(error) { });
-                require(["vs/platform/native/electron-sandbox/native"], haveElectron2, function(error) { });                
+                require(["vs/platform/native/electron-sandbox/native"], haveElectron2, function(error) { });
             }
         }
 
-    });
+    }
+
+    require(["vs/platform/windows/common/windows"], perform, function (error) {});
+    require(["vs/platform/window/common/window"], perform, function (error) {});
+});
