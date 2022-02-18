@@ -293,12 +293,48 @@ body.activity-bar-at-bottom .monaco-workbench .activitybar > .content .global-ac
     margin-right: var(--activity-bar-side-margin);
 }
 
-body.activity-bar-at-bottom .monaco-workbench .part.statusbar {
+body.activity-bar-at-bottom:not(.status-bar-at-top) .monaco-workbench .part.statusbar {
     height: 20px !important;
 }
 
-body.activity-bar-at-bottom .monaco-workbench .part.statusbar>.statusbar-item,
-body.activity-bar-at-bottom .monaco-workbench .part.statusbar>.items-container>.statusbar-item {
+body.status-bar-at-top .monaco-workbench .part.statusbar {
+    padding-left: calc(var(--traffic-lights-width) - 7px);
+    padding-right: 0;
+    -webkit-app-region: drag;
+    outline: none !important;
+}
+
+/* fix positioning of notifications */
+body.status-bar-at-top .notifications-toasts,
+body.status-bar-at-top .notifications-center {
+    bottom: auto;
+    top: var(--traffic-lights-height);
+    margin-top: var(--activity-bar-action-height);
+}
+body.status-bar-at-top .notifications-center {
+    top: 0;
+}
+body.status-bar-at-top .codicon-notifications-collapse,
+body.status-bar-at-top .codicon-notifications-expand,
+body.status-bar-at-top .notifications-center .codicon-notifications-hide {
+    transform: scaleY(-1)
+}
+body.status-bar-at-top .notification-toast {
+    transform: translate3d(0,-100%,0)
+}
+
+/* tweak hover styles */
+body.status-bar-at-top .statusbar-item {
+    -webkit-app-region: no-drag;
+    padding: 7px 0;
+    box-sizing: border-box;
+}
+body.status-bar-at-top .statusbar-item a {
+    border-radius: 5px;
+}
+
+body.activity-bar-at-bottom:not(.status-bar-at-top) .monaco-workbench .part.statusbar>.statusbar-item,
+body.activity-bar-at-bottom:not(.status-bar-at-top) .monaco-workbench .part.statusbar>.items-container>.statusbar-item {
     line-height: 20px !important;
 }
 
@@ -317,12 +353,7 @@ body.activity-bar-at-bottom .activitybar .global-activity .actions-container:bef
     background-size: 17px !important;
 }
 
-body.activity-bar-at-bottom .activitybar > div {
-    overflow: hidden;
-}
-
-body.activity-bar-wide .activitybar,
-body.activity-bar-wide .activitybar > .content :not(.monaco-menu) > .monaco-action-bar .action-label  {
+body.activity-bar-wide .activitybar {
     width: var(--traffic-lights-width) !important;
 }
 

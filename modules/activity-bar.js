@@ -18,8 +18,20 @@ define([
         let override = utils.override;
 
         let actionWidth = 32;
-        let actionHeight = 38;
+        let actionHeight = 35;
         let sideMargin = 4;
+
+        // FIXME - this is copy and paste from title-bar module;
+        let trafficLightDimensions = function () {
+            let size = {
+                width: 77,
+                height: 37,
+            }
+            return {
+                width: size.width / browser.getZoomFactor(),
+                height: size.height / browser.getZoomFactor(),
+            };
+        }
 
         // CompositeBar
 
@@ -440,22 +452,10 @@ define([
         }
 
         resizeActivityBarLegacy3 = function (activityBarPosition) {
-            // FIXME - this is copy and paste from title-bar module;
-            let traffictLightDimensions = function () {
-                let size = {
-                    width: 77,
-                    height: 37,
-                }
-                return {
-                    width: size.width / browser.getZoomFactor(),
-                    height: size.height / browser.getZoomFactor(),
-                };
-            }
-
             layout.Layout.prototype._updateActivityBar = function (visible) {
                 let a = this.activityBarPartView;
-                a.minimumWidth = traffictLightDimensions().width;
-                a.maximumWidth = traffictLightDimensions().width;
+                a.minimumWidth = trafficLightDimensions().width;
+                a.maximumWidth = trafficLightDimensions().width;
             }
 
             override(layout.Layout, "createWorkbenchLayout", function (original) {
@@ -469,22 +469,11 @@ define([
 
         resizeActivityBar = function (layoutState, activityBarPosition) {
             console.log(activityBarPosition)
-            // FIXME - this is copy and paste from title-bar module;
-            let traffictLightDimensions = function () {
-                let size = {
-                    width: 77,
-                    height: 37,
-                }
-                return {
-                    width: size.width / browser.getZoomFactor(),
-                    height: size.height / browser.getZoomFactor(),
-                };
-            }
 
             layout.Layout.prototype._updateActivityBar = function (visible) {
                 let a = this.activityBarPartView;
-                a.minimumWidth = traffictLightDimensions().width;
-                a.maximumWidth = traffictLightDimensions().width;
+                a.minimumWidth = trafficLightDimensions().width;
+                a.maximumWidth = trafficLightDimensions().width;
             }
 
             override(layout.Layout, "createWorkbenchLayout", function (original) {
@@ -496,7 +485,7 @@ define([
             document.body.classList.add("activity-bar-wide");
         }
 
-        moveActivityBarToPosition = function (layoutState, theme, hideSettings, activityBarPosition, moveStatusbar) {
+        moveActivityBarToPosition = function (layoutState, theme, hideSettings, activityBarPosition, statusBarPosition) {
             compositeBar.CompositeBar = _CompositeBar;
             actionBar.ActionBar = _ActionBar;
             const order = activityBarPosition === "bottom" ? 1 : 0;
@@ -551,6 +540,11 @@ define([
 
                 // Not ideal, but changing layout because of border seems to be bit of overkill
                 container.style.marginTop = borderColor ? "-1px" : null;
+
+                if (this.configurationService.getValue("customizeUI.statusBarPosition") === "top" && this.configurationService.getValue("customizeUI.activityBar") == "top") {
+                    container.style.backgroundColor = this.getColor("tab.inactiveBackground")
+                    container.style.backgroundColor = this.getColor("tab.inactiveBackground")
+                }
             });
 
             let focusBorder = theme.getColor("focusBorder") || "transparent";
@@ -610,7 +604,8 @@ define([
             }
 
             layout.Layout.prototype._updateStatusBar = function (active) {
-                if (moveStatusbar) {
+                switch (statusBarPosition) {
+                case "under-panel":
                     this.statusBarPartView.maximumHeight = 20;
                     if (active) {
                         if (layoutState.LayoutStateKeys.PANEL_POSITION != undefined) { // old mode
@@ -629,6 +624,23 @@ define([
                     } else {
                         this.workbenchGrid.moveViewTo(this.statusBarPartView, [2]);
                     }
+                    break;
+                case "top":
+                    this.statusBarPartView.minimumHeight =
+                        this.statusBarPartView.maximumHeight = trafficLightDimensions().height;
+
+                    this.statusBarPartView.styleOverrides.add({ background: 'activityBar.background' })
+                    this.statusBarPartView.updateStyles()
+                    this.statusBarPartView.getContainer().style.boxShadow = '0 -1px 4px 0 currentColor';
+                    this.statusBarPartView.getContainer().style.marginBottom = '1px';
+                    this.statusBarPartView.getContainer().style.height = trafficLightDimensions().height - 1;
+                    this.activityBarPartView.updateStyles()
+
+                    this.workbenchGrid.moveViewTo(this.statusBarPartView, [1]);
+                    break;
+                case "bottom":
+                    this.workbenchGrid.moveViewTo(this.statusBarPartView, [2]);
+                    break;
                 }
             }
 
@@ -673,7 +685,7 @@ define([
                 }`);
         }
 
-        moveActivityBarToPositionLegacy3 = function (theme, hideSettings, activityBarPosition, moveStatusbar) {
+        moveActivityBarToPositionLegacy3 = function (theme, hideSettings, activityBarPosition, statusBarPosition) {
 
             compositeBar.CompositeBar = _CompositeBar;
             actionBar.ActionBar = _ActionBar;
@@ -788,7 +800,8 @@ define([
             }
 
             layout.Layout.prototype._updateStatusBar = function (active) {
-                if (moveStatusbar) {
+                switch (statusBarPosition) {
+                case "under-panel":
                     this.statusBarPartView.maximumHeight = 20;
                     if (active) {
                         if (this.state.panel.position === 1 /* right */) {
@@ -801,6 +814,15 @@ define([
                     } else {
                         this.workbenchGrid.moveViewTo(this.statusBarPartView, [2]);
                     }
+                    break;
+                case "top":
+                    this.statusBarPartView.minimumHeight =
+                        this.statusBarPartView.maximumHeight = trafficLightDimensions().height;
+                    this.workbenchGrid.moveViewTo(this.statusBarPartView, [1]);
+                    break;
+                case "bottom":
+                    this.workbenchGrid.moveViewTo(this.statusBarPartView, [2]);
+                    break;
                 }
             }
 
@@ -853,8 +875,12 @@ define([
                     case "bottom":
                         let theme = themeService.getColorTheme ? themeService.getColorTheme() : themeService.getTheme();
                         let hideSettings = configurationService.getValue("customizeUI.activityBarHideSettings");
-                        let moveStatusbar = configurationService.getValue("customizeUI.moveStatusbar");
-                        moveActivityBarToPositionLegacy3(theme, hideSettings, activityBarPosition, moveStatusbar);
+                        let statusBarPosition = configurationService.getValue("customizeUI.statusBarPosition")
+                            || (configurationService.getValue("customizeUI.moveStatusbar")
+                                ? "under-panel"
+                                : "bottom");
+                        document.body.classList.add("status-bar-at-" + statusBarPosition);
+                        moveActivityBarToPositionLegacy3(layoutState, theme, hideSettings, activityBarPosition, statusBarPosition);
                         break;
                     case "narrow": /* TODO: narrow sized activity bar */
                     case "wide":
@@ -873,8 +899,12 @@ define([
                         case "bottom":
                             let theme = themeService.getColorTheme ? themeService.getColorTheme() : themeService.getTheme();
                             let hideSettings = configurationService.getValue("customizeUI.activityBarHideSettings");
-                            let moveStatusbar = configurationService.getValue("customizeUI.moveStatusbar");
-                            moveActivityBarToPosition(layoutState, theme, hideSettings, activityBarPosition, moveStatusbar);
+                            let statusBarPosition = configurationService.getValue("customizeUI.statusBarPosition")
+                                || (configurationService.getValue("customizeUI.moveStatusbar")
+                                    ? "under-panel"
+                                    : "bottom");
+                            document.body.classList.add("status-bar-at-" + statusBarPosition);
+                            moveActivityBarToPosition(layoutState, theme, hideSettings, activityBarPosition, statusBarPosition);
                             break;
                         case "narrow": /* TODO: narrow sized activity bar */
                         case "wide":
