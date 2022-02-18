@@ -602,7 +602,7 @@ define([
                     a.minimumHeight = 0;
                     a.maximumHeight = Infinity;
                     if (this.stateModel.getRuntimeValue(layoutState.LayoutStateKeys.SIDEBAR_POSITION) === 0 /* Left */) {
-                        this.workbenchGrid.moveViewTo(this.activityBarPartView, [order, 1 - order]);
+                        this.workbenchGrid.moveViewTo(this.activityBarPartView, [1, 0]);
                     } else {
                         this.workbenchGrid.moveView(this.activityBarPartView, 0, this.sideBarPartView, 3 /* Right */);
                     }
