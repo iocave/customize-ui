@@ -639,7 +639,7 @@ define([
                     this.workbenchGrid.moveViewTo(this.statusBarPartView, [1]);
                     break;
                 case "bottom":
-                    this.workbenchGrid.moveViewTo(this.statusBarPartView, [2]);
+                    // Statusbar is bottom by default; Nothing to do here.
                     break;
                 }
             }
