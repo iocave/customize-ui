@@ -299,7 +299,9 @@ body.activity-bar-at-bottom:not(.status-bar-at-top) .monaco-workbench .part.stat
 
 body.status-bar-at-top .monaco-workbench .part.statusbar {
     padding-left: calc(var(--traffic-lights-width) - 7px);
+    padding-right: 0;
     -webkit-app-region: drag;
+    outline: none !important;
 }
 
 /* fix positioning of notifications */
