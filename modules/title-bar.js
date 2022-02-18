@@ -86,6 +86,10 @@ define([
                 return this.configurationService.getValue("customizeUI.activityBar") === "wide";
             }
 
+            statusBarOnTop() {
+                return this.configurationService.getValue("customizeUI.statusBarPosition") == "top";
+            }
+
             activityBarIsVisible() {
                 return this.layout && this.layout.isVisible("workbench.parts.activitybar") &&
                     this.activityBarIsVertical();
@@ -154,6 +158,12 @@ define([
                 utils.override(part.Part, "layoutContents", function (original) {
                     // we need to override height for composite title, but only when laying
                     // out sidebar title
+                    if (self.statusBarOnTop() &&
+                        this.id === "workbench.parts.statusbar" && this._hasListener == undefined) {
+                        this.element.addEventListener("dblclick", () => self.windowService.onWindowTitleDoubleClick());
+                        this._hasListener = true;
+                    }
+
                     if (this.id === "workbench.parts.sidebar") {
                         let c = this.partLayout.__proto__.constructor;
                         let prev = c.TITLE_HEIGHT;
