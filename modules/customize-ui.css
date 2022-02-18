@@ -325,12 +325,16 @@ body.status-bar-at-top .notification-toast {
 
 /* tweak hover styles */
 body.status-bar-at-top .statusbar-item {
-    -webkit-app-region: no-drag;
     padding: 7px 0;
     box-sizing: border-box;
 }
 body.status-bar-at-top .statusbar-item a {
     border-radius: 5px;
+    -webkit-app-region: no-drag;
+}
+
+body.status-bar-at-top .statusbar-item.has-background-color.first-visible-item {
+    margin-left: 6px;
 }
 
 body.activity-bar-at-bottom:not(.status-bar-at-top) .monaco-workbench .part.statusbar>.statusbar-item,
