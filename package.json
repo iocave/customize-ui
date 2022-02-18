@@ -93,15 +93,15 @@
 				},
 				"customizeUI.listRowHeight": {
 					"type": "integer",
-					"title": "Height of rows in lists and trees in pixels (defaults to 22)"
+					"description": "Height of rows in lists and trees in pixels (defaults to 22)"
 				},
 				"customizeUI.font.regular": {
 					"type": "string",
-					"title": "Replacement font family for regular UI font"
+					"description": "Replacement font family for regular UI font"
 				},
 				"customizeUI.font.monospace": {
 					"type": "string",
-					"title": "Replacement font family for monospace UI font"
+					"description": "Replacement font family for monospace UI font"
 				},
 				"customizeUI.fontSizeMap": {
 					"default": {
