@@ -298,7 +298,7 @@ body.activity-bar-at-bottom:not(.status-bar-at-top) .monaco-workbench .part.stat
 }
 
 body.status-bar-at-top .monaco-workbench .part.statusbar {
-    padding-left: var(--traffic-lights-width);
+    padding-left: calc(var(--traffic-lights-width) - 7px);
     -webkit-app-region: drag;
 }
 
