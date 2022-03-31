@@ -145,7 +145,7 @@ define([
                         return res;
                     });
 
-                    let color = colorRegistry.registerColor("inlineTitleBar.background");
+                    let color = colorRegistry.registerColor("inlineTitleBar.background", null);
 
                     // actually change the color
                     utils.override(activitybarPart.ActivitybarPart, "updateStyles", function (original) {
