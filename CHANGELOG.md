@@ -6,6 +6,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.1.61] - 2021-03-31
+
+- Fix compability with latest vscode
+
 ## [0.1.60] - 2021-02-18
 
 - Add option for `customizeUI.statusBarPosition`: `top`,
