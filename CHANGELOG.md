@@ -6,6 +6,11 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.1.60] - 2021-02-18
+
+- Add option for `customizeUI.statusBarPosition`: `top`,
+- Bugfixes
+
 ## [0.1.59] - 2021-02-17
 
 - Fix compatiblity with latest insiders
