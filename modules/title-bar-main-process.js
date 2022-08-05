@@ -22,6 +22,10 @@ define([
                 require(["vs/platform/windows/electron-main/window"], function (win) {
                     self.__init(titleBar, win);
                 }, function (err) { });
+
+                require(["vs/platform/windows/electron-main/windowImpl"], function (win) {
+                    self.__init(titleBar, win);
+                }, function (err) { });
             }
         }
 
