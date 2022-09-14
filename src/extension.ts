@@ -140,6 +140,8 @@ class Extension {
 					],
 					mainProcessModules: [
 						"customize-ui/title-bar-main-process",
+						// This needs to be here in order to not delay loading of title-bar-main-process (which depends on it) 
+						"customize-ui/utils",
 					]
 				}
 			);
