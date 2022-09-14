@@ -6,6 +6,14 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.1.64] - 2022-09-14
+
+- Fix compatibility with latest insiders
+
+## [0.1.63] - 2022-08-05
+
+- Remove node moduels from extension
+
 ## [0.1.62] - 2022-08-05
 
 - Fix compability with latest vscode
