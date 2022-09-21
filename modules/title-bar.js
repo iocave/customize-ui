@@ -66,7 +66,7 @@ define([
             trafficLightDimensions() {
                 let size = {
                     width: 77,
-                    height: 37,
+                    height: 38,
                 }
                 return {
                     width: size.width / browser.getZoomFactor(),
