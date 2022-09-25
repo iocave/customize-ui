@@ -2,7 +2,7 @@
 	"name": "customize-ui",
 	"displayName": "Customize UI",
 	"description": "Advanced VSCode user interface customizations. Very experimental.",
-	"version": "0.1.64",
+	"version": "0.1.65",
 	"publisher": "iocave",
 	"license": "MIT",
 	"repository": {
@@ -10,7 +10,7 @@
 		"url": "https://github.com/iocave/customize-ui"
 	},
 	"engines": {
-		"vscode": "^1.34.0"
+		"vscode": "^1.71.2"
 	},
 	"categories": [
 		"Themes",

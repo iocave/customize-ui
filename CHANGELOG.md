@@ -6,6 +6,10 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.1.65] - 2022-09-25
+
+- Fix compatibility with VSCode 1.71.2
+
 ## [0.1.64] - 2022-09-14
 
 - Fix compatibility with latest insiders

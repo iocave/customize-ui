@@ -109,13 +109,6 @@ define([
                 return res;
             });
 
-            // outline
-            require(["vs/editor/contrib/documentSymbols/outlineTree"], function(outlineTree) {
-                outlineTree.OutlineVirtualDelegate.prototype.getHeight = function () {
-                    return rowHeight;
-                };
-            }, function(error) {});
-
             // newer version
             require(["vs/workbench/contrib/codeEditor/browser/outline/documentSymbolsTree"], function(symbolsTree) {
                 symbolsTree.DocumentSymbolVirtualDelegate.prototype.getHeight = function () {
@@ -141,10 +134,6 @@ define([
                 }
                 return res;
             };
-
-            require(["vs/workbench/browser/parts/views/customView"], function(customView) {
-                override(customView.CustomTreeView, "createTree", replacement);
-            }, function(error) {});
 
             require(["vs/workbench/browser/parts/views/treeView"], function(treeView) {
                 if (treeView.TreeView)
@@ -204,16 +193,6 @@ define([
                 return res;
             }
 
-            require(["vs/workbench/contrib/scm/browser/scmViewlet"], function(scm) {
-                if (scm.MainPanel) {
-                    override(scm.MainPanel, "renderBody", replacement);
-                }
-
-                if (scm.RepositoryPanel) {
-                    override(scm.RepositoryPanel, "renderBody", replacement);
-                }
-            }, function(error) {});
-
             replacement = function (original) {
                 let res = original();
                 if (this.tree && this.element) {
@@ -241,29 +220,8 @@ define([
                 return res;
             }
 
-            require(["vs/workbench/contrib/scm/browser/mainPanel"], function(mp) {
-                override(mp.MainPanel, "renderBody", replacement);
-            }, function(error) {});
-
-            require(["vs/workbench/contrib/scm/browser/mainPane"], function(mp) {
-                override(mp.MainPane, "renderBody", replacement);
-            }, function(error) {});
-
-            require(["vs/workbench/contrib/scm/browser/repositoryPanel"], function(rp) {
-                override(rp.RepositoryPanel, "renderBody", replacement);
-            }, function(error) {});
-
-            require(["vs/workbench/contrib/scm/browser/repositoryPane"], function(rp) {
-                override(rp.RepositoryPane, "renderBody", replacement);
-            }, function(error) {});
-
             require(["vs/workbench/contrib/timeline/browser/timelinePane"], function(tp) {
                 override(tp.TimelinePane, "renderBody", replacement);
-            }, function(error) {});
-
-            // panel height (OUTLINE, DEPENDENCIES, ...)
-            require(["vs/base/browser/ui/splitview/panelview"], function(panelView) {
-                panelView.Panel.HEADER_SIZE = rowHeight;
             }, function(error) {});
 
             // Version: 1.41.0-insider
