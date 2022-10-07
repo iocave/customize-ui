@@ -155,8 +155,11 @@
     height: var(--row-height) !important;
 }
 
+.monaco-icon-label::before {
+    height: auto !important;
+}
+
 .explorer-viewlet .explorer-item,
-.explorer-viewlet .explorer-item::before,
 .explorer-viewlet .open-editor,
 .explorer-viewlet .editor-group {
     height: var(--row-height) !important;
