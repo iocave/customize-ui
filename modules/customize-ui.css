@@ -116,6 +116,15 @@
     height: var(--row-height) !important;
 }
 
+/* Number badges */
+/* These would be simpler with :has() selector, but it requires Chromium 105 (Electron v21) */
+.search-view .results .filematch .badge,
+.debug-viewlet .debug-call-stack .line-number-wrapper,
+.debug-viewlet .debug-breakpoints .line-number-container {
+    display: flex;
+    align-items: center;
+}
+
 .customview-tree .monaco-tree .monaco-tree-row .custom-view-tree-node-item > .custom-view-tree-node-item-icon {
     height: var(--row-height) !important;
 }
