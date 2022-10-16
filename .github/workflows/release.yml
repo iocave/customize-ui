@@ -1,0 +1,60 @@
+name: Release
+
+on: { push: { tags: ["v[0-9]+.[0-9]+.[0-9]+"] } }
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set Environment Variables
+        run: 'echo "VSIX_FILENAME=customize-ui-${GITHUB_REF_NAME#v}.vsix" >> $GITHUB_ENV'
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Package with vsce
+        run: npx vsce@2.11.0 package --allow-star-activation --out "${{ env.VSIX_FILENAME }}"
+
+      - name: Checksum (SHA-256)
+        run: shasum -a 256 -b ${{ env.VSIX_FILENAME }}
+
+      - name: Upload VSIX to Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: vsix
+          path: ${{ env.VSIX_FILENAME }}
+          if-no-files-found: error
+
+      - name: Check Git Status
+        run: git status --porcelain
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref_name }}
+          release_name: ${{ github.ref_name }}
+          draft: true
+          prerelease: false
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ env.VSIX_FILENAME }}
+          asset_name: ${{ env.VSIX_FILENAME }}
+          asset_content_type: application/octet-stream
+
+      - name: Publish Release
+        run: 'hub release edit --draft=false -m '''' "${GITHUB_REF_NAME}"'
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
