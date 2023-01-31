@@ -11,6 +11,8 @@ This experimental extension allows customizing VSCode user interface beyond what
   <img src="https://raw.githubusercontent.com/iocave/customize-ui/master/screenshot.png" alt="Preview">
 </div>
 
+> Note: As of VSCode 1.74, this extension does not work, and will cause VSCode to crash. You can remain on 1.73.1 or prior to continue to use this extension. If you wish to move to a newer version of VSCode, you'll want to uninstall this extension before updating.
+
 ## Supported configuration options
 
 ### `customizeUI.activityBar`
