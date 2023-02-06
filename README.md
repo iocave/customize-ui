@@ -27,7 +27,7 @@ When set to `wide`, activity bar will match the width of traffic lights (for mac
 
 When enabled move the statusbar below the panel (Terminal, Output, Problems). Useful to gain some space for the sidebar.
 
-**WARNING:** don't works well if panel is set to left or right,  
+**WARNING:** Does not work well if panel is set to left or right,  
 this setting was added to be able to disable the default behavior.
 
 ### `customizeUI.activityBarHideSettings`
