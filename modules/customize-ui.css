@@ -103,13 +103,26 @@
     font-size: var(--font-size-menu) !important;
 }
 
-.monaco-workbench .debug-viewlet .monaco-list-row .expression,
-.monaco-workbench .debug-hover-widget .monaco-list-row .expression,
-.monaco-workbench .debug-viewlet .monaco-list-row .expression,
-.monaco-workbench .debug-hover-widget .monaco-list-row .expression,
-.monaco-workbench.mac .debug-viewlet .monaco-list-row .expression,
-.monaco-workbench.mac .debug-hover-widget .monaco-list-row .expression {
+.debug-viewlet .debug-watch .monaco-list-row .expression,
+.debug-hover-widget .monaco-list-row .expression {
     font-size: var(--font-size-monospace) !important;
+}
+
+.debug-viewlet .debug-watch .monaco-list-row .expression,
+.debug-viewlet .debug-call-stack .monaco-list-row .session,
+.debug-viewlet .debug-call-stack .monaco-list-row .stack-frame,
+.debug-viewlet .debug-breakpoints .monaco-list-row .breakpoint {
+    /* Prevent texts from exceeding row height and making something misaligned */
+    height: var(--row-height) !important;
+}
+
+/* Number badges */
+/* These would be simpler with :has() selector, but it requires Chromium 105 (Electron v21) */
+.search-view .results .filematch .badge,
+.debug-viewlet .debug-call-stack .line-number-wrapper,
+.debug-viewlet .debug-breakpoints .line-number-container {
+    display: flex;
+    align-items: center;
 }
 
 .customview-tree .monaco-tree .monaco-tree-row .custom-view-tree-node-item > .custom-view-tree-node-item-icon {
@@ -155,8 +168,15 @@
     height: var(--row-height) !important;
 }
 
+.monaco-icon-label::before {
+    height: auto !important;
+}
+
+.debug-viewlet .debug-call-stack .codicon-callstack-view-session::before {
+    vertical-align: middle;
+}
+
 .explorer-viewlet .explorer-item,
-.explorer-viewlet .explorer-item::before,
 .explorer-viewlet .open-editor,
 .explorer-viewlet .editor-group {
     height: var(--row-height) !important;
