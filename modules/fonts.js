@@ -56,11 +56,11 @@ define([
         }
 
         setFontFamily(fontFamily) {
-            addStyle(`.mac, .windows, .linux { font-family: "${fontFamily}" !important; }`);
+            addStyle(`.mac, .windows, .linux { font-family: ${fontFamily} !important; }`);
         }
 
         setMonospaceFontFamily(fontFamily) {
-            addStyle(`.mac, .windows, .linux { --monaco-monospace-font:"${fontFamily}" !important; }`);
+            addStyle(`.mac, .windows, .linux { --monaco-monospace-font: ${fontFamily} !important; }`);
         }
 
         updateFontSize(fontSizeMap) {
